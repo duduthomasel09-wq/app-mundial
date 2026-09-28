@@ -1,0 +1,46 @@
+# Dependências
+node_modules/
+.pnpm-store/
+
+# Builds
+dist/
+build/
+.next/
+out/
+.turbo/
+coverage/
+
+# Expo / React Native
+.expo/
+.expo-shared/
+ios/
+android/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Supabase
+supabase/.temp/
+supabase/.branches/
+
+# Variáveis de ambiente — NUNCA versionar segredos
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Sistema / editores
+.DS_Store
+Thumbs.db
+*.log
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Expo (gerados automaticamente)
+expo-env.d.ts
+web-build/
+.metro-health-check*
+.kotlin/

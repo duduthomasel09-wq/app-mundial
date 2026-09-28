@@ -1,11 +1,16 @@
-# App Mundial 🌍
+# Global Food Guide 🌍 (nome provisório)
 
-Um app para deixar o dia a dia mais prático para as pessoas — começando por um **guia de comida global**.
+Guia alimentar internacional: receitas, produtos de supermercado, equivalentes entre países,
+substitutos de ingredientes, tradução de nomes, listas de compras, guia de chás e recursos de viagem.
 
-## Ideia
-- Descobrir pratos típicos de cada país
-- Encontrar restaurantes e receitas
-- Tudo em um só lugar, simples de usar
+- 📄 Especificação: [PROJECT_SPEC.md](PROJECT_SPEC.md)
+- 🛠️ Como rodar: [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)
+- 🧭 Decisões técnicas: [docs/decisions](docs/decisions/README.md)
 
 ## Status
-🚧 Em construção — primeira versão.
+
+🚧 **Fase 0 — Fundação** em andamento.
+
+- ✅ Etapa 1 — Estrutura do monorepo
+- ✅ Etapa 2 — pnpm + Turborepo
+- ✅ Etapa 3 — App Expo (`apps/mobile`, Expo SDK 57) — aguardando aprovação
