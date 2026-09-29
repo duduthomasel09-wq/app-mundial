@@ -55,9 +55,14 @@ packages/core    Tipos e regras: países, moedas, planos, unidades
 packages/i18n    Idioma e formatos (traduções chegam na etapa 7)
 packages/ui      Cores e medidas compartilhadas (componentes na etapa 8)
 packages/config  Configurações de TypeScript/lint
-supabase/        Banco, migrações e funções
+supabase/        Banco: migrations, seed e Edge Functions (veja docs/SUPABASE.md)
 docs/            Documentação e decisões (ADRs)
 ```
+
+## Supabase (banco de dados)
+
+A configuração fica em `supabase/`. Para conectar um projeto de desenvolvimento, criar as tabelas
+e colocar as chaves públicas nos apps, siga o passo a passo em [SUPABASE.md](SUPABASE.md).
 
 ## Pacotes compartilhados
 
@@ -77,4 +82,4 @@ import { getColors } from '@gfg/ui';
 
 - Nomes de pacotes internos: `@gfg/<nome>`.
 - Commits em português, no imperativo: "Adiciona…", "Corrige…".
-- Segredos **nunca** no Git — use `.env.local` (veja os arquivos `.env.example`; o painel já tem o seu em `apps/admin/.env.example`, os demais chegam na etapa 9).
+- Segredos **nunca** no Git — use `.env.local` (veja os arquivos `.env.example`; hoje existem `apps/admin/.env.example`, `apps/mobile/.env.example` e `supabase/functions/.env.example`; a organização completa chega na etapa 9).

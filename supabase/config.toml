@@ -1,0 +1,79 @@
+# Configuração do Supabase CLI para o ambiente LOCAL (`supabase start`).
+# Documentação: https://supabase.com/docs/guides/local-development/cli/config
+#
+# Este arquivo não tem nenhuma chave ou senha. O projeto na nuvem (desenvolvimento)
+# é conectado com `supabase link` — veja docs/SUPABASE.md.
+
+# Nome do projeto local (usado nos contêineres do Docker).
+project_id = "app-mundial"
+
+[api]
+enabled = true
+port = 54321
+# Esquemas expostos pela API. O app só acessa o esquema `public`.
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+# Mesma versão principal do Postgres dos projetos novos na nuvem.
+major_version = 17
+
+[db.migrations]
+enabled = true
+
+[db.seed]
+# Dados iniciais aplicados em `supabase db reset` (em ordem alfabética).
+enabled = true
+sql_paths = ["./seed/*.sql"]
+
+[realtime]
+enabled = true
+
+[studio]
+enabled = true
+port = 54323
+api_url = "http://127.0.0.1"
+
+# Caixa de e-mails falsa para testar e-mails de login localmente.
+[inbucket]
+enabled = true
+port = 54324
+
+[storage]
+enabled = true
+file_size_limit = "50MiB"
+
+[auth]
+enabled = true
+# Painel admin em desenvolvimento. O app mobile ganha suas URLs quando o login for implementado.
+site_url = "http://127.0.0.1:3000"
+additional_redirect_urls = ["http://localhost:3000"]
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+refresh_token_reuse_interval = 10
+enable_signup = true
+enable_anonymous_sign_ins = false
+minimum_password_length = 8
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = false
+
+[edge_runtime]
+enabled = true
+policy = "per_worker"
+inspector_port = 8083
+deno_version = 2
+
+[analytics]
+enabled = true
+port = 54327
+backend = "postgres"
+
+# Verificação de funcionamento — pública de propósito (não expõe nenhum dado).
+[functions.health]
+verify_jwt = false
