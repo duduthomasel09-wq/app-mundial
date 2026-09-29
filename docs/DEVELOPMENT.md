@@ -37,6 +37,15 @@ Rodar só um projeto: `pnpm --filter @gfg/mobile dev` ou `pnpm --filter @gfg/adm
 
 > O Expo Go precisa ser compatível com o **SDK 57** do projeto.
 
+## Rodar o painel administrativo
+
+1. Na raiz do projeto: `pnpm --filter @gfg/admin dev`
+2. Abra http://localhost:3000 no navegador — vai direto para o Dashboard.
+3. (Opcional) Copie `apps/admin/.env.example` para `apps/admin/.env.local` para mudar configurações.
+
+> Por enquanto não há login real: o painel abre em **modo desenvolvimento**.
+> Detalhes em [apps/admin/README.md](../apps/admin/README.md).
+
 ## Estrutura
 
 ```
@@ -54,4 +63,4 @@ docs/            Documentação e decisões (ADRs)
 
 - Nomes de pacotes internos: `@gfg/<nome>`.
 - Commits em português, no imperativo: "Adiciona…", "Corrige…".
-- Segredos **nunca** no Git — use `.env` (veja `.env.example`, criado na etapa 9).
+- Segredos **nunca** no Git — use `.env.local` (veja os arquivos `.env.example`; o painel já tem o seu em `apps/admin/.env.example`, os demais chegam na etapa 9).

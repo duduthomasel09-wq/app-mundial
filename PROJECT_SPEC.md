@@ -336,8 +336,8 @@ Cada etapa é apresentada e aprovada antes da próxima.
 
 - [x] 1. Estrutura do monorepo
 - [x] 2. Configuração do pnpm + Turborepo
-- [ ] 3. App Expo
-- [ ] 4. Painel Next.js
+- [x] 3. App Expo
+- [x] 4. Painel Next.js (aguardando aprovação)
 - [ ] 5. Pacotes compartilhados
 - [ ] 6. Configuração inicial do Supabase
 - [ ] 7. i18n base (pt-BR, en, es)

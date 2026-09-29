@@ -39,6 +39,10 @@ Thumbs.db
 !.vscode/extensions.json
 .idea/
 
+# Next.js (gerado automaticamente)
+next-env.d.ts
+*.tsbuildinfo
+
 # Expo (gerados automaticamente)
 expo-env.d.ts
 web-build/
