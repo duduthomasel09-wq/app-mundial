@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
-import { Button, buttonClassName, Card, Input, Text } from '@/components/ui';
-import { isAuthEnabled } from '@/lib/auth';
+import { Badge, Button, buttonClassName, Card, Input, Text } from '@/components/ui';
+import { canUseDevelopmentSession } from '@/lib/auth';
+import { showEnvironmentBadge } from '@/lib/env';
 import { t } from '@/lib/i18n';
 import styles from './login.module.css';
 
@@ -18,7 +19,8 @@ export const metadata: Metadata = {
  * O envio do formulário será ligado ao Supabase Auth numa etapa futura.
  */
 export default function LoginPage() {
-  const authEnabled = isAuthEnabled();
+  // O atalho sem login nunca aparece em produção (ADR 0006/0013).
+  const showDevelopmentShortcut = canUseDevelopmentSession();
 
   return (
     <main className={styles.page}>
@@ -33,6 +35,9 @@ export default function LoginPage() {
           <Text tone="muted" align="center">
             {t('admin.panelName')}
           </Text>
+          {showEnvironmentBadge && (
+            <Badge tone="warning">{t('common.environment.development')}</Badge>
+          )}
         </div>
 
         <form className={styles.form} aria-describedby="login-notice">
@@ -61,7 +66,7 @@ export default function LoginPage() {
           {t('admin.login.notice')}
         </Text>
 
-        {!authEnabled && (
+        {showDevelopmentShortcut && (
           <Link
             className={buttonClassName({
               variant: 'secondary',

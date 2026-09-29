@@ -54,3 +54,9 @@ O `config.toml` e a Edge Function continuam sem ter sido executados pelo CLI/Den
 - Toda mudança no banco passa a ser uma migration versionada no Git.
 - As tabelas do app entram na Fase 1 como novas migrations, reutilizando `set_updated_at()`.
 - Quando o CI existir (etapa 10), ele poderá validar as migrations automaticamente.
+
+## Atualização (29/09/2026) — ADR 0013
+
+O **item 5** desta ADR (dados de referência no seed) foi **substituído pela ADR 0013**: idiomas,
+moedas e países agora estão na migration `20260929130000_dados_referencia.sql`, e o seed ficou
+reservado para dados fictícios de desenvolvimento. `--include-seed` é proibido em produção.

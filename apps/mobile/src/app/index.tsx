@@ -5,6 +5,8 @@ import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text as RNText, View } from 'react-native';
 
+import { showEnvironmentBadge } from '@/lib/env';
+
 // Tela provisória da Fase 0 — só confirma que o app abre, usa os pacotes compartilhados,
 // mostra os textos no idioma do aparelho e aplica o design system.
 // As funcionalidades (receitas, produtos etc.) entram nas próximas fases.
@@ -22,7 +24,12 @@ export default function HomeScreen() {
       <Text variant="title" tone="brand" align="center">
         {t('common.appName')}
       </Text>
-      <Badge label={t('mobile.home.phase')} tone="brand" style={styles.centered} />
+      <View style={styles.badges}>
+        <Badge label={t('mobile.home.phase')} tone="brand" />
+        {showEnvironmentBadge && (
+          <Badge label={t('common.environment.development')} tone="warning" />
+        )}
+      </View>
 
       <Card style={styles.card}>
         <Text tone="muted" align="center">
@@ -60,5 +67,6 @@ const styles = StyleSheet.create({
   },
   emoji: { fontSize: fontSize.display, textAlign: 'center' },
   centered: { alignSelf: 'center' },
+  badges: { flexDirection: 'row', justifyContent: 'center', gap: spacing.sm },
   card: { marginTop: spacing.sm },
 });

@@ -9,7 +9,10 @@
  * aviso — o app nunca quebra por causa de uma variável mal escrita.
  */
 
-/** Ambientes do projeto. `staging` = teste/homologação. */
+/**
+ * Ambientes do projeto. Ativos na Fase 0: `development` e `production` (ADR 0013).
+ * `staging` (teste/homologação) continua aceito, mas ainda sem projeto próprio.
+ */
 export const APP_ENVS = ['development', 'staging', 'production'] as const;
 export type AppEnv = (typeof APP_ENVS)[number];
 export const DEFAULT_APP_ENV: AppEnv = 'development';
@@ -103,6 +106,42 @@ export function looksLikeSecretKey(value: string): boolean {
   } catch {
     return false;
   }
+}
+
+/** `true` para endereços do próprio computador (localhost, 127.x, 0.0.0.0, ::1). */
+export function isLocalUrl(url: string): boolean {
+  const host = /^https?:\/\/(\[[^\]]+\]|[^/:?#]+)/i.exec(url.trim())?.[1]?.toLowerCase();
+  if (!host) return false;
+  return (
+    host === 'localhost' ||
+    host.endsWith('.localhost') ||
+    /^127(\.\d{1,3}){3}$/.test(host) ||
+    host === '0.0.0.0' ||
+    host === '[::1]'
+  );
+}
+
+/**
+ * Em produção, um endereço local é erro de configuração (ADR 0013): a URL é descartada
+ * (devolve vazio) e um erro é registrado. Nos outros ambientes, devolve a URL sem mudança.
+ */
+export function rejectLocalUrlInProduction(
+  report: EnvReport,
+  appEnv: AppEnv,
+  variable: string,
+  url: string,
+): string {
+  if (appEnv !== 'production' || !url || !isLocalUrl(url)) return url;
+  report.error(
+    variable,
+    'aponta para o próprio computador (localhost/127.0.0.1) em produção. Endereço descartado: use a URL do projeto Supabase de produção.',
+  );
+  return '';
+}
+
+/** `true` quando o app deve mostrar o selo "Desenvolvimento" (qualquer ambiente ≠ production). */
+export function isNonProduction(appEnv: AppEnv): boolean {
+  return appEnv !== 'production';
 }
 
 /** Avisa quando variáveis necessárias em produção estão vazias. */

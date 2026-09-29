@@ -8,11 +8,12 @@ substitutos de ingredientes, tradução de nomes, listas de compras, guia de ch�
 - 🗄️ Supabase: [docs/SUPABASE.md](docs/SUPABASE.md)
 - 🔑 Variáveis de ambiente: [docs/ENVIRONMENT.md](docs/ENVIRONMENT.md)
 - ✅ CI (verificação automática): [docs/CI.md](docs/CI.md)
+- 🧭 Ambientes (dev/prod): [docs/AMBIENTES.md](docs/AMBIENTES.md)
 - 🧭 Decisões técnicas: [docs/decisions](docs/decisions/README.md)
 
 ## Status
 
-🚧 **Fase 0 — Fundação** em andamento.
+✅ **Fase 0 — Fundação**: as 11 etapas estão concluídas e aprovadas. A Fase 1 aguarda autorização.
 
 - ✅ Etapa 1 — Estrutura do monorepo
 - ✅ Etapa 2 — pnpm + Turborepo
@@ -24,3 +25,4 @@ substitutos de ingredientes, tradução de nomes, listas de compras, guia de ch�
 - ✅ Etapa 8 — Design system mínimo (`@gfg/ui`, `@gfg/ui/native`, componentes do painel)
 - ✅ Etapa 9 — Variáveis de ambiente (`docs/ENVIRONMENT.md`)
 - ✅ Etapa 10 — CI com GitHub Actions (`docs/CI.md`)
+- ✅ Etapa 11 — Ambientes de desenvolvimento e produção (`docs/AMBIENTES.md`)

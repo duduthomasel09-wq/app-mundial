@@ -61,13 +61,13 @@ Copie `.env.example` para `.env.local` (esse arquivo nunca vai para o Git).
 Todas as variáveis são lidas e validadas em `src/lib/env.ts`; lista completa em
 [docs/ENVIRONMENT.md](../../docs/ENVIRONMENT.md).
 
-| Variável                        | Uso                                                 |
-| ------------------------------- | --------------------------------------------------- |
-| `NEXT_PUBLIC_APP_ENV`           | `development` (padrão), `staging` ou `production`   |
-| `NEXT_PUBLIC_SUPABASE_URL`      | Supabase — veja docs/SUPABASE.md (pode ficar vazio) |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Chave **pública** do Supabase (pode ficar vazio)    |
-| `ADMIN_LOCALE`                  | Idioma do painel: `pt-BR` (padrão), `en` ou `es`    |
-| `ADMIN_AUTH_MODE`               | `disabled` (padrão, sem login) ou `supabase`        |
+| Variável                        | Uso                                                                     |
+| ------------------------------- | ----------------------------------------------------------------------- |
+| `NEXT_PUBLIC_APP_ENV`           | `development` (padrão), `staging` ou `production`                       |
+| `NEXT_PUBLIC_SUPABASE_URL`      | Supabase — veja docs/SUPABASE.md (pode ficar vazio)                     |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Chave **pública** do Supabase (pode ficar vazio)                        |
+| `ADMIN_LOCALE`                  | Idioma do painel: `pt-BR` (padrão), `en` ou `es`                        |
+| `ADMIN_AUTH_MODE`               | `disabled` (padrão, sem login; **bloqueado em produção**) ou `supabase` |
 
 Sem nenhum `.env.local`, o painel funciona em modo desenvolvimento (sem login).
 Valores inválidos não quebram o painel: usam o padrão e mostram um aviso no terminal.
@@ -77,7 +77,10 @@ Valores inválidos não quebram o painel: usam o padrão e mostram um aviso no t
 - `getAdminSession()` (`src/lib/auth/session.ts`) decide se há um administrador logado.
 - O layout de `(painel)` chama essa função e manda para `/login` quando não há sessão.
 - Com `ADMIN_AUTH_MODE=disabled`, uma sessão simulada libera o painel e o menu mostra
-  "Modo desenvolvimento — sem login".
+  "Modo desenvolvimento — sem login" — **só fora de produção**. Com `NEXT_PUBLIC_APP_ENV=production`
+  a sessão simulada é **recusada**: o painel envia para `/login` e o atalho sem login some
+  (ADR 0006/0013).
+- Fora de produção, o menu e o login mostram o selo **"Desenvolvimento"**.
 - Com `ADMIN_AUTH_MODE=supabase`, ainda não há login real: o painel sempre manda para `/login`.
 
 ## Pacotes compartilhados

@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import { Sidebar } from '@/components/Sidebar';
 import { navigation } from '@/config/navigation';
 import { getAdminSession } from '@/lib/auth';
+import { showEnvironmentBadge } from '@/lib/env';
 import { t } from '@/lib/i18n';
 import styles from './painel.module.css';
 
@@ -31,6 +32,7 @@ export default async function PainelLayout({ children }: { children: ReactNode }
           menu: t('admin.nav.label'),
           comingSoon: t('common.comingSoon'),
           devMode: t('admin.sidebar.devMode'),
+          environment: showEnvironmentBadge ? t('common.environment.development') : undefined,
         }}
         userName={session.user.name}
         isDevelopmentSession={session.isDevelopmentSession}

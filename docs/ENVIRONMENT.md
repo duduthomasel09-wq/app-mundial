@@ -5,13 +5,14 @@ os arquivos `.env.example` são só modelos, com campos vazios ou valores padrã
 
 ## Ambientes
 
-| Ambiente      | Para quê                              | Onde ficam os valores                          |
-| ------------- | ------------------------------------- | ---------------------------------------------- |
-| `development` | Seu computador (padrão)               | `.env.local` de cada app (fora do Git)         |
-| `staging`     | **Teste/homologação** antes de lançar | Configurações da hospedagem / serviço de build |
-| `production`  | Usuários reais                        | Configurações da hospedagem / serviço de build |
+| Ambiente      | Situação (ADR 0013)                                   | Onde ficam os valores                                                  |
+| ------------- | ----------------------------------------------------- | ---------------------------------------------------------------------- |
+| `development` | **Ativo** — seu computador (padrão)                   | `.env.local` de cada app (fora do Git), apontando para o **dev**       |
+| `production`  | **Ativo** — usuários reais (projeto ainda não criado) | Só na hospedagem / serviço de build / GitHub — **nunca** no computador |
+| `staging`     | Aceito no código, **sem projeto** nesta fase          | —                                                                      |
 
-Os testes automáticos rodam como `development`.
+Os testes automáticos rodam como `development`. Separação dev/prod, checklist e regras:
+[AMBIENTES.md](AMBIENTES.md).
 
 ## Todas as variáveis
 
@@ -53,7 +54,8 @@ Os testes automáticos rodam como `development`.
 | `REVENUECAT_WEBHOOK_SECRET` | 🔒   | Futuro (Fase 2). Cadastrar com `npx supabase secrets set` |
 
 ¹ Vazia é permitida enquanto o app/painel não usa o Supabase; em `production` gera aviso.
-² Hoje `disabled` em `production` só gera **aviso**; o bloqueio chega na etapa 11 (ADR 0006).
+² Em `production`, `disabled` é **bloqueado** (ADR 0006/0013): a sessão sem login é recusada e o
+painel envia para `/login` (o build não é impedido).
 
 ## Como os valores são lidos e validados
 
@@ -64,7 +66,10 @@ Os testes automáticos rodam como `development`.
   - valor inválido (ex.: `ADMIN_AUTH_MODE=supabse`) → usa o padrão e mostra **aviso**;
   - URL que não começa com `http(s)://` → ignorada, com aviso;
   - **chave secreta** do Supabase numa variável pública → descartada, com **erro** no console;
-  - variáveis do Supabase vazias em `production` → aviso.
+  - variáveis do Supabase vazias em `production` → aviso;
+  - URL `localhost`/`127.0.0.1` em `production` → **erro**, URL descartada (ADR 0013);
+  - `ADMIN_AUTH_MODE=disabled` em `production` → **erro** e sessão sem login bloqueada.
+- Fora de `production`, o painel e o app mostram o selo **"Desenvolvimento"**.
 - Os avisos aparecem no terminal (`pnpm dev` / build) e mostram **só o nome** da variável,
   nunca o valor.
 - Escreva sempre `process.env.NOME_COMPLETO` por extenso: o Next.js e o Expo só copiam para o
@@ -86,4 +91,5 @@ Os testes automáticos rodam como `development`.
 - `.env`, `.env.local`, `.env.production` etc. **nunca** vão para o Git (`.gitignore` já bloqueia).
   Só arquivos `*.env.example` são versionados, e sempre sem valores reais.
 - Chaves 🔒 nunca em variáveis `EXPO_PUBLIC_*` ou `NEXT_PUBLIC_*`.
+- **Valores de produção nunca em `.env.local`**: o seu computador aponta só para o desenvolvimento.
 - Se um segredo vazar (Git, print, mensagem): **troque-o imediatamente** no serviço de origem.

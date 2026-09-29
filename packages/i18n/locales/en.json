@@ -17,7 +17,10 @@
     "languageCount_one": "{{count}} language",
     "languageCount_other": "{{count}} languages",
     "countryCount_one": "{{count}} country",
-    "countryCount_other": "{{count}} countries"
+    "countryCount_other": "{{count}} countries",
+    "environment": {
+      "development": "Development"
+    }
   },
   "mobile": {
     "home": {

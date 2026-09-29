@@ -3,12 +3,15 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   EnvReport,
   isAppEnv,
+  isLocalUrl,
+  isNonProduction,
   logEnvIssues,
   looksLikeSecretKey,
   readAppEnv,
   readEnum,
   readPublicKey,
   readUrl,
+  rejectLocalUrlInProduction,
   warnIfMissingInProduction,
 } from './env';
 
@@ -94,5 +97,50 @@ describe('variáveis de ambiente', () => {
     expect(printed).toContain('NEXT_PUBLIC_SUPABASE_ANON_KEY');
     expect(printed).not.toContain('NAO_MOSTRAR');
     expect(printed).not.toContain('nao-mostrar');
+  });
+});
+
+describe('ambientes de desenvolvimento e produção (ADR 0013)', () => {
+  it('reconhece endereços locais', () => {
+    for (const url of [
+      'http://localhost:54321',
+      'http://LOCALHOST',
+      'https://api.localhost',
+      'http://127.0.0.1:54321',
+      'http://127.10.0.5',
+      'http://0.0.0.0:3000',
+      'http://[::1]:54321',
+    ]) {
+      expect(isLocalUrl(url), url).toBe(true);
+    }
+    for (const url of ['https://abc.supabase.co', 'https://localhost.example.com', '', 'nada']) {
+      expect(isLocalUrl(url), url).toBe(false);
+    }
+  });
+
+  it('URL local em produção vira erro e é descartada', () => {
+    const report = new EnvReport();
+    expect(rejectLocalUrlInProduction(report, 'production', 'U', 'http://127.0.0.1:54321')).toBe(
+      '',
+    );
+    expect(report.issues).toEqual([expect.objectContaining({ variable: 'U', level: 'error' })]);
+  });
+
+  it('URL local em desenvolvimento é permitida; URL real em produção passa', () => {
+    const report = new EnvReport();
+    expect(rejectLocalUrlInProduction(report, 'development', 'U', 'http://localhost:54321')).toBe(
+      'http://localhost:54321',
+    );
+    expect(rejectLocalUrlInProduction(report, 'production', 'U', 'https://abc.supabase.co')).toBe(
+      'https://abc.supabase.co',
+    );
+    expect(rejectLocalUrlInProduction(report, 'production', 'U', '')).toBe('');
+    expect(report.issues).toEqual([]);
+  });
+
+  it('selo de desenvolvimento aparece em tudo que não é produção', () => {
+    expect(isNonProduction('development')).toBe(true);
+    expect(isNonProduction('staging')).toBe(true);
+    expect(isNonProduction('production')).toBe(false);
   });
 });

@@ -18,6 +18,8 @@ export interface SidebarLabels {
   menu: string;
   comingSoon: string;
   devMode: string;
+  /** Selo de ambiente ("Desenvolvimento"); ausente em produção. */
+  environment?: string;
 }
 
 interface SidebarProps {
@@ -39,6 +41,7 @@ export function Sidebar({ items, labels, userName, isDevelopmentSession }: Sideb
         <div>
           <p className={styles.brandName}>{labels.appName}</p>
           <p className={styles.brandSub}>{labels.panelName}</p>
+          {labels.environment && <Badge tone="warning">{labels.environment}</Badge>}
         </div>
       </div>
 

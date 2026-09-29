@@ -79,6 +79,23 @@ pnpm build
 - Deploy (Vercel), builds de loja (EAS) e Supabase de produção.
 - `expo-doctor` (precisa consultar a internet do Expo).
 
+## Futuro: promoção para produção (NÃO configurado)
+
+Nesta fase, levar migrations e Edge Functions para produção é **manual**, com o checklist de
+[AMBIENTES.md](AMBIENTES.md). Quando o projeto de produção existir, o plano é:
+
+1. GitHub → **Settings** → **Environments** → criar `development` e `production`.
+2. Em `production`: **Required reviewers** (você aprova cada execução) e
+   **Deployment branches** = só `main`.
+3. Em cada environment, cadastrar:
+   - **Secrets:** `SUPABASE_ACCESS_TOKEN`, `SUPABASE_DB_PASSWORD` (a do projeto daquele ambiente);
+   - **Variables:** `SUPABASE_PROJECT_REF` (ID do projeto daquele ambiente).
+4. Um workflow **manual** (`workflow_dispatch`) separado da CI: `db push --dry-run` → aprovação
+   → `db push` (**nunca** com `--include-seed` em produção) → `functions deploy`.
+5. A CI de verificação (`ci.yml`) continua **sem** secrets e sem acesso a nenhum projeto.
+
+Também planejado: um job da CI que aplica as migrations num PostgreSQL temporário (Fase 1).
+
 ## Futuro: exigir CI verde antes de aceitar mudanças (NÃO ativado)
 
 Hoje as mudanças vão **direto para a `main`**; a CI roda **depois** e avisa se algo quebrou.

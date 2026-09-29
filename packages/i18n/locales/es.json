@@ -19,7 +19,10 @@
     "languageCount_other": "{{count}} idiomas",
     "countryCount_one": "{{count}} país",
     "countryCount_many": "{{count}} de países",
-    "countryCount_other": "{{count}} países"
+    "countryCount_other": "{{count}} países",
+    "environment": {
+      "development": "Desarrollo"
+    }
   },
   "mobile": {
     "home": {

@@ -1,6 +1,6 @@
 # PROJECT_SPEC — Global Food Guide (nome provisório)
 
-> Versão 0.3 · 28/09/2026 · Status: **base técnica aprovada** · Fase 0 em andamento
+> Versão 0.3 · 28/09/2026 · Status: **base técnica aprovada** · Fase 0 concluída (11/11 etapas, 29/09/2026)
 > Nenhum código de funcionalidade deve ser escrito antes da aprovação deste documento.
 
 ---
@@ -344,11 +344,12 @@ Cada etapa é apresentada e aprovada antes da próxima.
 - [x] 8. Design system mínimo
 - [x] 9. Variáveis de ambiente
 - [x] 10. GitHub Actions / CI
-- [ ] 11. Ambientes de desenvolvimento e produção
+- [x] 11. Ambientes de desenvolvimento e produção
 
 Fora da Fase 0: receitas, produtos, assinaturas, IA e demais funcionalidades do MVP.
 
 ## 10. Próximos passos
 
 1. ~~Aprovar a base técnica e D03, D05, D07~~ ✅ (28/09/2026) — ver `docs/decisions/`.
-2. Concluir a **Fase 0 — Fundação** (seção 9).
+2. ~~Concluir a **Fase 0 — Fundação** (seção 9)~~ ✅ (29/09/2026) — 11 etapas aprovadas.
+3. **Fase 1 — Núcleo:** aguardando autorização.

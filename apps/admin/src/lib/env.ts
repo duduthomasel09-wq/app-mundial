@@ -11,11 +11,13 @@
 import {
   EnvReport,
   isLocaleCode,
+  isNonProduction,
   logEnvIssues,
   readAppEnv,
   readEnum,
   readPublicKey,
   readUrl,
+  rejectLocalUrlInProduction,
   warnIfMissingInProduction,
   type AppEnv,
   type LocaleCode,
@@ -33,7 +35,12 @@ const appEnv = readAppEnv(report, 'NEXT_PUBLIC_APP_ENV', process.env.NEXT_PUBLIC
 /** Variáveis seguras para o navegador (prefixo NEXT_PUBLIC_). */
 export const publicEnv = {
   appEnv,
-  supabaseUrl: readUrl(report, 'NEXT_PUBLIC_SUPABASE_URL', process.env.NEXT_PUBLIC_SUPABASE_URL),
+  supabaseUrl: rejectLocalUrlInProduction(
+    report,
+    appEnv,
+    'NEXT_PUBLIC_SUPABASE_URL',
+    readUrl(report, 'NEXT_PUBLIC_SUPABASE_URL', process.env.NEXT_PUBLIC_SUPABASE_URL),
+  ),
   supabaseAnonKey: readPublicKey(
     report,
     'NEXT_PUBLIC_SUPABASE_ANON_KEY',
@@ -62,13 +69,22 @@ export const serverEnv = {
   locale: readLocale(process.env.ADMIN_LOCALE),
 } as const;
 
-// Aviso (não bloqueio): o bloqueio do modo sem login em produção é da etapa 11 (ADR 0006).
+/**
+ * Sessão simulada (sem login) só é permitida fora de produção (ADR 0006 e ADR 0013).
+ * Em produção com `ADMIN_AUTH_MODE=disabled`, ela é BLOQUEADA: o painel vai para /login.
+ */
+export const isDevelopmentSessionAllowed =
+  serverEnv.authMode === 'disabled' && isNonProduction(appEnv);
+
 if (appEnv === 'production' && serverEnv.authMode === 'disabled') {
-  report.warn(
+  report.error(
     'ADMIN_AUTH_MODE',
-    'está "disabled" em produção: o painel abre SEM login. Use "supabase" quando o login real existir.',
+    'está "disabled" em produção. BLOQUEADO: a sessão sem login foi recusada e o painel envia para /login. Use "supabase" quando o login real existir.',
   );
 }
+
+/** Mostrar o selo "Desenvolvimento" (qualquer ambiente que não seja produção). */
+export const showEnvironmentBadge = isNonProduction(appEnv);
 
 warnIfMissingInProduction(report, appEnv, {
   NEXT_PUBLIC_SUPABASE_URL: publicEnv.supabaseUrl,

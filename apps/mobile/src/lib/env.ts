@@ -12,10 +12,12 @@
  */
 import {
   EnvReport,
+  isNonProduction,
   logEnvIssues,
   readAppEnv,
   readPublicKey,
   readUrl,
+  rejectLocalUrlInProduction,
   warnIfMissingInProduction,
 } from '@gfg/core';
 
@@ -25,7 +27,13 @@ const appEnv = readAppEnv(report, 'EXPO_PUBLIC_APP_ENV', process.env.EXPO_PUBLIC
 
 export const env = {
   appEnv,
-  supabaseUrl: readUrl(report, 'EXPO_PUBLIC_SUPABASE_URL', process.env.EXPO_PUBLIC_SUPABASE_URL),
+  // Em produção, URL local (localhost/127.0.0.1) é erro de configuração e é descartada.
+  supabaseUrl: rejectLocalUrlInProduction(
+    report,
+    appEnv,
+    'EXPO_PUBLIC_SUPABASE_URL',
+    readUrl(report, 'EXPO_PUBLIC_SUPABASE_URL', process.env.EXPO_PUBLIC_SUPABASE_URL),
+  ),
   supabaseAnonKey: readPublicKey(
     report,
     'EXPO_PUBLIC_SUPABASE_ANON_KEY',
@@ -41,5 +49,8 @@ warnIfMissingInProduction(report, appEnv, {
 /** Avisos encontrados ao ler as variáveis (só nomes, nunca valores). */
 export const envIssues = report.issues;
 logEnvIssues('mobile', envIssues);
+
+/** Mostrar o selo "Desenvolvimento" (qualquer ambiente que não seja produção). */
+export const showEnvironmentBadge = isNonProduction(appEnv);
 
 export const isSupabaseConfigured = Boolean(env.supabaseUrl && env.supabaseAnonKey);

@@ -3,6 +3,9 @@
 Este guia é para **Windows**. Os comandos são digitados no **PowerShell** ou no terminal do
 VS Code, dentro da pasta do projeto (`app-mundial`).
 
+> Este guia cobre o projeto de **desenvolvimento**. Produção (ainda não criada), checklist de
+> promoção e regras de separação: [AMBIENTES.md](AMBIENTES.md).
+
 Há dois jeitos de usar o Supabase:
 
 | Jeito                         | Para quê                                    | Precisa de                       |
@@ -17,13 +20,13 @@ Para começar, o **jeito A** é o mais simples. O jeito B é opcional.
 
 ## Situação atual do projeto de desenvolvimento
 
-| Item                                    | Situação                                                                 |
-| --------------------------------------- | ------------------------------------------------------------------------ |
-| Projeto `global-food-guide-dev` criado  | ✅ 29/09/2026                                                            |
-| Migration `20260929120000_fundacao.sql` | ✅ Aplicada pelo SQL Editor do site (seção 2.3-B)                        |
-| Seed `01_referencia.sql`                | ✅ Aplicado pelo SQL Editor do site (3 idiomas, 4 moedas, 5 países)      |
-| Registro da migration no CLI            | ⏳ Pendente: rodar o `migration repair` da seção 2.3-B ao instalar o CLI |
-| Chaves públicas nos apps (`.env.local`) | ⏳ Pendente (só será necessário quando os apps usarem o Supabase)        |
+| Item                                          | Situação                                                                                                                                                                                                |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Projeto `global-food-guide-dev` criado        | ✅ 29/09/2026                                                                                                                                                                                           |
+| Migration `20260929120000_fundacao.sql`       | ✅ Aplicada pelo SQL Editor do site (seção 2.3-B)                                                                                                                                                       |
+| Dados de referência (idiomas, moedas, países) | ✅ Aplicados pelo SQL Editor com o seed antigo (3 idiomas, 4 moedas, 5 países). Desde a etapa 11 eles ficam na migration `20260929130000_dados_referencia.sql`, que o `db push` aplica **sem duplicar** |
+| Registro da migration no CLI                  | ⏳ Pendente: rodar o `migration repair` — passo a passo em [AMBIENTES.md](AMBIENTES.md#pendência-no-projeto-de-desenvolvimento-migration-repair)                                                        |
+| Chaves públicas nos apps (`.env.local`)       | ⏳ Pendente (só será necessário quando os apps usarem o Supabase)                                                                                                                                       |
 
 ---
 
@@ -74,11 +77,13 @@ Isso fica salvo em `supabase/.temp/`, que **não** vai para o Git.
 ### 2.3 Criar as tabelas e os dados iniciais na nuvem
 
 ```powershell
-npx supabase db push --include-seed
+npx supabase db push
 ```
 
 - Mostra a lista de migrations que serão aplicadas e pergunta `[Y/n]` → `Y`.
-- `--include-seed` também grava os idiomas, moedas e países iniciais.
+- Os idiomas, moedas e países iniciais vêm na migration `20260929130000_dados_referencia.sql`.
+- `--include-seed` (dados fictícios de `supabase/seed/`) só no **desenvolvimento** —
+  **proibido em produção** (ADR 0013).
 
 Para conferir: no site do Supabase, abra **Table Editor** → devem aparecer as tabelas
 `locales` (3 linhas), `currencies` (4) e `countries` (5).
@@ -86,7 +91,8 @@ Para conferir: no site do Supabase, abra **Table Editor** → devem aparecer as 
 ### 2.3-B Sem instalar nada — pelo SQL Editor do site
 
 Alternativa ao passo 2.3 para quem ainda não tem o VS Code, o Node.js e o Git no computador.
-Faz o mesmo resultado, só que colando o SQL no navegador.
+Faz o mesmo resultado, só que colando o SQL no navegador. **Só no projeto de desenvolvimento —
+nunca use o SQL Editor em produção.**
 
 1. Abra o arquivo da migration no GitHub:
    https://github.com/duduthomasel09-wq/app-mundial/blob/main/supabase/migrations/20260929120000_fundacao.sql
@@ -94,8 +100,9 @@ Faz o mesmo resultado, só que colando o SQL no navegador.
 3. No site do Supabase, abra o projeto → **SQL Editor** (ícone `>_` na barra da esquerda).
 4. Cole (**Ctrl+V**) e clique em **Run** (ou **Ctrl+Enter**).
    Deve aparecer **"Success. No rows returned"**.
-5. Repita com o seed, numa aba nova (**+**):
-   https://github.com/duduthomasel09-wq/app-mundial/blob/main/supabase/seed/01_referencia.sql
+5. Repita com a migration de dados de referência, numa aba nova (**+**):
+   https://github.com/duduthomasel09-wq/app-mundial/blob/main/supabase/migrations/20260929130000_dados_referencia.sql
+   (Até a etapa 10 este passo usava o arquivo do seed; o conteúdo é o mesmo.)
 6. Confira em **Table Editor**: `countries` (5 linhas), `currencies` (4) e `locales` (3).
 
 > ⚠️ **Importante para depois:** quando o SQL é colado no site, o Supabase **não registra**
@@ -105,6 +112,9 @@ Faz o mesmo resultado, só que colando o SQL no navegador.
 > ```powershell
 > npx supabase migration repair --status applied 20260929120000
 > ```
+>
+> (Se você colou também a migration de dados de referência no SQL Editor, marque-a da mesma
+> forma: `... --status applied 20260929130000`. Se não, deixe o `db push` aplicá-la.)
 >
 > Isso só anota "esta migration já foi aplicada" — não muda nenhuma tabela nem dado.
 > Confira com `npx supabase migration list`: o número deve aparecer nas colunas **Local** e **Remote**.
