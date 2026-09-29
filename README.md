@@ -15,4 +15,4 @@ substitutos de ingredientes, tradução de nomes, listas de compras, guia de ch�
 - ✅ Etapa 2 — pnpm + Turborepo
 - ✅ Etapa 3 — App Expo (`apps/mobile`, Expo SDK 57)
 - ✅ Etapa 4 — Painel administrativo (`apps/admin`, Next.js 16)
-- ✅ Etapa 5 — Pacotes compartilhados (`@gfg/core`, `@gfg/i18n`, `@gfg/ui`) — aguardando aprovação
+- ✅ Etapa 5 — Pacotes compartilhados (`@gfg/core`, `@gfg/i18n`, `@gfg/ui`)

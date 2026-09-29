@@ -1,6 +1,6 @@
 # ADR 0007 — Pacotes compartilhados (`@gfg/core`, `@gfg/i18n`, `@gfg/ui`)
 
-- **Status:** Proposta (29/09/2026) — aguardando aprovação na etapa 5 da Fase 0
+- **Status:** Aprovada (29/09/2026) — etapa 5 da Fase 0
 
 ## Contexto
 

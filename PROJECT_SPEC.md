@@ -338,7 +338,7 @@ Cada etapa é apresentada e aprovada antes da próxima.
 - [x] 2. Configuração do pnpm + Turborepo
 - [x] 3. App Expo
 - [x] 4. Painel Next.js
-- [x] 5. Pacotes compartilhados (aguardando aprovação)
+- [x] 5. Pacotes compartilhados
 - [ ] 6. Configuração inicial do Supabase
 - [ ] 7. i18n base (pt-BR, en, es)
 - [ ] 8. Design system mínimo
