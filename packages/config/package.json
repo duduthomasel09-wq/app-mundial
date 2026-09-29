@@ -4,11 +4,20 @@
   "private": true,
   "description": "Configurações compartilhadas (TypeScript, lint, formatação)",
   "files": [
+    "eslint",
     "typescript"
   ],
   "exports": {
+    "./eslint/library.mjs": "./eslint/library.mjs",
     "./typescript/base.json": "./typescript/base.json",
     "./typescript/library.json": "./typescript/library.json",
     "./typescript/nextjs.json": "./typescript/nextjs.json"
+  },
+  "dependencies": {
+    "@eslint/js": "^9.39.0",
+    "typescript-eslint": "^8.46.0"
+  },
+  "peerDependencies": {
+    "eslint": "^9.39.0"
   }
 }

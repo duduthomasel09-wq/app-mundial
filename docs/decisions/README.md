@@ -10,4 +10,5 @@ Decisões aprovadas não são apagadas — se mudarem, cria-se uma nova ADR que 
 | [0003](0003-fonte-dados-produtos.md)    | Dados de produtos: Open Food Facts + curadoria                                  | Aprovada | 28/09/2026 |
 | [0004](0004-paises-idiomas-iniciais.md) | Países e idiomas iniciais                                                       | Aprovada | 28/09/2026 |
 | [0005](0005-monorepo-pnpm-hoisted.md)   | pnpm com `node-linker=hoisted`                                                  | Aprovada | 28/09/2026 |
-| [0006](0006-painel-admin-nextjs.md)     | Fundação do painel admin (Next.js 16, CSS Modules, auth preparada)              | Proposta | 28/09/2026 |
+| [0006](0006-painel-admin-nextjs.md)     | Fundação do painel admin (Next.js 16, CSS Modules, auth preparada)              | Aprovada | 29/09/2026 |
+| [0007](0007-pacotes-compartilhados.md)  | Pacotes compartilhados `@gfg/core`, `@gfg/i18n` e `@gfg/ui`                     | Proposta | 29/09/2026 |

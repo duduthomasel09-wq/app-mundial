@@ -1,6 +1,6 @@
 # ADR 0006 — Fundação do painel administrativo (Next.js)
 
-- **Status:** Proposta (28/09/2026) — aguardando aprovação na etapa 4 da Fase 0
+- **Status:** Aprovada (29/09/2026) — etapa 4 da Fase 0
 
 ## Contexto
 

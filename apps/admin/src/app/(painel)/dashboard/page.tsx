@@ -1,3 +1,5 @@
+import { COUNTRIES, COUNTRY_CODES } from '@gfg/core';
+import { formatCurrency } from '@gfg/i18n';
 import type { Metadata } from 'next';
 
 import { navigation } from '@/config/navigation';
@@ -26,8 +28,33 @@ export default function DashboardPage() {
           Status do painel
         </h2>
         <p className={styles.muted}>
-          Esta é a fundação técnica (Fase 0, etapa 4). Ainda não há dados nem cadastros.
+          Esta é a fundação técnica (Fase 0). Ainda não há dados nem cadastros.
         </p>
+      </section>
+
+      <section className={styles.card} aria-labelledby="countries-title">
+        <h2 id="countries-title" className={styles.cardTitle}>
+          Países iniciais
+        </h2>
+        <p className={styles.muted}>
+          Idioma padrão e exemplo de preço em cada país (dados do pacote compartilhado{' '}
+          <code>@gfg/core</code>).
+        </p>
+        <ul className={styles.areas}>
+          {COUNTRY_CODES.map((code) => {
+            const country = COUNTRIES[code];
+            return (
+              <li key={code} className={styles.area}>
+                <span>
+                  {code} · {country.defaultLocale}
+                </span>
+                <span className={styles.badge}>
+                  {formatCurrency(9.9, country.defaultCurrency, country.defaultLocale)}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
       </section>
 
       <section className={styles.card} aria-labelledby="areas-title">

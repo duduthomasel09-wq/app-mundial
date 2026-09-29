@@ -24,7 +24,7 @@ pnpm install
 | `pnpm build`     | Gera as versões de produção              |
 | `pnpm lint`      | Verifica padrões de código               |
 | `pnpm typecheck` | Verifica tipos TypeScript                |
-| `pnpm test`      | Roda os testes                           |
+| `pnpm test`      | Roda os testes (pacotes compartilhados)  |
 | `pnpm format`    | Formata os arquivos                      |
 
 Rodar só um projeto: `pnpm --filter @gfg/mobile dev` ou `pnpm --filter @gfg/admin dev`.
@@ -51,13 +51,27 @@ Rodar só um projeto: `pnpm --filter @gfg/mobile dev` ou `pnpm --filter @gfg/adm
 ```
 apps/mobile      App Expo (iOS/Android)
 apps/admin       Painel administrativo (Next.js)
-packages/core    Tipos e regras compartilhadas
-packages/i18n    Traduções (pt-BR, en, es)
-packages/ui      Design system mínimo
+packages/core    Tipos e regras: países, moedas, planos, unidades
+packages/i18n    Idioma e formatos (traduções chegam na etapa 7)
+packages/ui      Cores e medidas compartilhadas (componentes na etapa 8)
 packages/config  Configurações de TypeScript/lint
 supabase/        Banco, migrações e funções
 docs/            Documentação e decisões (ADRs)
 ```
+
+## Pacotes compartilhados
+
+O app e o painel importam os pacotes de `packages/` pelo nome:
+
+```ts
+import { convertUnit } from '@gfg/core';
+import { formatCurrency } from '@gfg/i18n';
+import { getColors } from '@gfg/ui';
+```
+
+- Os pacotes são TypeScript puro (sem React) e não têm build: o app e o painel compilam direto.
+- Para usar um pacote em outro projeto, adicione `"@gfg/<nome>": "workspace:*"` nas dependências e rode `pnpm install`.
+- Cada pacote tem testes: `pnpm --filter @gfg/core test` (ou `pnpm test` para todos).
 
 ## Convenções
 

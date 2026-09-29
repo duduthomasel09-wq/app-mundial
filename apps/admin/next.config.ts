@@ -1,9 +1,9 @@
 import type { NextConfig } from 'next';
 
 /**
- * Pacotes internos do monorepo que o painel poderá importar no futuro.
- * Eles serão criados na etapa 5 (Pacotes compartilhados); aqui já ficam
- * listados para o Next.js compilá-los direto do código-fonte TypeScript.
+ * Pacotes internos do monorepo usados pelo painel (etapa 5).
+ * Eles são publicados como código-fonte TypeScript; esta lista faz o
+ * Next.js compilá-los junto com o painel.
  */
 const sharedPackages = ['@gfg/core', '@gfg/i18n', '@gfg/ui'];
 
