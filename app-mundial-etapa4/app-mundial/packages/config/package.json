@@ -1,0 +1,14 @@
+{
+  "name": "@gfg/config",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Configurações compartilhadas (TypeScript, lint, formatação)",
+  "files": [
+    "typescript"
+  ],
+  "exports": {
+    "./typescript/base.json": "./typescript/base.json",
+    "./typescript/library.json": "./typescript/library.json",
+    "./typescript/nextjs.json": "./typescript/nextjs.json"
+  }
+}
