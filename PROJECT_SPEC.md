@@ -343,7 +343,7 @@ Cada etapa é apresentada e aprovada antes da próxima.
 - [x] 7. i18n base (pt-BR, en, es)
 - [x] 8. Design system mínimo
 - [x] 9. Variáveis de ambiente
-- [ ] 10. GitHub Actions / CI
+- [x] 10. GitHub Actions / CI
 - [ ] 11. Ambientes de desenvolvimento e produção
 
 Fora da Fase 0: receitas, produtos, assinaturas, IA e demais funcionalidades do MVP.

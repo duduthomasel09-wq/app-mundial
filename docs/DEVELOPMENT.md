@@ -100,6 +100,15 @@ Nenhum texto da tela fica escrito direto no código: todos estão em
 
 Detalhes em [packages/i18n/README.md](../packages/i18n/README.md).
 
+## CI (verificação automática)
+
+A cada envio para a `main` (e em pull requests), o GitHub Actions roda formatação, tipos,
+lint, testes, build e o empacotamento do app. O resultado aparece na aba **Actions** do
+GitHub. Detalhes em [CI.md](CI.md).
+
+Antes de enviar, rode as mesmas verificações no seu computador:
+`pnpm format:check`, `pnpm typecheck`, `pnpm lint`, `pnpm test` e `pnpm build`.
+
 ## Convenções
 
 - Nomes de pacotes internos: `@gfg/<nome>`.
