@@ -24,7 +24,39 @@
   "mobile": {
     "home": {
       "subtitle": "Em construção — Fase 0",
-      "language": "Idioma: {{language}}"
+      "language": "Idioma: {{language}}",
+      "phase": "Fase 0",
+      "openDesignSystem": "Ver design system"
+    },
+    "designSystem": {
+      "title": "Design system",
+      "intro": "Componentes básicos do app. Mude o tema do celular (claro/escuro) para ver as duas versões.",
+      "typography": "Tipografia",
+      "buttons": "Botões",
+      "inputs": "Campos",
+      "badges": "Selos",
+      "cards": "Cards",
+      "titleSample": "Título da tela",
+      "subtitleSample": "Subtítulo de seção",
+      "bodySample": "Texto do corpo, usado em parágrafos e descrições.",
+      "labelSample": "Rótulo",
+      "captionSample": "Texto auxiliar para dicas e legendas.",
+      "primary": "Principal",
+      "secondary": "Secundário",
+      "ghost": "Discreto",
+      "danger": "Excluir",
+      "disabled": "Desativado",
+      "inputLabel": "E-mail",
+      "inputPlaceholder": "voce@exemplo.com",
+      "inputHint": "Usado só para entrar na conta.",
+      "inputError": "Digite um e-mail válido.",
+      "badgeNeutral": "Neutro",
+      "badgeBrand": "Marca",
+      "badgeSuccess": "Sucesso",
+      "badgeWarning": "Alerta",
+      "badgeDanger": "Erro",
+      "cardText": "Um card agrupa informações relacionadas.",
+      "back": "Voltar"
     }
   },
   "admin": {

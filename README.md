@@ -19,3 +19,4 @@ substitutos de ingredientes, tradução de nomes, listas de compras, guia de ch�
 - ✅ Etapa 5 — Pacotes compartilhados (`@gfg/core`, `@gfg/i18n`, `@gfg/ui`)
 - ✅ Etapa 6 — Configuração inicial do Supabase (`supabase/`)
 - ✅ Etapa 7 — Traduções da interface em pt-BR, en e es (`@gfg/i18n`)
+- ✅ Etapa 8 — Design system mínimo (`@gfg/ui`, `@gfg/ui/native`, componentes do painel)

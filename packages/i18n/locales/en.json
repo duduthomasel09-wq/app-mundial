@@ -22,7 +22,39 @@
   "mobile": {
     "home": {
       "subtitle": "Under construction — Phase 0",
-      "language": "Language: {{language}}"
+      "language": "Language: {{language}}",
+      "phase": "Phase 0",
+      "openDesignSystem": "View design system"
+    },
+    "designSystem": {
+      "title": "Design system",
+      "intro": "Basic app components. Switch your phone theme (light/dark) to see both versions.",
+      "typography": "Typography",
+      "buttons": "Buttons",
+      "inputs": "Inputs",
+      "badges": "Badges",
+      "cards": "Cards",
+      "titleSample": "Screen title",
+      "subtitleSample": "Section subtitle",
+      "bodySample": "Body text, used in paragraphs and descriptions.",
+      "labelSample": "Label",
+      "captionSample": "Helper text for hints and captions.",
+      "primary": "Primary",
+      "secondary": "Secondary",
+      "ghost": "Subtle",
+      "danger": "Delete",
+      "disabled": "Disabled",
+      "inputLabel": "Email",
+      "inputPlaceholder": "you@example.com",
+      "inputHint": "Only used to sign in.",
+      "inputError": "Enter a valid email.",
+      "badgeNeutral": "Neutral",
+      "badgeBrand": "Brand",
+      "badgeSuccess": "Success",
+      "badgeWarning": "Warning",
+      "badgeDanger": "Error",
+      "cardText": "A card groups related information.",
+      "back": "Back"
     }
   },
   "admin": {

@@ -24,7 +24,39 @@
   "mobile": {
     "home": {
       "subtitle": "En construcción — Fase 0",
-      "language": "Idioma: {{language}}"
+      "language": "Idioma: {{language}}",
+      "phase": "Fase 0",
+      "openDesignSystem": "Ver design system"
+    },
+    "designSystem": {
+      "title": "Design system",
+      "intro": "Componentes básicos de la app. Cambia el tema del móvil (claro/oscuro) para ver las dos versiones.",
+      "typography": "Tipografía",
+      "buttons": "Botones",
+      "inputs": "Campos",
+      "badges": "Etiquetas",
+      "cards": "Tarjetas",
+      "titleSample": "Título de pantalla",
+      "subtitleSample": "Subtítulo de sección",
+      "bodySample": "Texto del cuerpo, usado en párrafos y descripciones.",
+      "labelSample": "Etiqueta",
+      "captionSample": "Texto auxiliar para pistas y leyendas.",
+      "primary": "Principal",
+      "secondary": "Secundario",
+      "ghost": "Discreto",
+      "danger": "Eliminar",
+      "disabled": "Desactivado",
+      "inputLabel": "Correo electrónico",
+      "inputPlaceholder": "tu@ejemplo.com",
+      "inputHint": "Solo se usa para iniciar sesión.",
+      "inputError": "Introduce un correo válido.",
+      "badgeNeutral": "Neutro",
+      "badgeBrand": "Marca",
+      "badgeSuccess": "Éxito",
+      "badgeWarning": "Alerta",
+      "badgeDanger": "Error",
+      "cardText": "Una tarjeta agrupa información relacionada.",
+      "back": "Volver"
     }
   },
   "admin": {

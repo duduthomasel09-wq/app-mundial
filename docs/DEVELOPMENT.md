@@ -53,7 +53,7 @@ apps/mobile      App Expo (iOS/Android)
 apps/admin       Painel administrativo (Next.js)
 packages/core    Tipos e regras: países, moedas, planos, unidades
 packages/i18n    Traduções (pt-BR, en, es), idioma e formatos
-packages/ui      Cores e medidas compartilhadas (componentes na etapa 8)
+packages/ui      Design system: tokens (@gfg/ui) e componentes do app (@gfg/ui/native)
 packages/config  Configurações de TypeScript/lint
 supabase/        Banco: migrations, seed e Edge Functions (veja docs/SUPABASE.md)
 docs/            Documentação e decisões (ADRs)
@@ -77,6 +77,17 @@ import { getColors } from '@gfg/ui';
 - Os pacotes são TypeScript puro (sem React) e não têm build: o app e o painel compilam direto.
 - Para usar um pacote em outro projeto, adicione `"@gfg/<nome>": "workspace:*"` nas dependências e rode `pnpm install`.
 - Cada pacote tem testes: `pnpm --filter @gfg/core test` (ou `pnpm test` para todos).
+
+## Design system (visual)
+
+Cores, fontes, espaçamentos e raios vêm dos **tokens** de `@gfg/ui` — nunca escreva
+valores fixos nas telas.
+
+- App: componentes de `@gfg/ui/native` (`Text`, `Button`, `Card`, `Input`, `Badge`, `Divider`).
+  Em modo de desenvolvimento, a tela inicial tem o botão **"Ver design system"**.
+- Painel: componentes de `apps/admin/src/components/ui` e variáveis CSS (`var(--color-brand)`…).
+
+Detalhes em [packages/ui/README.md](../packages/ui/README.md).
 
 ## Traduções (textos da interface)
 

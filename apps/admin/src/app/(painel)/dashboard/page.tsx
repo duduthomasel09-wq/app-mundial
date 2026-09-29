@@ -2,6 +2,7 @@ import { COUNTRIES, COUNTRY_CODES } from '@gfg/core';
 import { formatCurrency } from '@gfg/i18n';
 import type { Metadata } from 'next';
 
+import { Badge, Card, Divider, Text } from '@/components/ui';
 import { navigation } from '@/config/navigation';
 import { adminLocale, t } from '@/lib/i18n';
 import styles from './dashboard.module.css';
@@ -16,23 +17,28 @@ export default function DashboardPage() {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-        <p className={styles.eyebrow}>{t('admin.panelName')}</p>
-        <h1 className={styles.title}>{t('common.appName')}</h1>
-        <p className={styles.lead}>{t('admin.dashboard.welcome')}</p>
+        <Text variant="caption" tone="brand" className={styles.eyebrow}>
+          {t('admin.panelName')}
+        </Text>
+        <Text as="h1" variant="title">
+          {t('common.appName')}
+        </Text>
+        <Text tone="muted">{t('admin.dashboard.welcome')}</Text>
       </header>
 
-      <section className={styles.card} aria-labelledby="status-title">
-        <h2 id="status-title" className={styles.cardTitle}>
+      <Card aria-labelledby="status-title">
+        <Text as="h2" id="status-title" variant="subtitle">
           {t('admin.dashboard.statusTitle')}
-        </h2>
-        <p className={styles.muted}>{t('admin.dashboard.statusText')}</p>
-      </section>
+        </Text>
+        <Text tone="muted">{t('admin.dashboard.statusText')}</Text>
+      </Card>
 
-      <section className={styles.card} aria-labelledby="countries-title">
-        <h2 id="countries-title" className={styles.cardTitle}>
+      <Card aria-labelledby="countries-title">
+        <Text as="h2" id="countries-title" variant="subtitle">
           {t('admin.dashboard.countriesTitle')}
-        </h2>
-        <p className={styles.muted}>{t('admin.dashboard.countriesText')}</p>
+        </Text>
+        <Text tone="muted">{t('admin.dashboard.countriesText')}</Text>
+        <Divider />
         <ul className={styles.areas}>
           {COUNTRY_CODES.map((code) => {
             const country = COUNTRIES[code];
@@ -41,28 +47,28 @@ export default function DashboardPage() {
                 <span>
                   {t(`common.countries.${code}`)} · {t(`common.languages.${country.defaultLocale}`)}
                 </span>
-                <span className={styles.badge}>
+                <Badge tone="brand">
                   {formatCurrency(9.9, country.defaultCurrency, adminLocale)}
-                </span>
+                </Badge>
               </li>
             );
           })}
         </ul>
-      </section>
+      </Card>
 
-      <section className={styles.card} aria-labelledby="areas-title">
-        <h2 id="areas-title" className={styles.cardTitle}>
+      <Card aria-labelledby="areas-title">
+        <Text as="h2" id="areas-title" variant="subtitle">
           {t('admin.dashboard.areasTitle')}
-        </h2>
+        </Text>
         <ul className={styles.areas}>
           {futureAreas.map((item) => (
             <li key={item.key} className={styles.area}>
               <span>{t(`admin.nav.${item.key}`)}</span>
-              <span className={styles.badge}>{t('common.comingSoon')}</span>
+              <Badge>{t('common.comingSoon')}</Badge>
             </li>
           ))}
         </ul>
-      </section>
+      </Card>
     </div>
   );
 }

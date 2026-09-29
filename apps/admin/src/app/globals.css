@@ -1,32 +1,19 @@
 /*
- * Estilos base do painel. Provisórios: o design system mínimo
- * (etapa 8) vai substituir estas cores e tamanhos por tokens compartilhados.
+ * Estilos base do painel.
+ *
+ * Cores, espaçamentos, fontes e raios vêm do design system (@gfg/ui): as variáveis
+ * `--color-*`, `--space-*`, `--radius-*`, `--font-size-*`, `--text-*` e `--size-*`
+ * são geradas no layout raiz (createCssVariables) — claro e escuro. Não crie cores aqui.
  */
 :root {
-  --color-brand: #1f6f5c;
-  --color-brand-strong: #17584a;
-  --color-brand-soft: #e6f1ee;
-  --color-bg: #f6f7f6;
-  --color-surface: #ffffff;
-  --color-border: #e1e5e3;
-  --color-text: #1b2420;
-  --color-text-muted: #5d6b65;
-  --radius: 10px;
+  /* Medidas de layout exclusivas do painel. */
   --sidebar-width: 248px;
-  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-brand: #4fb39a;
-    --color-brand-strong: #6cc7b0;
-    --color-brand-soft: #1c332d;
-    --color-bg: #111614;
-    --color-surface: #1a211e;
-    --color-border: #2b3531;
-    --color-text: #e8eeeb;
-    --color-text-muted: #9aa8a2;
-  }
+  --content-max-width: 960px;
+  --login-card-width: 380px;
+  --logo-size: 36px;
+  --logo-size-large: 44px;
+  --tile-min-width: 220px;
+  /* Ponto de quebra para celular: 800px (CSS não aceita variáveis em @media). */
 }
 
 *,
@@ -43,11 +30,11 @@ body {
 
 body {
   min-height: 100vh;
-  background: var(--color-bg);
+  background: var(--color-background);
   color: var(--color-text);
   font-family: var(--font-sans);
-  font-size: 15px;
-  line-height: 1.5;
+  font-size: var(--text-body-size);
+  line-height: var(--text-body-line-height);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -61,4 +48,8 @@ h2,
 h3,
 p {
   margin: 0;
+}
+
+code {
+  font-size: var(--font-size-sm);
 }

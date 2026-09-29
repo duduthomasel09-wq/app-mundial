@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
+import { Button, buttonClassName, Card, Input, Text } from '@/components/ui';
 import { isAuthEnabled } from '@/lib/auth';
 import { t } from '@/lib/i18n';
 import styles from './login.module.css';
@@ -21,53 +22,58 @@ export default function LoginPage() {
 
   return (
     <main className={styles.page}>
-      <div className={styles.card}>
+      <Card className={styles.card}>
         <div className={styles.header}>
           <span className={styles.logo} aria-hidden="true">
             GF
           </span>
-          <h1 className={styles.title}>{t('common.appName')}</h1>
-          <p className={styles.subtitle}>{t('admin.panelName')}</p>
+          <Text as="h1" variant="subtitle" align="center">
+            {t('common.appName')}
+          </Text>
+          <Text tone="muted" align="center">
+            {t('admin.panelName')}
+          </Text>
         </div>
 
         <form className={styles.form} aria-describedby="login-notice">
-          <label className={styles.label}>
-            {t('admin.login.email')}
-            <input
-              className={styles.input}
-              type="email"
-              name="email"
-              autoComplete="email"
-              placeholder={t('admin.login.emailPlaceholder')}
-              disabled
-            />
-          </label>
-          <label className={styles.label}>
-            {t('admin.login.password')}
-            <input
-              className={styles.input}
-              type="password"
-              name="password"
-              autoComplete="current-password"
-              placeholder="••••••••"
-              disabled
-            />
-          </label>
-          <button className={styles.button} type="submit" disabled>
+          <Input
+            name="email"
+            type="email"
+            label={t('admin.login.email')}
+            autoComplete="email"
+            placeholder={t('admin.login.emailPlaceholder')}
+            disabled
+          />
+          <Input
+            name="password"
+            type="password"
+            label={t('admin.login.password')}
+            autoComplete="current-password"
+            placeholder="••••••••"
+            disabled
+          />
+          <Button type="submit" fullWidth disabled>
             {t('admin.login.submit')}
-          </button>
+          </Button>
         </form>
 
-        <p id="login-notice" className={styles.notice}>
+        <Text id="login-notice" variant="caption" tone="muted" align="center">
           {t('admin.login.notice')}
-        </p>
+        </Text>
 
         {!authEnabled && (
-          <Link className={styles.devLink} href="/dashboard">
+          <Link
+            className={buttonClassName({
+              variant: 'secondary',
+              fullWidth: true,
+              className: styles.devLink,
+            })}
+            href="/dashboard"
+          >
             {t('admin.login.devLink')}
           </Link>
         )}
-      </div>
+      </Card>
     </main>
   );
 }

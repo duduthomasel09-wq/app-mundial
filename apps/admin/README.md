@@ -34,14 +34,16 @@ apps/admin
 └── src
     ├── app
     │   ├── layout.tsx          Layout raiz (HTML, título, estilos globais)
-    │   ├── globals.css         Cores e estilos base (provisórios até a etapa 8)
+    │   ├── globals.css         Estilos base (cores e medidas vêm dos tokens de @gfg/ui)
     │   ├── icon.svg            Ícone da aba do navegador
     │   ├── page.tsx            "/" → redireciona para /dashboard
     │   ├── (auth)/login/       Tela de login
     │   └── (painel)/           Área protegida (exige sessão)
     │       ├── layout.tsx      Menu lateral + verificação de sessão
     │       └── dashboard/      Tela inicial
-    ├── components/Sidebar.tsx  Menu lateral
+    ├── components
+    │   ├── Sidebar.tsx         Menu lateral
+    │   └── ui/                 Design system web: Text, Button, Card, Input, Badge, Divider
     ├── config
     │   └── navigation.ts       Itens do menu (só Dashboard ativo)
     └── lib

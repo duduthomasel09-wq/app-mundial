@@ -2,105 +2,42 @@
   display: grid;
   place-items: center;
   min-height: 100vh;
-  padding: 24px 16px;
+  padding: var(--space-xl) var(--space-lg);
 }
 
 .card {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  gap: var(--space-xl);
   width: 100%;
-  max-width: 380px;
-  padding: 32px 28px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 14px;
+  max-width: var(--login-card-width);
+  padding: var(--space-xxl) var(--space-xl);
 }
 
 .header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  text-align: center;
+  gap: var(--space-xs);
 }
 
 .logo {
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
-  margin-bottom: 6px;
+  width: var(--logo-size-large);
+  height: var(--logo-size-large);
+  margin-bottom: var(--space-xs);
   background: var(--color-brand);
-  color: #fff;
-  border-radius: 11px;
-  font-weight: 700;
-}
-
-.title {
-  font-size: 22px;
-  font-weight: 700;
-}
-
-.subtitle {
-  color: var(--color-text-muted);
+  color: var(--color-on-brand);
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-bold);
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-}
-
-.label {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.input {
-  padding: 10px 12px;
-  background: var(--color-bg);
-  color: var(--color-text);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  font: inherit;
-  font-weight: 400;
-}
-
-.button {
-  padding: 11px 12px;
-  background: var(--color-brand);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font: inherit;
-  font-weight: 600;
-}
-
-.input:disabled,
-.button:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-.notice {
-  color: var(--color-text-muted);
-  font-size: 13px;
-  text-align: center;
+  gap: var(--space-lg);
 }
 
 .devLink {
-  padding: 10px 12px;
-  border: 1px dashed var(--color-brand);
-  border-radius: 8px;
-  color: var(--color-brand);
-  font-weight: 600;
-  text-align: center;
-}
-
-.devLink:hover {
-  background: var(--color-brand-soft);
+  border-style: dashed;
+  border-color: var(--color-brand);
 }

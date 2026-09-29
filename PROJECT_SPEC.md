@@ -341,7 +341,7 @@ Cada etapa é apresentada e aprovada antes da próxima.
 - [x] 5. Pacotes compartilhados
 - [x] 6. Configuração inicial do Supabase
 - [x] 7. i18n base (pt-BR, en, es)
-- [ ] 8. Design system mínimo
+- [x] 8. Design system mínimo
 - [ ] 9. Variáveis de ambiente
 - [ ] 10. GitHub Actions / CI
 - [ ] 11. Ambientes de desenvolvimento e produção

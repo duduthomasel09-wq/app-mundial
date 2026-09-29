@@ -14,3 +14,4 @@ Decisões aprovadas não são apagadas — se mudarem, cria-se uma nova ADR que 
 | [0007](0007-pacotes-compartilhados.md)  | Pacotes compartilhados `@gfg/core`, `@gfg/i18n` e `@gfg/ui`                     | Aprovada | 29/09/2026 |
 | [0008](0008-fundacao-supabase.md)       | Fundação do Supabase (CLI, migrations, seed, Edge Functions)                    | Aprovada | 29/09/2026 |
 | [0009](0009-i18n-base.md)               | Base de i18n: i18next, arquivos pt-BR/en/es, tipos das chaves                   | Aprovada | 29/09/2026 |
+| [0010](0010-design-system.md)           | Design system: tokens em `@gfg/ui`, componentes em `@gfg/ui/native` e no painel | Aprovada | 29/09/2026 |

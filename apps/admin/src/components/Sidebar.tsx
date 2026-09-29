@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+import { Badge } from '@/components/ui';
 import type { NavItem } from '@/config/navigation';
 import styles from './Sidebar.module.css';
 
@@ -49,7 +50,7 @@ export function Sidebar({ items, labels, userName, isDevelopmentSession }: Sideb
                 <li key={item.key}>
                   <span className={`${styles.item} ${styles.disabled}`} aria-disabled="true">
                     <span>{item.label}</span>
-                    <span className={styles.soon}>{labels.comingSoon}</span>
+                    <Badge>{labels.comingSoon}</Badge>
                   </span>
                 </li>
               );

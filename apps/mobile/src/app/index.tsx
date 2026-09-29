@@ -1,30 +1,51 @@
 import { COUNTRY_CODES, LOCALES, type LocaleCode } from '@gfg/core';
-import { fontSize, fontWeight, getColors, spacing } from '@gfg/ui';
+import { fontSize, spacing } from '@gfg/ui';
+import { Badge, Button, Card, Divider, Text, useTheme } from '@gfg/ui/native';
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, Text, useColorScheme, View } from 'react-native';
+import { StyleSheet, Text as RNText, View } from 'react-native';
 
-// Tela provisória da Fase 0 — só confirma que o app abre, usa os pacotes compartilhados
-// e mostra os textos no idioma do aparelho.
+// Tela provisória da Fase 0 — só confirma que o app abre, usa os pacotes compartilhados,
+// mostra os textos no idioma do aparelho e aplica o design system.
 // As funcionalidades (receitas, produtos etc.) entram nas próximas fases.
 export default function HomeScreen() {
-  const palette = getColors(useColorScheme());
+  const { colors } = useTheme();
   const { t, i18n } = useTranslation();
+  const router = useRouter();
   const locale = i18n.language as LocaleCode;
 
   return (
-    <View style={[styles.container, { backgroundColor: palette.background }]}>
-      <Text style={styles.emoji}>🌍</Text>
-      <Text style={[styles.title, { color: palette.brand }]}>{t('common.appName')}</Text>
-      <Text style={[styles.subtitle, { color: palette.textMuted }]}>
-        {t('mobile.home.subtitle')}
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <RNText style={styles.emoji} accessibilityElementsHidden importantForAccessibility="no">
+        🌍
+      </RNText>
+      <Text variant="title" tone="brand" align="center">
+        {t('common.appName')}
       </Text>
-      <Text style={[styles.details, { color: palette.textMuted }]}>
-        {t('mobile.home.language', { language: t(`common.languages.${locale}`) })}
-      </Text>
-      <Text style={[styles.details, { color: palette.textMuted }]}>
-        {t('common.languageCount', { count: LOCALES.length })} ·{' '}
-        {t('common.countryCount', { count: COUNTRY_CODES.length })}
-      </Text>
+      <Badge label={t('mobile.home.phase')} tone="brand" style={styles.centered} />
+
+      <Card style={styles.card}>
+        <Text tone="muted" align="center">
+          {t('mobile.home.subtitle')}
+        </Text>
+        <Divider space="xs" />
+        <Text variant="caption" tone="muted" align="center">
+          {t('mobile.home.language', { language: t(`common.languages.${locale}`) })}
+        </Text>
+        <Text variant="caption" tone="muted" align="center">
+          {t('common.languageCount', { count: LOCALES.length })} ·{' '}
+          {t('common.countryCount', { count: COUNTRY_CODES.length })}
+        </Text>
+      </Card>
+
+      {__DEV__ && (
+        <Button
+          variant="ghost"
+          label={t('mobile.home.openDesignSystem')}
+          onPress={() => router.push('/design-system')}
+          style={styles.centered}
+        />
+      )}
     </View>
   );
 }
@@ -32,12 +53,12 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: 'stretch',
     justifyContent: 'center',
+    gap: spacing.md,
     padding: spacing.xl,
   },
-  emoji: { fontSize: fontSize.display, marginBottom: spacing.md },
-  title: { fontSize: fontSize.xl, fontWeight: fontWeight.bold },
-  subtitle: { fontSize: fontSize.md, marginTop: spacing.sm },
-  details: { fontSize: fontSize.sm, marginTop: spacing.md },
+  emoji: { fontSize: fontSize.display, textAlign: 'center' },
+  centered: { alignSelf: 'center' },
+  card: { marginTop: spacing.sm },
 });
