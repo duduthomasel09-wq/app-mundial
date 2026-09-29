@@ -6,6 +6,7 @@ substitutos de ingredientes, tradução de nomes, listas de compras, guia de ch�
 - 📄 Especificação: [PROJECT_SPEC.md](PROJECT_SPEC.md)
 - 🛠️ Como rodar: [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)
 - 🗄️ Supabase: [docs/SUPABASE.md](docs/SUPABASE.md)
+- 🔑 Variáveis de ambiente: [docs/ENVIRONMENT.md](docs/ENVIRONMENT.md)
 - 🧭 Decisões técnicas: [docs/decisions](docs/decisions/README.md)
 
 ## Status
@@ -20,3 +21,4 @@ substitutos de ingredientes, tradução de nomes, listas de compras, guia de ch�
 - ✅ Etapa 6 — Configuração inicial do Supabase (`supabase/`)
 - ✅ Etapa 7 — Traduções da interface em pt-BR, en e es (`@gfg/i18n`)
 - ✅ Etapa 8 — Design system mínimo (`@gfg/ui`, `@gfg/ui/native`, componentes do painel)
+- ✅ Etapa 9 — Variáveis de ambiente (`docs/ENVIRONMENT.md`)

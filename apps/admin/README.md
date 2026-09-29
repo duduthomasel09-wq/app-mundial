@@ -58,16 +58,19 @@ apps/admin
 ## Variáveis de ambiente
 
 Copie `.env.example` para `.env.local` (esse arquivo nunca vai para o Git).
+Todas as variáveis são lidas e validadas em `src/lib/env.ts`; lista completa em
+[docs/ENVIRONMENT.md](../../docs/ENVIRONMENT.md).
 
 | Variável                        | Uso                                                 |
 | ------------------------------- | --------------------------------------------------- |
-| `NEXT_PUBLIC_APP_ENV`           | `development`, `staging` ou `production`            |
+| `NEXT_PUBLIC_APP_ENV`           | `development` (padrão), `staging` ou `production`   |
 | `NEXT_PUBLIC_SUPABASE_URL`      | Supabase — veja docs/SUPABASE.md (pode ficar vazio) |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase — veja docs/SUPABASE.md (pode ficar vazio) |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Chave **pública** do Supabase (pode ficar vazio)    |
 | `ADMIN_LOCALE`                  | Idioma do painel: `pt-BR` (padrão), `en` ou `es`    |
 | `ADMIN_AUTH_MODE`               | `disabled` (padrão, sem login) ou `supabase`        |
 
 Sem nenhum `.env.local`, o painel funciona em modo desenvolvimento (sem login).
+Valores inválidos não quebram o painel: usam o padrão e mostram um aviso no terminal.
 
 ## Autenticação (preparada, não implementada)
 

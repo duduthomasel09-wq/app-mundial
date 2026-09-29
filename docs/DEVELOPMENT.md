@@ -104,4 +104,4 @@ Detalhes em [packages/i18n/README.md](../packages/i18n/README.md).
 
 - Nomes de pacotes internos: `@gfg/<nome>`.
 - Commits em português, no imperativo: "Adiciona…", "Corrige…".
-- Segredos **nunca** no Git — use `.env.local` (veja os arquivos `.env.example`; hoje existem `apps/admin/.env.example`, `apps/mobile/.env.example` e `supabase/functions/.env.example`; a organização completa chega na etapa 9).
+- Segredos **nunca** no Git — use `.env.local` (copie do `.env.example` de cada app). Lista completa de variáveis, ambientes e regras: [ENVIRONMENT.md](ENVIRONMENT.md).

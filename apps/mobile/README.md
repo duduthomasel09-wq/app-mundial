@@ -6,6 +6,8 @@ App Expo (iOS/Android) do Global Food Guide.
 - **Rotas:** ficam em `src/app/` (cada arquivo vira uma tela)
 - **Textos:** vêm de `@gfg/i18n` (`useTranslation()`); o idioma segue o do celular
   (`src/lib/i18n.ts`) — pt-BR, en ou es, com inglês quando o idioma não é suportado
+- **Variáveis de ambiente:** lidas e validadas em `src/lib/env.ts` (modelo: `.env.example`,
+  lista completa em `docs/ENVIRONMENT.md`)
 - **Visual:** componentes de `@gfg/ui/native`; em modo de desenvolvimento, a rota
   `/design-system` mostra o catálogo de componentes (na versão publicada ela volta ao início)
 
