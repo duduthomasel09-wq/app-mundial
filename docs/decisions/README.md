@@ -13,4 +13,4 @@ Decisões aprovadas não são apagadas — se mudarem, cria-se uma nova ADR que 
 | [0006](0006-painel-admin-nextjs.md)     | Fundação do painel admin (Next.js 16, CSS Modules, auth preparada)              | Aprovada | 29/09/2026 |
 | [0007](0007-pacotes-compartilhados.md)  | Pacotes compartilhados `@gfg/core`, `@gfg/i18n` e `@gfg/ui`                     | Aprovada | 29/09/2026 |
 | [0008](0008-fundacao-supabase.md)       | Fundação do Supabase (CLI, migrations, seed, Edge Functions)                    | Aprovada | 29/09/2026 |
-| [0009](0009-i18n-base.md)               | Base de i18n: i18next, arquivos pt-BR/en/es, tipos das chaves                   | Proposta | 29/09/2026 |
+| [0009](0009-i18n-base.md)               | Base de i18n: i18next, arquivos pt-BR/en/es, tipos das chaves                   | Aprovada | 29/09/2026 |
