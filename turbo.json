@@ -9,7 +9,7 @@
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
-      "env": ["NEXT_PUBLIC_*", "ADMIN_AUTH_MODE"]
+      "env": ["NEXT_PUBLIC_*", "ADMIN_AUTH_MODE", "ADMIN_LOCALE"]
     },
     "dev": {
       "cache": false,

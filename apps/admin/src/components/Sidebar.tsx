@@ -3,16 +3,30 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { navigation } from '@/config/navigation';
-import { siteConfig } from '@/config/site';
+import type { NavItem } from '@/config/navigation';
 import styles from './Sidebar.module.css';
 
+export interface SidebarItem extends NavItem {
+  label: string;
+}
+
+/** Textos já traduzidos no servidor (este componente roda no navegador). */
+export interface SidebarLabels {
+  appName: string;
+  panelName: string;
+  menu: string;
+  comingSoon: string;
+  devMode: string;
+}
+
 interface SidebarProps {
+  items: readonly SidebarItem[];
+  labels: SidebarLabels;
   userName: string;
   isDevelopmentSession: boolean;
 }
 
-export function Sidebar({ userName, isDevelopmentSession }: SidebarProps) {
+export function Sidebar({ items, labels, userName, isDevelopmentSession }: SidebarProps) {
   const pathname = usePathname();
 
   return (
@@ -22,20 +36,20 @@ export function Sidebar({ userName, isDevelopmentSession }: SidebarProps) {
           GF
         </span>
         <div>
-          <p className={styles.brandName}>{siteConfig.name}</p>
-          <p className={styles.brandSub}>{siteConfig.panelName}</p>
+          <p className={styles.brandName}>{labels.appName}</p>
+          <p className={styles.brandSub}>{labels.panelName}</p>
         </div>
       </div>
 
-      <nav aria-label="Menu principal">
+      <nav aria-label={labels.menu}>
         <ul className={styles.menu}>
-          {navigation.map((item) => {
+          {items.map((item) => {
             if (!item.available) {
               return (
                 <li key={item.key}>
                   <span className={`${styles.item} ${styles.disabled}`} aria-disabled="true">
                     <span>{item.label}</span>
-                    <span className={styles.soon}>Em breve</span>
+                    <span className={styles.soon}>{labels.comingSoon}</span>
                   </span>
                 </li>
               );
@@ -60,7 +74,7 @@ export function Sidebar({ userName, isDevelopmentSession }: SidebarProps) {
 
       <div className={styles.footer}>
         <p className={styles.user}>{userName}</p>
-        {isDevelopmentSession && <p className={styles.devNote}>Modo desenvolvimento — sem login</p>}
+        {isDevelopmentSession && <p className={styles.devNote}>{labels.devMode}</p>}
       </div>
     </aside>
   );

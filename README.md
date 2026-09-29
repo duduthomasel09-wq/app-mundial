@@ -17,4 +17,5 @@ substitutos de ingredientes, tradução de nomes, listas de compras, guia de ch�
 - ✅ Etapa 3 — App Expo (`apps/mobile`, Expo SDK 57)
 - ✅ Etapa 4 — Painel administrativo (`apps/admin`, Next.js 16)
 - ✅ Etapa 5 — Pacotes compartilhados (`@gfg/core`, `@gfg/i18n`, `@gfg/ui`)
-- ✅ Etapa 6 — Configuração inicial do Supabase (`supabase/`) — aguardando aprovação
+- ✅ Etapa 6 — Configuração inicial do Supabase (`supabase/`)
+- ✅ Etapa 7 — Traduções da interface em pt-BR, en e es (`@gfg/i18n`) — aguardando aprovação

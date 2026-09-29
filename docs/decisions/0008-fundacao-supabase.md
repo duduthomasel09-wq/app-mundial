@@ -1,6 +1,6 @@
 # ADR 0008 — Fundação do Supabase
 
-- **Status:** Proposta (29/09/2026) — aguardando aprovação na etapa 6 da Fase 0
+- **Status:** Aprovada (29/09/2026) — etapa 6 da Fase 0
 
 ## Contexto
 

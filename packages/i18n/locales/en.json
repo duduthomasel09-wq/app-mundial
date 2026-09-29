@@ -1,0 +1,65 @@
+{
+  "common": {
+    "appName": "Global Food Guide",
+    "comingSoon": "Coming soon",
+    "languages": {
+      "pt-BR": "Portuguese (Brazil)",
+      "en": "English",
+      "es": "Spanish"
+    },
+    "countries": {
+      "BR": "Brazil",
+      "US": "United States",
+      "PT": "Portugal",
+      "ES": "Spain",
+      "GB": "United Kingdom"
+    },
+    "languageCount_one": "{{count}} language",
+    "languageCount_other": "{{count}} languages",
+    "countryCount_one": "{{count}} country",
+    "countryCount_other": "{{count}} countries"
+  },
+  "mobile": {
+    "home": {
+      "subtitle": "Under construction — Phase 0",
+      "language": "Language: {{language}}"
+    }
+  },
+  "admin": {
+    "panelName": "Admin panel",
+    "description": "{{appName}} {{panelName}}",
+    "nav": {
+      "label": "Main menu",
+      "dashboard": "Dashboard",
+      "produtos": "Products",
+      "ingredientes": "Ingredients",
+      "equivalencias": "Equivalents",
+      "receitas": "Recipes",
+      "traducoes": "Translations",
+      "usuarios": "Users",
+      "assinaturas": "Subscriptions",
+      "configuracoes": "Settings"
+    },
+    "sidebar": {
+      "devMode": "Development mode — no login"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "welcome": "Welcome to the admin panel. This is where you will manage the app content.",
+      "statusTitle": "Panel status",
+      "statusText": "This is the technical foundation (Phase 0). There is no data or content yet.",
+      "countriesTitle": "Initial countries",
+      "countriesText": "Default language and a sample price in each country.",
+      "areasTitle": "Planned areas"
+    },
+    "login": {
+      "title": "Sign in",
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "password": "Password",
+      "submit": "Sign in",
+      "notice": "Email and password sign-in is not active yet. It will be connected to Supabase in a future step.",
+      "devLink": "Open the panel (development mode)"
+    }
+  }
+}

@@ -52,7 +52,7 @@ Rodar só um projeto: `pnpm --filter @gfg/mobile dev` ou `pnpm --filter @gfg/adm
 apps/mobile      App Expo (iOS/Android)
 apps/admin       Painel administrativo (Next.js)
 packages/core    Tipos e regras: países, moedas, planos, unidades
-packages/i18n    Idioma e formatos (traduções chegam na etapa 7)
+packages/i18n    Traduções (pt-BR, en, es), idioma e formatos
 packages/ui      Cores e medidas compartilhadas (componentes na etapa 8)
 packages/config  Configurações de TypeScript/lint
 supabase/        Banco: migrations, seed e Edge Functions (veja docs/SUPABASE.md)
@@ -77,6 +77,17 @@ import { getColors } from '@gfg/ui';
 - Os pacotes são TypeScript puro (sem React) e não têm build: o app e o painel compilam direto.
 - Para usar um pacote em outro projeto, adicione `"@gfg/<nome>": "workspace:*"` nas dependências e rode `pnpm install`.
 - Cada pacote tem testes: `pnpm --filter @gfg/core test` (ou `pnpm test` para todos).
+
+## Traduções (textos da interface)
+
+Nenhum texto da tela fica escrito direto no código: todos estão em
+`packages/i18n/locales/` (`pt-BR.json`, `en.json`, `es.json`).
+
+- Para mudar um texto: edite o JSON do idioma.
+- Para criar um texto novo: adicione a mesma chave nos três arquivos e rode `pnpm test`.
+- O app usa o idioma do celular. O painel usa `ADMIN_LOCALE` (padrão `pt-BR`) — veja `apps/admin/.env.example`.
+
+Detalhes em [packages/i18n/README.md](../packages/i18n/README.md).
 
 ## Convenções
 

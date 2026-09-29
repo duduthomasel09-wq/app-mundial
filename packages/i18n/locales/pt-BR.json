@@ -1,0 +1,67 @@
+{
+  "common": {
+    "appName": "Global Food Guide",
+    "comingSoon": "Em breve",
+    "languages": {
+      "pt-BR": "Português (Brasil)",
+      "en": "Inglês",
+      "es": "Espanhol"
+    },
+    "countries": {
+      "BR": "Brasil",
+      "US": "Estados Unidos",
+      "PT": "Portugal",
+      "ES": "Espanha",
+      "GB": "Reino Unido"
+    },
+    "languageCount_one": "{{count}} idioma",
+    "languageCount_many": "{{count}} de idiomas",
+    "languageCount_other": "{{count}} idiomas",
+    "countryCount_one": "{{count}} país",
+    "countryCount_many": "{{count}} de países",
+    "countryCount_other": "{{count}} países"
+  },
+  "mobile": {
+    "home": {
+      "subtitle": "Em construção — Fase 0",
+      "language": "Idioma: {{language}}"
+    }
+  },
+  "admin": {
+    "panelName": "Painel administrativo",
+    "description": "{{panelName}} do {{appName}}",
+    "nav": {
+      "label": "Menu principal",
+      "dashboard": "Dashboard",
+      "produtos": "Produtos",
+      "ingredientes": "Ingredientes",
+      "equivalencias": "Equivalências",
+      "receitas": "Receitas",
+      "traducoes": "Traduções",
+      "usuarios": "Usuários",
+      "assinaturas": "Assinaturas",
+      "configuracoes": "Configurações"
+    },
+    "sidebar": {
+      "devMode": "Modo desenvolvimento — sem login"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "welcome": "Bem-vindo ao painel administrativo. Aqui você vai gerenciar o conteúdo do app.",
+      "statusTitle": "Status do painel",
+      "statusText": "Esta é a fundação técnica (Fase 0). Ainda não há dados nem cadastros.",
+      "countriesTitle": "Países iniciais",
+      "countriesText": "Idioma padrão e exemplo de preço em cada país.",
+      "areasTitle": "Áreas previstas"
+    },
+    "login": {
+      "title": "Entrar",
+      "email": "E-mail",
+      "emailPlaceholder": "voce@exemplo.com",
+      "password": "Senha",
+      "submit": "Entrar",
+      "notice": "O login com e-mail e senha ainda não está ativo. Ele será ligado ao Supabase numa etapa futura.",
+      "devLink": "Entrar no painel (modo desenvolvimento)"
+    }
+  }
+}

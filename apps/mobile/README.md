@@ -4,6 +4,8 @@ App Expo (iOS/Android) do Global Food Guide.
 
 - **Stack:** Expo SDK 57 · React Native 0.86 · Expo Router · TypeScript
 - **Rotas:** ficam em `src/app/` (cada arquivo vira uma tela)
+- **Textos:** vêm de `@gfg/i18n` (`useTranslation()`); o idioma segue o do celular
+  (`src/lib/i18n.ts`) — pt-BR, en ou es, com inglês quando o idioma não é suportado
 
 ## Rodar
 

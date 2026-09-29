@@ -6,12 +6,19 @@
  * Veja `apps/admin/.env.example`.
  */
 
+import { isLocaleCode, type LocaleCode } from '@gfg/core';
+
 export type AppEnv = 'development' | 'staging' | 'production';
 export type AdminAuthMode = 'disabled' | 'supabase';
 
 function readAppEnv(value: string | undefined): AppEnv {
   if (value === 'staging' || value === 'production') return value;
   return 'development';
+}
+
+/** Idioma do painel. Padrão: pt-BR (a equipe de conteúdo trabalha em português). */
+function readLocale(value: string | undefined): LocaleCode {
+  return isLocaleCode(value) ? value : 'pt-BR';
 }
 
 function readAuthMode(value: string | undefined): AdminAuthMode {
@@ -28,6 +35,7 @@ export const publicEnv = {
 /** Variáveis usadas só no servidor. Não importar em componentes de cliente. */
 export const serverEnv = {
   authMode: readAuthMode(process.env.ADMIN_AUTH_MODE),
+  locale: readLocale(process.env.ADMIN_LOCALE),
 } as const;
 
 export const isSupabaseConfigured = Boolean(publicEnv.supabaseUrl && publicEnv.supabaseAnonKey);

@@ -43,10 +43,10 @@ apps/admin
     │       └── dashboard/      Tela inicial
     ├── components/Sidebar.tsx  Menu lateral
     ├── config
-    │   ├── navigation.ts       Itens do menu (só Dashboard ativo)
-    │   └── site.ts             Nome do projeto e do painel
+    │   └── navigation.ts       Itens do menu (só Dashboard ativo)
     └── lib
         ├── env.ts              Leitura das variáveis de ambiente
+        ├── i18n.ts             Traduções do painel (idioma de ADMIN_LOCALE)
         └── auth/               Estrutura de autenticação (sem Supabase ainda)
 ```
 
@@ -60,8 +60,9 @@ Copie `.env.example` para `.env.local` (esse arquivo nunca vai para o Git).
 | Variável                        | Uso                                                 |
 | ------------------------------- | --------------------------------------------------- |
 | `NEXT_PUBLIC_APP_ENV`           | `development`, `staging` ou `production`            |
-| `NEXT_PUBLIC_SUPABASE_URL`      | Supabase — a partir da etapa 6 (vazio por enquanto) |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase — a partir da etapa 6 (vazio por enquanto) |
+| `NEXT_PUBLIC_SUPABASE_URL`      | Supabase — veja docs/SUPABASE.md (pode ficar vazio) |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase — veja docs/SUPABASE.md (pode ficar vazio) |
+| `ADMIN_LOCALE`                  | Idioma do painel: `pt-BR` (padrão), `en` ou `es`    |
 | `ADMIN_AUTH_MODE`               | `disabled` (padrão, sem login) ou `supabase`        |
 
 Sem nenhum `.env.local`, o painel funciona em modo desenvolvimento (sem login).

@@ -1,0 +1,67 @@
+{
+  "common": {
+    "appName": "Global Food Guide",
+    "comingSoon": "Próximamente",
+    "languages": {
+      "pt-BR": "Portugués (Brasil)",
+      "en": "Inglés",
+      "es": "Español"
+    },
+    "countries": {
+      "BR": "Brasil",
+      "US": "Estados Unidos",
+      "PT": "Portugal",
+      "ES": "España",
+      "GB": "Reino Unido"
+    },
+    "languageCount_one": "{{count}} idioma",
+    "languageCount_many": "{{count}} de idiomas",
+    "languageCount_other": "{{count}} idiomas",
+    "countryCount_one": "{{count}} país",
+    "countryCount_many": "{{count}} de países",
+    "countryCount_other": "{{count}} países"
+  },
+  "mobile": {
+    "home": {
+      "subtitle": "En construcción — Fase 0",
+      "language": "Idioma: {{language}}"
+    }
+  },
+  "admin": {
+    "panelName": "Panel de administración",
+    "description": "{{panelName}} de {{appName}}",
+    "nav": {
+      "label": "Menú principal",
+      "dashboard": "Panel",
+      "produtos": "Productos",
+      "ingredientes": "Ingredientes",
+      "equivalencias": "Equivalencias",
+      "receitas": "Recetas",
+      "traducoes": "Traducciones",
+      "usuarios": "Usuarios",
+      "assinaturas": "Suscripciones",
+      "configuracoes": "Ajustes"
+    },
+    "sidebar": {
+      "devMode": "Modo desarrollo — sin inicio de sesión"
+    },
+    "dashboard": {
+      "title": "Panel",
+      "welcome": "Bienvenido al panel de administración. Aquí gestionarás el contenido de la app.",
+      "statusTitle": "Estado del panel",
+      "statusText": "Esta es la base técnica (Fase 0). Todavía no hay datos ni contenido.",
+      "countriesTitle": "Países iniciales",
+      "countriesText": "Idioma predeterminado y un precio de ejemplo en cada país.",
+      "areasTitle": "Áreas previstas"
+    },
+    "login": {
+      "title": "Iniciar sesión",
+      "email": "Correo electrónico",
+      "emailPlaceholder": "tu@ejemplo.com",
+      "password": "Contraseña",
+      "submit": "Entrar",
+      "notice": "El inicio de sesión con correo y contraseña aún no está activo. Se conectará a Supabase en una etapa futura.",
+      "devLink": "Entrar al panel (modo desarrollo)"
+    }
+  }
+}
