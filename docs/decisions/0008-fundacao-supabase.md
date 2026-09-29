@@ -42,7 +42,12 @@ e não tinha Docker ativo. Por isso:
 - a Edge Function passou por verificação de tipos do TypeScript, mas não foi executada no Deno;
 - o `config.toml` segue o formato documentado do CLI, mas ainda não foi lido pelo CLI.
 
-O primeiro `npx supabase link` + `db push` (docs/SUPABASE.md) confirma tudo no projeto real.
+**Atualização (29/09/2026):** a migration e o seed foram aplicados com sucesso no projeto
+de desenvolvimento real (`global-food-guide-dev`) pelo SQL Editor do site — ver
+docs/SUPABASE.md, seção 2.3-B. Como esse caminho não registra a migration no histórico do CLI,
+o primeiro uso do CLI deve começar com
+`npx supabase migration repair --status applied 20260929120000`.
+O `config.toml` e a Edge Function continuam sem ter sido executados pelo CLI/Deno.
 
 ## Consequências
 

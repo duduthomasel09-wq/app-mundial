@@ -12,6 +12,19 @@ Há dois jeitos de usar o Supabase:
 
 Para começar, o **jeito A** é o mais simples. O jeito B é opcional.
 
+> **Não tem o VS Code, o Node.js ou o Git instalados?** Dá para criar as tabelas só pelo
+> navegador: veja a seção [2.3-B](#23-b-sem-instalar-nada--pelo-sql-editor-do-site).
+
+## Situação atual do projeto de desenvolvimento
+
+| Item                                    | Situação                                                                 |
+| --------------------------------------- | ------------------------------------------------------------------------ |
+| Projeto `global-food-guide-dev` criado  | ✅ 29/09/2026                                                            |
+| Migration `20260929120000_fundacao.sql` | ✅ Aplicada pelo SQL Editor do site (seção 2.3-B)                        |
+| Seed `01_referencia.sql`                | ✅ Aplicado pelo SQL Editor do site (3 idiomas, 4 moedas, 5 países)      |
+| Registro da migration no CLI            | ⏳ Pendente: rodar o `migration repair` da seção 2.3-B ao instalar o CLI |
+| Chaves públicas nos apps (`.env.local`) | ⏳ Pendente (só será necessário quando os apps usarem o Supabase)        |
+
 ---
 
 ## 1. Instalar o Supabase CLI
@@ -69,6 +82,35 @@ npx supabase db push --include-seed
 
 Para conferir: no site do Supabase, abra **Table Editor** → devem aparecer as tabelas
 `locales` (3 linhas), `currencies` (4) e `countries` (5).
+
+### 2.3-B Sem instalar nada — pelo SQL Editor do site
+
+Alternativa ao passo 2.3 para quem ainda não tem o VS Code, o Node.js e o Git no computador.
+Faz o mesmo resultado, só que colando o SQL no navegador.
+
+1. Abra o arquivo da migration no GitHub:
+   https://github.com/duduthomasel09-wq/app-mundial/blob/main/supabase/migrations/20260929120000_fundacao.sql
+2. Clique em **Copy raw file** (ícone 📋, no canto de cima à direita do arquivo).
+3. No site do Supabase, abra o projeto → **SQL Editor** (ícone `>_` na barra da esquerda).
+4. Cole (**Ctrl+V**) e clique em **Run** (ou **Ctrl+Enter**).
+   Deve aparecer **"Success. No rows returned"**.
+5. Repita com o seed, numa aba nova (**+**):
+   https://github.com/duduthomasel09-wq/app-mundial/blob/main/supabase/seed/01_referencia.sql
+6. Confira em **Table Editor**: `countries` (5 linhas), `currencies` (4) e `locales` (3).
+
+> ⚠️ **Importante para depois:** quando o SQL é colado no site, o Supabase **não registra**
+> que a migration foi aplicada. Por isso, **na primeira vez** que usar o CLI (depois de fazer o
+> `login` e o `link` do passo 2.2), rode **antes de qualquer `db push`**:
+>
+> ```powershell
+> npx supabase migration repair --status applied 20260929120000
+> ```
+>
+> Isso só anota "esta migration já foi aplicada" — não muda nenhuma tabela nem dado.
+> Confira com `npx supabase migration list`: o número deve aparecer nas colunas **Local** e **Remote**.
+>
+> Cada nova migration aplicada pelo SQL Editor precisa do mesmo `repair` com o seu próprio número.
+> Por isso, depois de instalar o CLI, prefira sempre o `db push` (passo 2.3).
 
 ### 2.4 Publicar a Edge Function de teste (opcional)
 
@@ -137,9 +179,10 @@ Cria `supabase/migrations/<data-hora>_nome_da_mudanca.sql`. Escreva o SQL, teste
 
 ## Problemas comuns
 
-| Mensagem                              | Solução                                                              |
-| ------------------------------------- | -------------------------------------------------------------------- |
-| `Cannot find project ref`             | Rode o `npx supabase link --project-ref ...` (passo 2.2)             |
-| `password authentication failed`      | Senha do banco errada. Dá para trocar em Project Settings → Database |
-| `Cannot connect to the Docker daemon` | Só no jeito B: abra o Docker Desktop e espere ele iniciar            |
-| `npx` não é reconhecido               | Instale o Node.js 22 (veja `docs/DEVELOPMENT.md`)                    |
+| Mensagem                                         | Solução                                                                         |
+| ------------------------------------------------ | ------------------------------------------------------------------------------- |
+| `relation "locales" already exists` no `db push` | A migration já foi aplicada pelo site: rode o `migration repair` da seção 2.3-B |
+| `Cannot find project ref`                        | Rode o `npx supabase link --project-ref ...` (passo 2.2)                        |
+| `password authentication failed`                 | Senha do banco errada. Dá para trocar em Project Settings → Database            |
+| `Cannot connect to the Docker daemon`            | Só no jeito B: abra o Docker Desktop e espere ele iniciar                       |
+| `npx` não é reconhecido                          | Instale o Node.js 22 (veja `docs/DEVELOPMENT.md`)                               |
