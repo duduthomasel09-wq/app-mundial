@@ -1,4 +1,4 @@
-name: Supabase - Repair Migration
+name: Supabase - Migration Check
 
 on:
   workflow_dispatch:
@@ -7,8 +7,8 @@ permissions:
   contents: read
 
 jobs:
-  repair:
-    name: Registrar migration já aplicada
+  migration-check:
+    name: Verificar migrations
     runs-on: ubuntu-latest
 
     steps:
@@ -20,9 +20,12 @@ jobs:
         with:
           version: latest
 
-      - name: Registrar fundacao como aplicada
+      - name: Verificar CLI
+        run: supabase --version
+
+      - name: Verificar migrations
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
         run: |
           supabase link --project-ref cuhxtopqflgdotzcbhkk
-          supabase migration repair --status applied 20260929120000
+          supabase migration list
