@@ -44,6 +44,16 @@ Os testes automáticos rodam como `development`. Separação dev/prod, checklist
 | `SUPABASE_DB_PASSWORD`  | 🔒   | Senha do banco (`link`, `db push`). Opcional: o CLI pergunta |
 | `SUPABASE_ACCESS_TOKEN` | 🔒   | Login do CLI sem navegador (automação — etapa 10)            |
 
+### GitHub Actions — Environment `development` (ADR 0014)
+
+Configurado no site do GitHub (Settings → Environments → `development`), **nunca** em arquivo.
+Usado só pelo workflow **Supabase dev — migrations**.
+
+| Nome                    | Tipo                     | Para quê                            |
+| ----------------------- | ------------------------ | ----------------------------------- |
+| `SUPABASE_ACCESS_TOKEN` | 🔒 secret do Environment | CLI no GitHub (link, dry-run, push) |
+| `SUPABASE_PROJECT_REF`  | variável do Environment  | ID do projeto de desenvolvimento    |
+
 ### Edge Functions (modelo: `supabase/functions/.env.example`)
 
 | Variável                    | Tipo | Observação                                                |

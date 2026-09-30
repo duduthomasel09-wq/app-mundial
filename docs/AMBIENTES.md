@@ -5,16 +5,17 @@ Variáveis de cada ambiente: [ENVIRONMENT.md](ENVIRONMENT.md) · Supabase: [SUPA
 
 ## Resumo
 
-|                           | Desenvolvimento                      | Produção                                            |
-| ------------------------- | ------------------------------------ | --------------------------------------------------- |
-| `APP_ENV`                 | `development` (padrão)               | `production`                                        |
-| Projeto Supabase          | `global-food-guide-dev` (já existe)  | `global-food-guide-prod` (**ainda não criado**)     |
-| Onde ficam as variáveis   | `.env.local` no seu computador       | Só na hospedagem / GitHub — **nunca** no computador |
-| Dados                     | Fictícios, podem ser apagados        | Reais — nunca misturar com teste                    |
-| Seed (`--include-seed`)   | Permitido                            | **PROIBIDO**                                        |
-| Login do painel           | `ADMIN_AUTH_MODE=disabled` permitido | `disabled` é **bloqueado** (vai para /login)        |
-| Selo "Desenvolvimento"    | Aparece no painel e no app           | Não aparece                                         |
-| URL `localhost/127.0.0.1` | Permitida (Supabase local)           | **Erro** de configuração (URL descartada)           |
+|                           | Desenvolvimento                                   | Produção                                               |
+| ------------------------- | ------------------------------------------------- | ------------------------------------------------------ |
+| `APP_ENV`                 | `development` (padrão)                            | `production`                                           |
+| Projeto Supabase          | `global-food-guide-dev` (já existe)               | `global-food-guide-prod` (**ainda não criado**)        |
+| Onde ficam as variáveis   | `.env.local` no seu computador                    | Só na hospedagem / GitHub — **nunca** no computador    |
+| Dados                     | Fictícios, podem ser apagados                     | Reais — nunca misturar com teste                       |
+| Aplicar migrations        | Workflow **Supabase dev — migrations** (ADR 0014) | Manual, com checklist (futuro: workflow com aprovação) |
+| Seed (`--include-seed`)   | Permitido                                         | **PROIBIDO**                                           |
+| Login do painel           | `ADMIN_AUTH_MODE=disabled` permitido              | `disabled` é **bloqueado** (vai para /login)           |
+| Selo "Desenvolvimento"    | Aparece no painel e no app                        | Não aparece                                            |
+| URL `localhost/127.0.0.1` | Permitida (Supabase local)                        | **Erro** de configuração (URL descartada)              |
 
 `staging` (teste/homologação) continua aceito no código, mas **não tem projeto** nesta fase.
 
@@ -26,45 +27,31 @@ Variáveis de cada ambiente: [ENVIRONMENT.md](ENVIRONMENT.md) · Supabase: [SUPA
 4. **Sempre** teste no desenvolvimento antes de levar para produção.
 5. **Sempre** confira qual projeto está ligado antes de um `db push`.
 
-## Pendência no projeto de desenvolvimento: `migration repair`
+## Histórico do projeto de desenvolvimento: `migration repair` ✅ concluído
 
-As tabelas do dev foram criadas pelo **SQL Editor** (SUPABASE.md, seção 2.3-B), então o
-histórico de migrations do projeto está **vazio**. Antes do primeiro `db push` no dev:
+As tabelas do dev foram criadas pelo **SQL Editor** (SUPABASE.md, seção 2.3-B), então o histórico
+de migrations do projeto estava vazio. Em **30/09/2026**, pelo GitHub Actions (ADR 0014):
 
-```powershell
-npx supabase login
-npx supabase link --project-ref SEU_ID_DO_DEV
-npx supabase migration list
-```
+1. `migration repair --status applied 20260929120000` — só anotou no histórico que a fundação já
+   estava aplicada (não mudou tabelas nem dados);
+2. `db push` — aplicou a `20260929130000_dados_referencia` (idempotente: não duplicou nada).
 
-A lista deve mostrar as duas migrations só na coluna **Local**. Então:
-
-```powershell
-npx supabase migration repair --status applied 20260929120000
-```
-
-- **O que faz:** só anota no histórico "a migration `20260929120000_fundacao` já foi aplicada".
-  **Não muda nenhuma tabela nem dado.**
-- **Por quê:** ela já foi aplicada à mão; sem a anotação, o `db push` tentaria criar as tabelas
-  de novo e daria erro (`relation "locales" already exists`).
-- **Não** faça repair da `20260929130000_dados_referencia`: ela deve ser aplicada de verdade.
-
-Depois:
-
-```powershell
-npx supabase db push --dry-run   # mostra: vai aplicar 20260929130000_dados_referencia
-npx supabase db push
-```
-
-A migration de dados de referência é **idempotente**: no dev (que já tem os dados) ela não
-duplica nem apaga nada. Confira em **Table Editor**: 3 idiomas, 4 moedas, 5 países.
+Resultado: as duas migrations aparecem em **Local** e **Remote**. Não há mais pendência.
 
 ## Fluxo de uma mudança no banco
 
-1. `npx supabase migration new nome_da_mudanca` → escreva o SQL.
-2. Teste no **desenvolvimento** (local com `db reset`, ou no projeto dev com `db push`).
-3. Commit → a CI verifica o código.
-4. Leve para **produção** com o checklist abaixo.
+1. Crie o arquivo em `supabase/migrations/` (ou `npx supabase migration new nome_da_mudanca`)
+   e escreva o SQL.
+2. Commit na `main` → a CI verifica o código.
+3. Aplique no **desenvolvimento** pelo GitHub (caminho oficial — ADR 0014):
+   **Actions** → **Supabase dev — migrations** → **Run workflow**:
+   - primeiro com **`verificar`**: leia o dry-run (quais migrations seriam aplicadas);
+   - se estiver certo, rode de novo com **`aplicar`**.
+
+   Alternativa: Supabase CLI no seu computador (`link` + `db push --dry-run` + `db push`).
+
+4. Confira o resultado no site do Supabase (**Table Editor**).
+5. Leve para **produção** com o checklist abaixo (quando a produção existir).
 
 Nunca edite uma migration que já foi aplicada em algum ambiente: crie outra.
 

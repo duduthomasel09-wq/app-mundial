@@ -79,6 +79,38 @@ pnpm build
 - Deploy (Vercel), builds de loja (EAS) e Supabase de produção.
 - `expo-doctor` (precisa consultar a internet do Expo).
 
+## Migrations no desenvolvimento ("Supabase dev — migrations")
+
+Workflow **separado da CI**, só manual, para aplicar migrations no projeto Supabase de
+**desenvolvimento** (ADR 0014). Arquivo:
+[`.github/workflows/supabase-dev-migrations.yml`](../.github/workflows/supabase-dev-migrations.yml).
+
+**Como usar:** GitHub → **Actions** → **Supabase dev — migrations** → **Run workflow** →
+escolha o modo:
+
+| Modo                     | O que faz                                                                   | Muda o banco? |
+| ------------------------ | --------------------------------------------------------------------------- | ------------- |
+| `verificar` (padrão)     | `migration list` + `db push --dry-run` (mostra o que seria aplicado)        | **Não**       |
+| `aplicar` (só da `main`) | `migration list` + `db push --dry-run` + `db push --yes` + `migration list` | Sim           |
+
+Rotina recomendada: rode **`verificar`**, leia o passo "Dry-run" (quais migrations entrariam) e,
+se estiver certo, rode **`aplicar`**.
+
+**Configuração (feita no GitHub, não no código)** — Settings → **Environments** → `development`:
+
+| Tipo                 | Nome                    | Conteúdo                                              |
+| -------------------- | ----------------------- | ----------------------------------------------------- |
+| Environment secret   | `SUPABASE_ACCESS_TOKEN` | Token do Supabase (com permissão de escrita no banco) |
+| Environment variable | `SUPABASE_PROJECT_REF`  | ID do projeto de desenvolvimento (20 letras)          |
+| Deployment branches  | `main`                  | Só a `main` pode usar este Environment                |
+
+Segurança: permissão só de leitura do código; actions fixadas por SHA (`actions/checkout` v7.0.1,
+`supabase/setup-cli` v3.0.1 `45a513f8c64c0bc8e0e3dfe572b5c95be85f6359`); Supabase CLI fixo em
+**2.118.0**; nunca duas execuções ao mesmo tempo; **nunca** `--include-seed` nem `--include-all`.
+Se o secret ou a variável faltarem, o workflow para no primeiro passo com uma mensagem clara.
+
+**Não existe workflow de produção.**
+
 ## Futuro: promoção para produção (NÃO configurado)
 
 Nesta fase, levar migrations e Edge Functions para produção é **manual**, com o checklist de
@@ -93,6 +125,7 @@ Nesta fase, levar migrations e Edge Functions para produção é **manual**, com
 4. Um workflow **manual** (`workflow_dispatch`) separado da CI: `db push --dry-run` → aprovação
    → `db push` (**nunca** com `--include-seed` em produção) → `functions deploy`.
 5. A CI de verificação (`ci.yml`) continua **sem** secrets e sem acesso a nenhum projeto.
+6. O token de produção deve ser **diferente** do usado no Environment `development`.
 
 Também planejado: um job da CI que aplica as migrations num PostgreSQL temporário (Fase 1).
 

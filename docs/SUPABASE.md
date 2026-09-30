@@ -5,6 +5,10 @@ VS Code, dentro da pasta do projeto (`app-mundial`).
 
 > Este guia cobre o projeto de **desenvolvimento**. Produção (ainda não criada), checklist de
 > promoção e regras de separação: [AMBIENTES.md](AMBIENTES.md).
+>
+> **Caminho oficial para aplicar migrations no desenvolvimento:** o workflow do GitHub
+> **Supabase dev — migrations** ([CI.md](CI.md#migrations-no-desenvolvimento-supabase-dev--migrations),
+> ADR 0014). Os comandos do CLI abaixo continuam valendo como alternativa no seu computador.
 
 Há dois jeitos de usar o Supabase:
 
@@ -20,13 +24,13 @@ Para começar, o **jeito A** é o mais simples. O jeito B é opcional.
 
 ## Situação atual do projeto de desenvolvimento
 
-| Item                                          | Situação                                                                                                                                                                                                |
-| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Projeto `global-food-guide-dev` criado        | ✅ 29/09/2026                                                                                                                                                                                           |
-| Migration `20260929120000_fundacao.sql`       | ✅ Aplicada pelo SQL Editor do site (seção 2.3-B)                                                                                                                                                       |
-| Dados de referência (idiomas, moedas, países) | ✅ Aplicados pelo SQL Editor com o seed antigo (3 idiomas, 4 moedas, 5 países). Desde a etapa 11 eles ficam na migration `20260929130000_dados_referencia.sql`, que o `db push` aplica **sem duplicar** |
-| Registro da migration no CLI                  | ⏳ Pendente: rodar o `migration repair` — passo a passo em [AMBIENTES.md](AMBIENTES.md#pendência-no-projeto-de-desenvolvimento-migration-repair)                                                        |
-| Chaves públicas nos apps (`.env.local`)       | ⏳ Pendente (só será necessário quando os apps usarem o Supabase)                                                                                                                                       |
+| Item                                          | Situação                                                                                                                                                                                                                                                                |
+| --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Projeto `global-food-guide-dev` criado        | ✅ 29/09/2026                                                                                                                                                                                                                                                           |
+| Migration `20260929120000_fundacao.sql`       | ✅ Aplicada pelo SQL Editor do site (seção 2.3-B)                                                                                                                                                                                                                       |
+| Dados de referência (idiomas, moedas, países) | ✅ No banco e registrados na migration `20260929130000_dados_referencia.sql`                                                                                                                                                                                            |
+| Registro das migrations no histórico          | ✅ 30/09/2026: `repair` da `20260929120000` + `db push` da `20260929130000`, pelo GitHub Actions. Hoje as migrations do dev são aplicadas pelo workflow **Supabase dev — migrations** ([CI.md](CI.md#migrations-no-desenvolvimento-supabase-dev--migrations), ADR 0014) |
+| Chaves públicas nos apps (`.env.local`)       | ⏳ Pendente (só será necessário quando os apps usarem o Supabase)                                                                                                                                                                                                       |
 
 ---
 

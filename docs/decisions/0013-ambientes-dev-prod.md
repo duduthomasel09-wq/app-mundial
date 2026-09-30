@@ -50,3 +50,10 @@ A ADR 0006 prometeu que a etapa 11 impediria o painel sem login em produção.
   dados de referência é aplicada sem duplicar nada.
 - A ADR 0008, item 5 ("dados de referência no seed"), fica substituída por esta ADR.
 - Criar o projeto de produção exige seguir `docs/AMBIENTES.md` (inclui voltar o link para o dev).
+
+## Atualização (30/09/2026) — ADR 0014
+
+- O `migration repair` do desenvolvimento **foi concluído** em 30/09/2026 (e a migration de
+  dados de referência aplicada), pelo GitHub Actions.
+- O caminho oficial para aplicar migrations no **desenvolvimento** passa a ser o workflow
+  manual **Supabase dev — migrations** (ADR 0014). A promoção para **produção** continua manual.

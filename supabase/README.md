@@ -31,6 +31,8 @@ receitas, assinaturas…) chegam na Fase 1.
 ## Regras
 
 - **Nova mudança no banco = nova migration.** Crie com `supabase migration new <nome>`.
+- **Aplicar no desenvolvimento:** workflow do GitHub **Supabase dev — migrations**
+  (`verificar` → `aplicar`) — veja [docs/CI.md](../docs/CI.md) e a ADR 0014.
 - Os códigos de `migrations/20260929130000_dados_referencia.sql` devem ser iguais aos de
   `packages/core/src/geography.ts`.
 - **Seed só no desenvolvimento.** `--include-seed` é **proibido em produção**; dados necessários

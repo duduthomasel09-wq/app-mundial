@@ -1,0 +1,86 @@
+# Migrations do Supabase — projeto de DESENVOLVIMENTO (ADR 0014).
+#
+# Execução só manual (Actions → "Supabase dev — migrations" → Run workflow).
+#   - modo "verificar" (padrão): mostra o histórico e faz um dry-run. Não muda nada.
+#   - modo "aplicar": mostra o histórico, faz o dry-run e só então aplica.
+#
+# Usa o GitHub Environment "development":
+#   - secret   SUPABASE_ACCESS_TOKEN — token do Supabase
+#   - variável SUPABASE_PROJECT_REF  — ID do projeto de desenvolvimento
+#
+# Regras: não existe workflow de produção; nunca usa --include-seed nem --include-all;
+# actions fixadas por SHA (ADR 0012) e Supabase CLI em versão fixa.
+name: Supabase dev — migrations
+
+on:
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: 'verificar = só mostra o que seria aplicado · aplicar = dry-run e depois aplica'
+        type: choice
+        options:
+          - verificar
+          - aplicar
+        default: verificar
+
+# Permissão mínima: só leitura do código.
+permissions:
+  contents: read
+
+# Nunca duas execuções ao mesmo tempo no mesmo banco; nenhuma é cancelada no meio.
+concurrency:
+  group: supabase-dev-migrations
+  cancel-in-progress: false
+
+jobs:
+  migrations:
+    name: Migrations no development (${{ inputs.modo }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: development
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}
+      MODO: ${{ inputs.modo }}
+    steps:
+      - name: Conferir configuração
+        run: |
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ]; then
+            echo "::error::Secret SUPABASE_ACCESS_TOKEN não encontrado no Environment development."
+            exit 1
+          fi
+          if ! printf '%s' "$SUPABASE_PROJECT_REF" | grep -Eq '^[a-z]{20}$'; then
+            echo "::error::Variável SUPABASE_PROJECT_REF ausente ou inválida no Environment development."
+            exit 1
+          fi
+          if [ "$MODO" = "aplicar" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
+            echo "::error::O modo aplicar só é permitido a partir da branch main."
+            exit 1
+          fi
+
+      - name: Baixar o código
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Instalar Supabase CLI (versão fixa)
+        uses: supabase/setup-cli@45a513f8c64c0bc8e0e3dfe572b5c95be85f6359 # v3.0.1
+        with:
+          version: 2.118.0
+
+      - name: Ligar ao projeto de desenvolvimento
+        run: supabase link --project-ref "$SUPABASE_PROJECT_REF"
+
+      - name: Histórico de migrations (antes)
+        run: supabase migration list
+
+      - name: Dry-run (o que seria aplicado — nada é alterado)
+        run: supabase db push --dry-run
+
+      - name: Aplicar migrations
+        if: inputs.modo == 'aplicar'
+        run: supabase db push --yes
+
+      - name: Histórico de migrations (depois)
+        if: inputs.modo == 'aplicar'
+        run: supabase migration list

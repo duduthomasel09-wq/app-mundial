@@ -106,6 +106,9 @@ A cada envio para a `main` (e em pull requests), o GitHub Actions roda formataç
 lint, testes, build e o empacotamento do app. O resultado aparece na aba **Actions** do
 GitHub. Detalhes em [CI.md](CI.md).
 
+Migrations do banco de **desenvolvimento** são aplicadas por outro workflow, manual:
+**Supabase dev — migrations** (modos `verificar` e `aplicar`) — veja [CI.md](CI.md).
+
 Antes de enviar, rode as mesmas verificações no seu computador:
 `pnpm format:check`, `pnpm typecheck`, `pnpm lint`, `pnpm test` e `pnpm build`.
 

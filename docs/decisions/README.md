@@ -18,3 +18,4 @@ Decisões aprovadas não são apagadas — se mudarem, cria-se uma nova ADR que 
 | [0011](0011-variaveis-de-ambiente.md)   | Variáveis de ambiente: ambientes, nomes, validação em `@gfg/core`                                             | Aprovada | 29/09/2026 |
 | [0012](0012-ci-github-actions.md)       | CI com GitHub Actions: verificações + empacotamento do app, sem secrets                                       | Aprovada | 29/09/2026 |
 | [0013](0013-ambientes-dev-prod.md)      | Ambientes dev/prod: bloqueios em produção, dados de referência em migration, seed só dev (etapa 11 concluída) | Aprovada | 29/09/2026 |
+| [0014](0014-migrations-dev-github.md)   | Migrations do desenvolvimento pelo GitHub Actions (Environment `development`, dry-run)                        | Proposta | 30/09/2026 |
