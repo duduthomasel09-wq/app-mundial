@@ -1,4 +1,4 @@
-name: Supabase - Diagnóstico
+name: Supabase - Migration Check
 
 on:
   workflow_dispatch:
@@ -7,8 +7,8 @@ permissions:
   contents: read
 
 jobs:
-  diagnose:
-    name: Verificar acesso ao Supabase
+  migration-check:
+    name: Verificar migrations
     runs-on: ubuntu-latest
 
     steps:
@@ -23,8 +23,9 @@ jobs:
       - name: Verificar CLI
         run: supabase --version
 
-      - name: Verificar projeto Supabase
+      - name: Verificar migrations
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
         run: |
-          supabase projects list
+          supabase link --project-ref cuhxtopqflgdotzcbhkk
+          supabase migration list
