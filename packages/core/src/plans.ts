@@ -21,8 +21,29 @@ export const SUBSCRIPTION_STATUSES = [
 ] as const;
 export type SubscriptionStatus = (typeof SUBSCRIPTION_STATUSES)[number];
 
+/** Todos os papéis do PROJECT_SPEC. `user` é o padrão (sem linha em `user_roles`). */
 export const ROLES = ['user', 'editor', 'admin'] as const;
 export type Role = (typeof ROLES)[number];
+
+/**
+ * Papéis elevados — os únicos gravados em `user_roles` (tipo `app_role` no banco, ADR 0015).
+ * `admin` inclui todas as permissões de `editor`.
+ */
+export const STAFF_ROLES = ['editor', 'admin'] as const;
+export type StaffRole = (typeof STAFF_ROLES)[number];
+
+export function isStaffRole(value: unknown): value is StaffRole {
+  return typeof value === 'string' && (STAFF_ROLES as readonly string[]).includes(value);
+}
+
+/**
+ * Mesma regra de `public.has_role()` no banco: `true` se os papéis do usuário atendem ao
+ * papel exigido (admin também vale como editor). Serve para a interface; quem garante a
+ * segurança de verdade é a RLS no banco.
+ */
+export function hasStaffRole(roles: readonly StaffRole[], required: StaffRole): boolean {
+  return roles.includes(required) || (required === 'editor' && roles.includes('admin'));
+}
 
 /** Limite de um recurso: um número máximo, ou `null` para ilimitado. */
 export type EntitlementLimit = number | null;

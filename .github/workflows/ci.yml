@@ -1,7 +1,8 @@
 # CI do Global Food Guide (ADR 0012).
 #
-# Só VERIFICA o projeto: não publica, não faz deploy, não usa EAS, Vercel nem Supabase,
-# e não usa nenhum secret. Nunca altera a branch main.
+# Só VERIFICA o projeto: não publica, não faz deploy, não usa EAS nem Vercel, não acessa
+# nenhum projeto Supabase remoto e não usa nenhum secret. Nunca altera a branch main.
+# O job "Banco de dados" sobe um Supabase LOCAL e temporário (Docker) só para testar.
 #
 # As actions são fixadas pelo SHA do commit (versão no comentário). Para atualizar uma
 # action, troque o SHA e o comentário juntos — veja docs/CI.md.
@@ -102,3 +103,36 @@ jobs:
         run: |
           echo "Arquivos gerados:"
           find "$RUNNER_TEMP/expo-export/_expo/static/js" -name '*.hbc' -exec ls -lh {} \;
+
+  # Aplica todas as migrations num Supabase local e temporário (Docker, sem secrets) e roda
+  # os testes pgTAP de RLS/segurança de supabase/tests/ (ADR 0012, atualização da ADR 0015).
+  database:
+    name: Banco de dados (migrations + testes pgTAP)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Baixar o código
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Instalar Supabase CLI (versão fixa)
+        uses: supabase/setup-cli@45a513f8c64c0bc8e0e3dfe572b5c95be85f6359 # v3.0.1
+        with:
+          version: 2.118.0
+
+      # Só o necessário para o teste: banco, autenticação (cria auth.users), API.
+      - name: Subir Supabase local (aplica migrations e seed)
+        run: >-
+          supabase start
+          -x realtime,storage-api,imgproxy,mailpit,studio,edge-runtime,logflare,vector,supavisor,postgres-meta
+
+      - name: Verificar funções do banco (db lint)
+        run: supabase db lint --level warning --fail-on error
+
+      - name: Testes de RLS e segurança (pgTAP)
+        run: supabase test db
+
+      - name: Desligar Supabase local
+        if: always()
+        run: supabase stop --no-backup

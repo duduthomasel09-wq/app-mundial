@@ -24,13 +24,15 @@ Para começar, o **jeito A** é o mais simples. O jeito B é opcional.
 
 ## Situação atual do projeto de desenvolvimento
 
-| Item                                          | Situação                                                                                                                                                                                                                                                                |
-| --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Projeto `global-food-guide-dev` criado        | ✅ 29/09/2026                                                                                                                                                                                                                                                           |
-| Migration `20260929120000_fundacao.sql`       | ✅ Aplicada pelo SQL Editor do site (seção 2.3-B)                                                                                                                                                                                                                       |
-| Dados de referência (idiomas, moedas, países) | ✅ No banco e registrados na migration `20260929130000_dados_referencia.sql`                                                                                                                                                                                            |
-| Registro das migrations no histórico          | ✅ 30/09/2026: `repair` da `20260929120000` + `db push` da `20260929130000`, pelo GitHub Actions. Hoje as migrations do dev são aplicadas pelo workflow **Supabase dev — migrations** ([CI.md](CI.md#migrations-no-desenvolvimento-supabase-dev--migrations), ADR 0014) |
-| Chaves públicas nos apps (`.env.local`)       | ⏳ Pendente (só será necessário quando os apps usarem o Supabase)                                                                                                                                                                                                       |
+| Item                                            | Situação                                                                                                                                                                                                                                                                |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Projeto `global-food-guide-dev` criado          | ✅ 29/09/2026                                                                                                                                                                                                                                                           |
+| Migration `20260929120000_fundacao.sql`         | ✅ Aplicada pelo SQL Editor do site (seção 2.3-B)                                                                                                                                                                                                                       |
+| Dados de referência (idiomas, moedas, países)   | ✅ No banco e registrados na migration `20260929130000_dados_referencia.sql`                                                                                                                                                                                            |
+| Registro das migrations no histórico            | ✅ 30/09/2026: `repair` da `20260929120000` + `db push` da `20260929130000`, pelo GitHub Actions. Hoje as migrations do dev são aplicadas pelo workflow **Supabase dev — migrations** ([CI.md](CI.md#migrations-no-desenvolvimento-supabase-dev--migrations), ADR 0014) |
+| Usuários, papéis e auditoria (`20260930120000`) | ⏳ Criada no repositório; **ainda não aplicada** no dev (aplicar pelo workflow, `verificar` → `aplicar`)                                                                                                                                                                |
+| Confirmação de e-mail e primeiro admin          | ⏳ Configurar no site do Supabase — seção 5                                                                                                                                                                                                                             |
+| Chaves públicas nos apps (`.env.local`)         | ⏳ Pendente (só será necessário quando os apps usarem o Supabase)                                                                                                                                                                                                       |
 
 ---
 
@@ -190,6 +192,47 @@ Cria `supabase/migrations/<data-hora>_nome_da_mudanca.sql`. Escreva o SQL, teste
 **Regra:** nunca edite uma migration que já foi enviada — crie outra.
 
 ---
+
+## 5. Autenticação no projeto de desenvolvimento (ADR 0015)
+
+Estas configurações ficam **no site do Supabase**, não no código. O `supabase/config.toml` vale
+só para o ambiente local (onde a confirmação de e-mail fica desligada).
+
+### 5.1 Confirmação de e-mail (ligada)
+
+1. Site do Supabase → projeto de desenvolvimento → **Authentication** → **Sign In / Providers**
+   → **Email**.
+2. Deixe **Enable Email provider** e **Confirm email** **ligados** e salve.
+3. Recomendado: **Minimum password length** = **8** (igual ao ambiente local).
+
+### 5.2 Criar o primeiro admin (só depois da migration `20260930120000` aplicada)
+
+Ninguém consegue se dar papéis pelo app ou pelo painel — nem o primeiro usuário. Por isso o
+**primeiro admin** é criado uma única vez, pelo dono do projeto, no **SQL Editor do projeto de
+desenvolvimento** (permitido no dev; **nunca** em produção — ADR 0013).
+
+1. Crie a sua conta normalmente (pelo app ou pelo painel, quando o login existir) e confirme o
+   e-mail. Enquanto o login não existe: **Authentication** → **Users** → **Add user**.
+2. No **SQL Editor**, troque o e-mail e rode:
+
+   ```sql
+   -- Confere se a conta existe (deve aparecer 1 linha):
+   select id, email from auth.users where email = 'seu-email@exemplo.com';
+
+   -- Concede o papel admin a essa conta (pode rodar de novo sem duplicar):
+   insert into public.user_roles (user_id, role)
+   select id, 'admin' from auth.users where email = 'seu-email@exemplo.com'
+   on conflict do nothing;
+
+   -- Confere:
+   select u.email, r.role from public.user_roles r join auth.users u on u.id = r.user_id;
+   ```
+
+3. Os próximos papéis (`editor`/`admin`) serão dados **pelo painel**, por um admin, e ficam
+   registrados no `audit_log`.
+
+> O sistema nunca fica sem admin ativo: o papel do último admin não pode ser revogado, e a
+> conta dele não pode ser excluída (nem "suavemente") — conceda `admin` a outra pessoa antes.
 
 ## Problemas comuns
 

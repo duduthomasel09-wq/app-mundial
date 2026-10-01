@@ -15,7 +15,7 @@ Arquivo: [`.github/workflows/ci.yml`](../.github/workflows/ci.yml).
 
 ## O que verifica
 
-A CI tem **dois jobs**, que rodam ao mesmo tempo:
+A CI tem **três jobs**, que rodam ao mesmo tempo:
 
 **1. Verificações (format, tipos, lint, testes, build)**
 
@@ -32,6 +32,18 @@ A CI tem **dois jobs**, que rodam ao mesmo tempo:
 
 Gera o pacote JavaScript do app para **Android e iOS** (`expo export`) só para confirmar que o
 app empacota. O resultado é descartado. **Não** usa EAS, não publica e não precisa de conta Expo.
+
+**3. Banco de dados (migrations + testes pgTAP)** — ADR 0015
+
+| Passo                      | Comando                                            | Falha quando…                          |
+| -------------------------- | -------------------------------------------------- | -------------------------------------- |
+| Subir Supabase local       | `supabase start -x …` (Docker)                     | alguma migration ou o seed dá erro     |
+| Verificar funções do banco | `supabase db lint --level warning --fail-on error` | erro no código de uma função do banco  |
+| Testes de RLS e segurança  | `supabase test db`                                 | algum teste de `supabase/tests/` falha |
+| Desligar                   | `supabase stop --no-backup`                        | —                                      |
+
+É um Supabase **local e temporário**, criado e apagado dentro do servidor do GitHub: **sem
+secrets** e **sem acesso** a nenhum projeto remoto (nem o de desenvolvimento). CLI fixo em 2.118.0.
 
 Ambiente usado: Node pelo `.nvmrc` (22) e pnpm pelo `packageManager` (10.28.0), com cache da
 pasta de pacotes do pnpm. Nenhuma variável de ambiente é necessária (valores padrão da ADR 0011).
@@ -75,7 +87,6 @@ pnpm build
 
 ## Fora da CI (etapas futuras)
 
-- Teste das migrations do Supabase num banco temporário (Fase 1).
 - Deploy (Vercel), builds de loja (EAS) e Supabase de produção.
 - `expo-doctor` (precisa consultar a internet do Expo).
 

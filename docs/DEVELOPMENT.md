@@ -106,6 +106,9 @@ A cada envio para a `main` (e em pull requests), o GitHub Actions roda formataç
 lint, testes, build e o empacotamento do app. O resultado aparece na aba **Actions** do
 GitHub. Detalhes em [CI.md](CI.md).
 
+A CI também sobe um Supabase **local e temporário** e roda os testes de segurança do banco
+(`supabase/tests/`, pgTAP) — sem secrets e sem tocar no projeto de desenvolvimento.
+
 Migrations do banco de **desenvolvimento** são aplicadas por outro workflow, manual:
 **Supabase dev — migrations** (modos `verificar` e `aplicar`) — veja [CI.md](CI.md).
 

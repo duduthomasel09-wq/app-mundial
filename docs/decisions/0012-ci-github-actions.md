@@ -46,3 +46,15 @@ automática, confiável, sem secrets e sem deploy.
 - Enquanto a proteção da branch não for ativada, a CI **avisa** mas **não impede** um envio
   quebrado — continua valendo rodar as verificações localmente antes de enviar.
 - Atualizar uma action exige trocar o SHA e o comentário juntos.
+
+## Atualização (30/09/2026) — ADR 0015
+
+A CI ganhou um **terceiro job**, "Banco de dados (migrations + testes pgTAP)":
+
+- sobe um **Supabase local e temporário** (Docker do servidor do GitHub, sem secrets e sem acesso
+  a nenhum projeto remoto) com o Supabase CLI fixo em 2.118.0 e `supabase/setup-cli` fixado por SHA;
+- aplica todas as migrations e o seed;
+- roda `supabase db lint` (falha em erros) e os testes pgTAP de `supabase/tests/` (`supabase test db`);
+- desliga e apaga o banco temporário no final.
+
+As demais decisões desta ADR continuam iguais (gatilhos, permissões, actions por SHA, CI completa).

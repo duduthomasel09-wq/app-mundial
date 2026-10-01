@@ -1,6 +1,6 @@
 # ADR 0014 — Fluxo oficial de migrations no desenvolvimento (GitHub Actions)
 
-- **Status:** Proposta (30/09/2026) — aguardando aprovação
+- **Status:** Aprovada (30/09/2026) — workflow testado com sucesso no modo `verificar`
 - **Relaciona-se com:** ADR 0012 (CI e padrão de actions), ADR 0013 (ambientes dev/prod)
 
 ## Contexto
