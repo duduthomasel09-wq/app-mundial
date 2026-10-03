@@ -79,7 +79,14 @@ export const isDevelopmentSessionAllowed =
 if (appEnv === 'production' && serverEnv.authMode === 'disabled') {
   report.error(
     'ADMIN_AUTH_MODE',
-    'está "disabled" em produção. BLOQUEADO: a sessão sem login foi recusada e o painel envia para /login. Use "supabase" quando o login real existir.',
+    'está "disabled" em produção. BLOQUEADO: a sessão sem login foi recusada e o painel envia para /login. Use "supabase" (login real, ADR 0016).',
+  );
+}
+
+if (serverEnv.authMode === 'supabase' && !(publicEnv.supabaseUrl && publicEnv.supabaseAnonKey)) {
+  report.error(
+    'ADMIN_AUTH_MODE',
+    'está "supabase", mas NEXT_PUBLIC_SUPABASE_URL ou NEXT_PUBLIC_SUPABASE_ANON_KEY está vazia. Ninguém consegue entrar no painel até as duas serem preenchidas.',
   );
 }
 
@@ -96,3 +103,9 @@ export const envIssues = report.issues;
 logEnvIssues('admin', envIssues);
 
 export const isSupabaseConfigured = Boolean(publicEnv.supabaseUrl && publicEnv.supabaseAnonKey);
+
+/**
+ * Login real ligado e pronto para uso (ADR 0016): `ADMIN_AUTH_MODE=supabase` com URL e
+ * chave pública preenchidas. Sem as duas, ninguém entra (o painel fica em /login).
+ */
+export const isSupabaseAuthEnabled = serverEnv.authMode === 'supabase' && isSupabaseConfigured;

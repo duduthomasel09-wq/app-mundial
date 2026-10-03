@@ -78,7 +78,12 @@
       "configuracoes": "Ajustes"
     },
     "sidebar": {
-      "devMode": "Modo desarrollo — sin inicio de sesión"
+      "devMode": "Modo desarrollo — sin inicio de sesión",
+      "signOut": "Cerrar sesión"
+    },
+    "roles": {
+      "admin": "Administrador",
+      "editor": "Editor"
     },
     "dashboard": {
       "title": "Panel",
@@ -95,8 +100,19 @@
       "emailPlaceholder": "tu@ejemplo.com",
       "password": "Contraseña",
       "submit": "Entrar",
-      "notice": "El inicio de sesión con correo y contraseña aún no está activo. Se conectará a Supabase en una etapa futura.",
-      "devLink": "Entrar al panel (modo desarrollo)"
+      "submitting": "Entrando…",
+      "notice": "El inicio de sesión está desactivado en este entorno (ADMIN_AUTH_MODE=disabled).",
+      "noticeNotConfigured": "El inicio de sesión está activado, pero falta la URL o la clave pública de Supabase. Avisa al responsable técnico.",
+      "devLink": "Entrar al panel (modo desarrollo)",
+      "errors": {
+        "invalid_input": "Ingresa un correo válido y la contraseña.",
+        "invalid_credentials": "Correo o contraseña incorrectos.",
+        "email_not_confirmed": "Confirma tu correo antes de entrar (revisa el mensaje que te enviamos).",
+        "rate_limited": "Demasiados intentos. Espera unos minutos y vuelve a intentarlo.",
+        "no_permission": "Tu cuenta no tiene permiso para usar el panel. Habla con un administrador.",
+        "not_configured": "El inicio de sesión no está configurado en este entorno.",
+        "unknown": "No pudimos iniciar tu sesión ahora. Inténtalo de nuevo en unos instantes."
+      }
     }
   }
 }

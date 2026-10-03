@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 
 import { Sidebar } from '@/components/Sidebar';
 import { navigation } from '@/config/navigation';
-import { getAdminSession } from '@/lib/auth';
+import { getAdminAccess } from '@/lib/auth';
 import { showEnvironmentBadge } from '@/lib/env';
 import { t } from '@/lib/i18n';
 import styles from './painel.module.css';
@@ -13,14 +13,17 @@ export const dynamic = 'force-dynamic';
 
 /**
  * Layout das áreas internas do painel (menu lateral + conteúdo).
- * Toda página dentro de `(painel)` exige uma sessão de administrador.
+ * Toda página dentro de `(painel)` exige login com papel `editor` ou `admin`,
+ * verificado no servidor a cada acesso.
  */
 export default async function PainelLayout({ children }: { children: ReactNode }) {
-  const session = await getAdminSession();
+  const access = await getAdminAccess();
 
-  if (!session) {
-    redirect('/login');
-  }
+  // Login válido, mas sem papel editor/admin: encerra a sessão e avisa (ADR 0016).
+  if (access.status === 'forbidden') redirect('/sem-permissao');
+  if (access.status !== 'signed_in') redirect('/login');
+
+  const { session } = access;
 
   return (
     <div className={styles.shell}>
@@ -32,9 +35,12 @@ export default async function PainelLayout({ children }: { children: ReactNode }
           menu: t('admin.nav.label'),
           comingSoon: t('common.comingSoon'),
           devMode: t('admin.sidebar.devMode'),
+          signOut: t('admin.sidebar.signOut'),
+          role: t(`admin.roles.${session.user.role}`),
           environment: showEnvironmentBadge ? t('common.environment.development') : undefined,
         }}
         userName={session.user.name}
+        userEmail={session.user.email}
         isDevelopmentSession={session.isDevelopmentSession}
       />
       <main className={styles.content}>{children}</main>

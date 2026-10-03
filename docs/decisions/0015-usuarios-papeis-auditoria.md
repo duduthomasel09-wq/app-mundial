@@ -1,6 +1,6 @@
 # ADR 0015 — Usuários, papéis e auditoria (Fase 1, etapa 1.1)
 
-- **Status:** Aprovada (30/09/2026) — decisões aprovadas; implementação aguardando revisão
+- **Status:** Aprovada (30/09/2026) — implementada e aplicada no desenvolvimento (01/10/2026)
 - **Relaciona-se com:** ADR 0006 (painel), ADR 0013 (ambientes), ADR 0014 (migrations no dev),
   ADR 0012 (CI — ganha o job de testes de banco)
 

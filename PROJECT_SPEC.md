@@ -352,4 +352,4 @@ Fora da Fase 0: receitas, produtos, assinaturas, IA e demais funcionalidades do 
 
 1. ~~Aprovar a base técnica e D03, D05, D07~~ ✅ (28/09/2026) — ver `docs/decisions/`.
 2. ~~Concluir a **Fase 0 — Fundação** (seção 9)~~ ✅ (29/09/2026) — 11 etapas aprovadas.
-3. **Fase 1 — Núcleo:** em andamento — etapa 1.1 (usuários, papéis e auditoria; ADR 0015) implementada, aguardando revisão.
+3. **Fase 1 — Núcleo:** em andamento — etapa 1.1 (usuários, papéis e auditoria; ADR 0015) ✅ concluída e aplicada no desenvolvimento (01/10/2026); etapa 1.2 (login real do painel; ADR 0016) implementada, aguardando revisão.

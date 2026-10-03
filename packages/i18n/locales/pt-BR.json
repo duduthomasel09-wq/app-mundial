@@ -78,7 +78,12 @@
       "configuracoes": "Configurações"
     },
     "sidebar": {
-      "devMode": "Modo desenvolvimento — sem login"
+      "devMode": "Modo desenvolvimento — sem login",
+      "signOut": "Sair"
+    },
+    "roles": {
+      "admin": "Administrador",
+      "editor": "Editor"
     },
     "dashboard": {
       "title": "Dashboard",
@@ -95,8 +100,19 @@
       "emailPlaceholder": "voce@exemplo.com",
       "password": "Senha",
       "submit": "Entrar",
-      "notice": "O login com e-mail e senha ainda não está ativo. Ele será ligado ao Supabase numa etapa futura.",
-      "devLink": "Entrar no painel (modo desenvolvimento)"
+      "submitting": "Entrando…",
+      "notice": "Login desligado neste ambiente (ADMIN_AUTH_MODE=disabled).",
+      "noticeNotConfigured": "O login está ativado, mas a URL ou a chave pública do Supabase não foi configurada. Avise o responsável técnico.",
+      "devLink": "Entrar no painel (modo desenvolvimento)",
+      "errors": {
+        "invalid_input": "Informe um e-mail válido e a senha.",
+        "invalid_credentials": "E-mail ou senha incorretos.",
+        "email_not_confirmed": "Confirme seu e-mail antes de entrar (veja a mensagem que enviamos).",
+        "rate_limited": "Muitas tentativas. Aguarde alguns minutos e tente de novo.",
+        "no_permission": "Sua conta não tem permissão para usar o painel. Fale com um administrador.",
+        "not_configured": "O login não está configurado neste ambiente.",
+        "unknown": "Não foi possível entrar agora. Tente de novo em instantes."
+      }
     }
   }
 }

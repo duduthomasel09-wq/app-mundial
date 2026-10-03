@@ -83,6 +83,16 @@ a.active:hover {
   font-weight: var(--font-weight-semibold);
 }
 
+.email {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  overflow-wrap: anywhere;
+}
+
+.signOut {
+  margin-top: var(--space-sm);
+}
+
 .devNote {
   color: var(--color-text-muted);
   font-size: var(--font-size-xs);

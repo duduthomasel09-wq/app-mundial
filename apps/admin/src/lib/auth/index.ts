@@ -1,2 +1,7 @@
-export { canUseDevelopmentSession, getAdminSession, isAuthEnabled } from './session';
-export type { AdminRole, AdminSession, AdminUser } from './types';
+export {
+  canUseDevelopmentSession,
+  getAdminAccess,
+  getAdminSession,
+  isAuthEnabled,
+} from './session';
+export type { AdminAccess, AdminSession, AdminUser } from './types';

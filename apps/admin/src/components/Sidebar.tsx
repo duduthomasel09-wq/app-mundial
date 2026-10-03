@@ -3,8 +3,9 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { Badge } from '@/components/ui';
+import { Badge, Button } from '@/components/ui';
 import type { NavItem } from '@/config/navigation';
+import { signOutAction } from '@/lib/auth/actions';
 import styles from './Sidebar.module.css';
 
 export interface SidebarItem extends NavItem {
@@ -18,6 +19,9 @@ export interface SidebarLabels {
   menu: string;
   comingSoon: string;
   devMode: string;
+  signOut: string;
+  /** Nome do papel do usuário, já traduzido ("Administrador", "Editor"). */
+  role: string;
   /** Selo de ambiente ("Desenvolvimento"); ausente em produção. */
   environment?: string;
 }
@@ -26,10 +30,17 @@ interface SidebarProps {
   items: readonly SidebarItem[];
   labels: SidebarLabels;
   userName: string;
+  userEmail: string;
   isDevelopmentSession: boolean;
 }
 
-export function Sidebar({ items, labels, userName, isDevelopmentSession }: SidebarProps) {
+export function Sidebar({
+  items,
+  labels,
+  userName,
+  userEmail,
+  isDevelopmentSession,
+}: SidebarProps) {
   const pathname = usePathname();
 
   return (
@@ -78,7 +89,17 @@ export function Sidebar({ items, labels, userName, isDevelopmentSession }: Sideb
 
       <div className={styles.footer}>
         <p className={styles.user}>{userName}</p>
-        {isDevelopmentSession && <p className={styles.devNote}>{labels.devMode}</p>}
+        {userEmail !== userName && <p className={styles.email}>{userEmail}</p>}
+        <Badge tone="brand">{labels.role}</Badge>
+        {isDevelopmentSession ? (
+          <p className={styles.devNote}>{labels.devMode}</p>
+        ) : (
+          <form action={signOutAction} className={styles.signOut}>
+            <Button type="submit" variant="secondary" fullWidth>
+              {labels.signOut}
+            </Button>
+          </form>
+        )}
       </div>
     </aside>
   );

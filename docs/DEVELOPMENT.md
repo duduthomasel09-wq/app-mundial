@@ -43,7 +43,8 @@ Rodar só um projeto: `pnpm --filter @gfg/mobile dev` ou `pnpm --filter @gfg/adm
 2. Abra http://localhost:3000 no navegador — vai direto para o Dashboard.
 3. (Opcional) Copie `apps/admin/.env.example` para `apps/admin/.env.local` para mudar configurações.
 
-> Por enquanto não há login real: o painel abre em **modo desenvolvimento**.
+> Sem `.env.local`, o painel abre em **modo desenvolvimento** (sem login). Para usar o login real
+> (e-mail e senha, só `editor`/`admin`), siga [SUPABASE.md, seção 5.3](SUPABASE.md#53-ligar-o-login-do-painel-adr-0016).
 > Detalhes em [apps/admin/README.md](../apps/admin/README.md).
 
 ## Estrutura

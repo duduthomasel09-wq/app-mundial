@@ -30,9 +30,9 @@ Para começar, o **jeito A** é o mais simples. O jeito B é opcional.
 | Migration `20260929120000_fundacao.sql`         | ✅ Aplicada pelo SQL Editor do site (seção 2.3-B)                                                                                                                                                                                                                       |
 | Dados de referência (idiomas, moedas, países)   | ✅ No banco e registrados na migration `20260929130000_dados_referencia.sql`                                                                                                                                                                                            |
 | Registro das migrations no histórico            | ✅ 30/09/2026: `repair` da `20260929120000` + `db push` da `20260929130000`, pelo GitHub Actions. Hoje as migrations do dev são aplicadas pelo workflow **Supabase dev — migrations** ([CI.md](CI.md#migrations-no-desenvolvimento-supabase-dev--migrations), ADR 0014) |
-| Usuários, papéis e auditoria (`20260930120000`) | ⏳ Criada no repositório; **ainda não aplicada** no dev (aplicar pelo workflow, `verificar` → `aplicar`)                                                                                                                                                                |
-| Confirmação de e-mail e primeiro admin          | ⏳ Configurar no site do Supabase — seção 5                                                                                                                                                                                                                             |
-| Chaves públicas nos apps (`.env.local`)         | ⏳ Pendente (só será necessário quando os apps usarem o Supabase)                                                                                                                                                                                                       |
+| Usuários, papéis e auditoria (`20260930120000`) | ✅ Aplicada em 01/10/2026 pelo workflow (`verificar` → `aplicar`)                                                                                                                                                                                                       |
+| Confirmação de e-mail e primeiro admin          | ✅ Confirmação de e-mail ligada; primeiro admin criado — seção 5                                                                                                                                                                                                        |
+| Chaves públicas nos apps (`.env.local`)         | ⏳ Painel: preencher para usar o login real (seção 5.3). App: ainda não usa                                                                                                                                                                                             |
 
 ---
 
@@ -150,11 +150,12 @@ No site do Supabase, abra **Project Settings → API Keys** (e **Data API** para
 2. Copie `apps/mobile/.env.example` para `apps/mobile/.env.local` e preencha.
 
 > ⚠️ **Nunca** copie a chave **secret** / **service_role** para esses arquivos: ela dá acesso
-> total ao banco. Ela só será usada no servidor, em etapas futuras.
+> total ao banco. O painel e o app usam **só** a chave pública.
 >
 > Os arquivos `.env.local` já estão no `.gitignore` — eles não vão para o GitHub.
 
-Nesta etapa os apps ainda **não** usam o Supabase; preencher esses valores é só preparação.
+O **painel** usa esses valores quando o login real está ligado (seção 5.3). O **app** ainda não
+usa o Supabase; no app, preencher é só preparação.
 
 ---
 
@@ -203,7 +204,10 @@ só para o ambiente local (onde a confirmação de e-mail fica desligada).
 1. Site do Supabase → projeto de desenvolvimento → **Authentication** → **Sign In / Providers**
    → **Email**.
 2. Deixe **Enable Email provider** e **Confirm email** **ligados** e salve.
-3. Recomendado: **Minimum password length** = **8** (igual ao ambiente local).
+3. Recomendado: tamanho mínimo de senha = **8** (igual ao ambiente local). O nome e o lugar
+   dessa opção mudam conforme a versão do site (ex.: **Minimum password length**, nas opções do
+   Email ou numa área de segurança de senha). Se não aparecer, deixe como está — o painel não
+   tem cadastro; isso volta a importar no cadastro pelo app (etapa 1.3).
 
 ### 5.2 Criar o primeiro admin (só depois da migration `20260930120000` aplicada)
 
@@ -211,8 +215,8 @@ Ninguém consegue se dar papéis pelo app ou pelo painel — nem o primeiro usu�
 **primeiro admin** é criado uma única vez, pelo dono do projeto, no **SQL Editor do projeto de
 desenvolvimento** (permitido no dev; **nunca** em produção — ADR 0013).
 
-1. Crie a sua conta normalmente (pelo app ou pelo painel, quando o login existir) e confirme o
-   e-mail. Enquanto o login não existe: **Authentication** → **Users** → **Add user**.
+1. Crie a sua conta e confirme o e-mail. O painel não tem cadastro; enquanto o app não tem
+   (etapa 1.3), use **Authentication** → **Users** → **Add user**.
 2. No **SQL Editor**, troque o e-mail e rode:
 
    ```sql
@@ -233,6 +237,36 @@ desenvolvimento** (permitido no dev; **nunca** em produção — ADR 0013).
 
 > O sistema nunca fica sem admin ativo: o papel do último admin não pode ser revogado, e a
 > conta dele não pode ser excluída (nem "suavemente") — conceda `admin` a outra pessoa antes.
+
+### 5.3 Ligar o login do painel (ADR 0016)
+
+O painel só deixa entrar contas com papel `editor` ou `admin` (seção 5.2). Para usar o login
+real no computador:
+
+1. Copie `apps/admin/.env.example` para `apps/admin/.env.local` (não vai para o Git).
+2. Preencha com os valores do projeto de **desenvolvimento** (seção 2.5) — só a chave pública:
+
+   ```bash
+   NEXT_PUBLIC_APP_ENV=development
+   NEXT_PUBLIC_SUPABASE_URL=https://<id-do-projeto-dev>.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=<publishable key>
+   ADMIN_AUTH_MODE=supabase
+   ```
+
+3. Rode `pnpm --filter @gfg/admin dev` e abra http://localhost:3000 → vai para `/login`.
+4. Entre com o e-mail e a senha da conta admin.
+
+O que esperar:
+
+| Situação                              | Resultado                                                |
+| ------------------------------------- | -------------------------------------------------------- |
+| Senha errada ou e-mail que não existe | "E-mail ou senha incorretos." (mesma mensagem nos dois)  |
+| E-mail ainda não confirmado           | Pede para confirmar o e-mail                             |
+| Conta sem papel                       | "Sua conta não tem permissão…" e a sessão é encerrada    |
+| Conta `editor` ou `admin`             | Entra no Dashboard; o menu mostra nome, papel e **Sair** |
+| **Sair**                              | Volta para `/login`; o Dashboard volta a pedir login     |
+
+Para voltar ao modo sem login, troque para `ADMIN_AUTH_MODE=disabled` (ou apague a linha).
 
 ## Problemas comuns
 

@@ -63,9 +63,10 @@ Usado só pelo workflow **Supabase dev — migrations**.
 | `SUPABASE_SERVICE_ROLE_KEY` | 🔒   | Fornecida automaticamente — **só** dentro das funções     |
 | `REVENUECAT_WEBHOOK_SECRET` | 🔒   | Futuro (Fase 2). Cadastrar com `npx supabase secrets set` |
 
-¹ Vazia é permitida enquanto o app/painel não usa o Supabase; em `production` gera aviso.
-² Em `production`, `disabled` é **bloqueado** (ADR 0006/0013): a sessão sem login é recusada e o
-painel envia para `/login` (o build não é impedido).
+¹ Vazia é permitida enquanto o app/painel não usa o Supabase; em `production` gera aviso. No painel,
+com `ADMIN_AUTH_MODE=supabase` as duas são **obrigatórias** (sem elas ninguém entra e aparece **erro**).
+² `supabase` = login real (ADR 0016). Em `production`, `disabled` é **bloqueado** (ADR 0006/0013): a
+sessão sem login é recusada e o painel envia para `/login` (o build não é impedido).
 
 ## Como os valores são lidos e validados
 
@@ -78,7 +79,8 @@ painel envia para `/login` (o build não é impedido).
   - **chave secreta** do Supabase numa variável pública → descartada, com **erro** no console;
   - variáveis do Supabase vazias em `production` → aviso;
   - URL `localhost`/`127.0.0.1` em `production` → **erro**, URL descartada (ADR 0013);
-  - `ADMIN_AUTH_MODE=disabled` em `production` → **erro** e sessão sem login bloqueada.
+  - `ADMIN_AUTH_MODE=disabled` em `production` → **erro** e sessão sem login bloqueada;
+  - `ADMIN_AUTH_MODE=supabase` sem URL ou chave pública → **erro** e ninguém entra no painel.
 - Fora de `production`, o painel e o app mostram o selo **"Desenvolvimento"**.
 - Os avisos aparecem no terminal (`pnpm dev` / build) e mostram **só o nome** da variável,
   nunca o valor.

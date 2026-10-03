@@ -76,7 +76,12 @@
       "configuracoes": "Settings"
     },
     "sidebar": {
-      "devMode": "Development mode — no login"
+      "devMode": "Development mode — no login",
+      "signOut": "Sign out"
+    },
+    "roles": {
+      "admin": "Administrator",
+      "editor": "Editor"
     },
     "dashboard": {
       "title": "Dashboard",
@@ -93,8 +98,19 @@
       "emailPlaceholder": "you@example.com",
       "password": "Password",
       "submit": "Sign in",
-      "notice": "Email and password sign-in is not active yet. It will be connected to Supabase in a future step.",
-      "devLink": "Open the panel (development mode)"
+      "submitting": "Signing in…",
+      "notice": "Sign-in is turned off in this environment (ADMIN_AUTH_MODE=disabled).",
+      "noticeNotConfigured": "Sign-in is enabled, but the Supabase URL or public key is not configured. Contact the technical lead.",
+      "devLink": "Open the panel (development mode)",
+      "errors": {
+        "invalid_input": "Enter a valid email and your password.",
+        "invalid_credentials": "Incorrect email or password.",
+        "email_not_confirmed": "Confirm your email before signing in (check the message we sent you).",
+        "rate_limited": "Too many attempts. Wait a few minutes and try again.",
+        "no_permission": "Your account is not allowed to use the admin panel. Contact an administrator.",
+        "not_configured": "Sign-in is not configured in this environment.",
+        "unknown": "We couldn't sign you in right now. Please try again shortly."
+      }
     }
   }
 }
