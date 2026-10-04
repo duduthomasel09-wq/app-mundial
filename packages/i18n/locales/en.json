@@ -99,6 +99,7 @@
       "password": "Password",
       "submit": "Sign in",
       "submitting": "Signing in…",
+      "forgotPassword": "Forgot my password",
       "notice": "Sign-in is turned off in this environment (ADMIN_AUTH_MODE=disabled).",
       "noticeNotConfigured": "Sign-in is enabled, but the Supabase URL or public key is not configured. Contact the technical lead.",
       "devLink": "Open the panel (development mode)",
@@ -110,6 +111,44 @@
         "no_permission": "Your account is not allowed to use the admin panel. Contact an administrator.",
         "not_configured": "Sign-in is not configured in this environment.",
         "unknown": "We couldn't sign you in right now. Please try again shortly."
+      },
+      "notices": {
+        "password_changed": "Password changed. Sign in with your new password."
+      }
+    },
+    "forgotPassword": {
+      "title": "Reset password",
+      "intro": "Enter your account email. If it exists, we'll send you a link to create a new password.",
+      "submit": "Send link",
+      "submitting": "Sending…",
+      "sent": "If an account exists for that email, we've sent a link to create a new password. Check your inbox (and spam). The link expires soon and can only be used once.",
+      "linkInvalid": "This reset link is invalid or has expired. Request a new link below.",
+      "unavailable": "Password reset is not available in this environment.",
+      "backToLogin": "Back to sign in",
+      "errors": {
+        "invalid_input": "Enter a valid email.",
+        "not_configured": "Password reset is not configured in this environment."
+      }
+    },
+    "newPassword": {
+      "title": "New password",
+      "intro": "Create a new password for {{email}}.",
+      "password": "New password",
+      "confirmation": "Repeat the new password",
+      "hint": "At least 8 characters. Accents and emojis take more space: the total limit is 72 bytes.",
+      "submit": "Save new password",
+      "submitting": "Saving…",
+      "errors": {
+        "invalid_input": "Fill in the new password and the confirmation.",
+        "password_too_short": "The password must have at least 8 characters.",
+        "password_too_long": "The password is too long (72-byte limit — accents and emojis count more). Use a shorter password.",
+        "password_mismatch": "The two passwords don't match.",
+        "weak_password": "This password is too weak. Choose another one.",
+        "same_password": "The new password must be different from the current one.",
+        "session_expired": "The time to change your password has run out. Request a new link.",
+        "rate_limited": "Too many attempts. Wait a few minutes and try again.",
+        "not_configured": "Password reset is not configured in this environment.",
+        "unknown": "We couldn't save your new password. Please try again shortly."
       }
     }
   }

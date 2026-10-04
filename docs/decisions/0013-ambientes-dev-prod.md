@@ -1,6 +1,8 @@
 # ADR 0013 — Ambientes de desenvolvimento e produção
 
-- **Status:** Aprovada (29/09/2026) — etapa 11 da Fase 0 aprovada e concluída
+- **Status:** Aprovada (29/09/2026) — etapa 11 da Fase 0 aprovada e concluída · item 3
+  atualizado pela [ADR 0017](0017-recuperacao-senha-painel.md): a sessão sem login vale só em
+  `development` (também é bloqueada em `staging`)
 - **Relaciona-se com:** ADR 0006 (bloqueio prometido para a etapa 11), ADR 0008 (substitui o
   item 5 — dados de referência no seed), ADR 0011 (ambientes e variáveis)
 

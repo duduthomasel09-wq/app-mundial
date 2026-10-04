@@ -1,7 +1,7 @@
 import 'server-only';
 
 import { createServerClient } from '@supabase/ssr';
-import type { SupabaseClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 
 import { isSupabaseAuthEnabled, publicEnv } from '@/lib/env';
@@ -41,6 +41,26 @@ export async function createSupabaseServerClient(): Promise<SupabaseClient | nul
           // sessão antes de cada página, e as Server Actions conseguem gravar normalmente.
         }
       },
+    },
+  });
+}
+
+/**
+ * Cliente **sem sessão** (não lê nem grava cookies), usado só para pedir o e-mail de
+ * recuperação de senha (ADR 0017). Usa o fluxo "implicit": o link do e-mail traz um
+ * `token_hash` que funciona em qualquer navegador ou aparelho — não depende de um cookie
+ * gravado no navegador que fez o pedido (como no fluxo PKCE).
+ */
+export function createSupabaseStatelessClient(): SupabaseClient | null {
+  if (!isSupabaseAuthEnabled || !publicEnv.supabaseUrl || !publicEnv.supabaseAnonKey) {
+    return null;
+  }
+  return createClient(publicEnv.supabaseUrl, publicEnv.supabaseAnonKey, {
+    auth: {
+      flowType: 'implicit',
+      persistSession: false,
+      autoRefreshToken: false,
+      detectSessionInUrl: false,
     },
   });
 }

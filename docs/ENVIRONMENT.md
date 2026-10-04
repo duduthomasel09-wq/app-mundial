@@ -21,13 +21,14 @@ Os testes automáticos rodam como `development`. Separação dev/prod, checklist
 
 ### Painel — `apps/admin` (modelo: `apps/admin/.env.example`)
 
-| Variável                        | Tipo | Valores                                  | Padrão        | Em production |
-| ------------------------------- | ---- | ---------------------------------------- | ------------- | ------------- |
-| `NEXT_PUBLIC_APP_ENV`           | 🌐   | `development` · `staging` · `production` | `development` | `production`  |
-| `NEXT_PUBLIC_SUPABASE_URL`      | 🌐   | `https://<id>.supabase.co`               | vazio         | necessária ¹  |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | 🌐   | chave **publishable** (ou _anon_)        | vazio         | necessária ¹  |
-| `ADMIN_LOCALE`                  | 🖥️   | `pt-BR` · `en` · `es`                    | `pt-BR`       | opcional      |
-| `ADMIN_AUTH_MODE`               | 🖥️   | `disabled` · `supabase`                  | `disabled`    | `supabase` ²  |
+| Variável                        | Tipo | Valores                                  | Padrão                    | Em production |
+| ------------------------------- | ---- | ---------------------------------------- | ------------------------- | ------------- |
+| `NEXT_PUBLIC_APP_ENV`           | 🌐   | `development` · `staging` · `production` | `development`             | `production`  |
+| `NEXT_PUBLIC_SUPABASE_URL`      | 🌐   | `https://<id>.supabase.co`               | vazio                     | necessária ¹  |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | 🌐   | chave **publishable** (ou _anon_)        | vazio                     | necessária ¹  |
+| `NEXT_PUBLIC_ADMIN_URL`         | 🌐   | `https://painel.exemplo.com` (só origem) | `http://localhost:3000` ³ | necessária ³  |
+| `ADMIN_LOCALE`                  | 🖥️   | `pt-BR` · `en` · `es`                    | `pt-BR`                   | opcional      |
+| `ADMIN_AUTH_MODE`               | 🖥️   | `disabled` · `supabase`                  | `disabled`                | `supabase` ²  |
 
 ### App — `apps/mobile` (modelo: `apps/mobile/.env.example`)
 
@@ -65,8 +66,13 @@ Usado só pelo workflow **Supabase dev — migrations**.
 
 ¹ Vazia é permitida enquanto o app/painel não usa o Supabase; em `production` gera aviso. No painel,
 com `ADMIN_AUTH_MODE=supabase` as duas são **obrigatórias** (sem elas ninguém entra e aparece **erro**).
-² `supabase` = login real (ADR 0016). Em `production`, `disabled` é **bloqueado** (ADR 0006/0013): a
-sessão sem login é recusada e o painel envia para `/login` (o build não é impedido).
+² `supabase` = login real (ADR 0016). Fora de `development` (em `staging` **e** `production`),
+`disabled` é **bloqueado** (ADR 0013/0017): a sessão sem login é recusada e o painel envia para
+`/login` (o build não é impedido).
+³ Endereço do painel para o link do e-mail de recuperação de senha (ADR 0017). Nunca é montado a
+partir do endereço da requisição. Vazia só em `development` (usa `http://localhost:3000`); em
+`staging`/`production` precisa ser `https://` e não local — senão a recuperação de senha fica
+desligada e aparece **erro**.
 
 ## Como os valores são lidos e validados
 
@@ -79,7 +85,9 @@ sessão sem login é recusada e o painel envia para `/login` (o build não é im
   - **chave secreta** do Supabase numa variável pública → descartada, com **erro** no console;
   - variáveis do Supabase vazias em `production` → aviso;
   - URL `localhost`/`127.0.0.1` em `production` → **erro**, URL descartada (ADR 0013);
-  - `ADMIN_AUTH_MODE=disabled` em `production` → **erro** e sessão sem login bloqueada;
+  - `ADMIN_AUTH_MODE=disabled` em `staging` ou `production` → **erro** e sessão sem login bloqueada;
+  - `NEXT_PUBLIC_ADMIN_URL` vazia/local/`http://` fora de `development` (com login real) → **erro** e
+    recuperação de senha desligada;
   - `ADMIN_AUTH_MODE=supabase` sem URL ou chave pública → **erro** e ninguém entra no painel.
 - Fora de `production`, o painel e o app mostram o selo **"Desenvolvimento"**.
 - Os avisos aparecem no terminal (`pnpm dev` / build) e mostram **só o nome** da variável,

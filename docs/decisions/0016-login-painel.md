@@ -1,6 +1,7 @@
 # ADR 0016 — Login real do painel administrativo (Fase 1, etapa 1.2)
 
-- **Status:** Aprovada (03/10/2026) — decisões aprovadas; implementação aguardando revisão
+- **Status:** Aprovada (03/10/2026) — implementada (commit `6a4bbc0`) · "esqueci minha senha"
+  implementado pela [ADR 0017](0017-recuperacao-senha-painel.md)
 - **Relaciona-se com:** ADR 0006 (painel — atualiza a parte de autenticação), ADR 0011
   (variáveis de ambiente), ADR 0013 (ambientes), ADR 0015 (papéis `editor`/`admin`)
 
@@ -14,7 +15,7 @@ Supabase Auth e liberar o acesso só para quem tem papel.
 ## Decisões
 
 1. **Login só com e-mail e senha.** Sem cadastro no painel (as contas nascem no app ou no site
-   do Supabase). "Esqueci minha senha" fica para a etapa 1.3, junto com o app.
+   do Supabase). "Esqueci minha senha" fica para a etapa 1.3 (feito na ADR 0017, só no painel).
 2. **Quem entra:** só `editor` ou `admin` (`admin` inclui `editor` — ADR 0015, H2). A regra fica
    em `@gfg/core` (`decideAdminAccess`, `highestStaffRole`), com testes.
 3. **Sem papel → sessão encerrada.** No login, a sessão recém-criada é encerrada na hora e a tela

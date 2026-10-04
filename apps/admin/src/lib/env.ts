@@ -9,8 +9,10 @@
  * aparece escrita por extenso (`process.env.NEXT_PUBLIC_...`). Não use acesso dinâmico.
  */
 import {
+  allowsUnauthenticatedAdmin,
   EnvReport,
   isLocaleCode,
+  isLocalUrl,
   isNonProduction,
   logEnvIssues,
   readAppEnv,
@@ -32,6 +34,49 @@ const report = new EnvReport();
 
 const appEnv = readAppEnv(report, 'NEXT_PUBLIC_APP_ENV', process.env.NEXT_PUBLIC_APP_ENV);
 
+/** Endereço do painel em desenvolvimento quando `NEXT_PUBLIC_ADMIN_URL` está vazia. */
+const DEVELOPMENT_ADMIN_URL = 'http://localhost:3000';
+
+/**
+ * Endereço público do painel (ADR 0017), usado para montar o link do e-mail de recuperação
+ * de senha. **Nunca** é montado a partir do Host/Origin da requisição.
+ *
+ * - Só a origem é usada (`https://painel.exemplo.com`); caminhos são descartados com aviso.
+ * - development: vazia → `http://localhost:3000`.
+ * - staging/production: precisa ser `https://` e não pode ser local; vazia → erro (a
+ *   recuperação de senha fica desligada).
+ */
+function readAdminUrl(raw: string | undefined): string {
+  const value = readUrl(report, 'NEXT_PUBLIC_ADMIN_URL', raw);
+  if (!value) {
+    return appEnv === 'development' ? DEVELOPMENT_ADMIN_URL : '';
+  }
+
+  let url: URL;
+  try {
+    url = new URL(value);
+  } catch {
+    report.warn('NEXT_PUBLIC_ADMIN_URL', 'não é uma URL válida. Ignorada.');
+    return appEnv === 'development' ? DEVELOPMENT_ADMIN_URL : '';
+  }
+  if (url.pathname !== '/' || url.search || url.hash) {
+    report.warn(
+      'NEXT_PUBLIC_ADMIN_URL',
+      'deve ter só o endereço (sem caminho). Usando só a origem.',
+    );
+  }
+
+  if (appEnv !== 'development' && (url.protocol !== 'https:' || isLocalUrl(url.origin))) {
+    report.error(
+      'NEXT_PUBLIC_ADMIN_URL',
+      'fora de development precisa ser https:// e não pode ser local. Endereço descartado: a recuperação de senha fica desligada.',
+    );
+    return '';
+  }
+
+  return url.origin;
+}
+
 /** Variáveis seguras para o navegador (prefixo NEXT_PUBLIC_). */
 export const publicEnv = {
   appEnv,
@@ -46,6 +91,7 @@ export const publicEnv = {
     'NEXT_PUBLIC_SUPABASE_ANON_KEY',
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   ),
+  adminUrl: readAdminUrl(process.env.NEXT_PUBLIC_ADMIN_URL),
 } as const;
 
 /** Idioma do painel. Padrão: pt-BR (a equipe de conteúdo trabalha em português). */
@@ -70,16 +116,16 @@ export const serverEnv = {
 } as const;
 
 /**
- * Sessão simulada (sem login) só é permitida fora de produção (ADR 0006 e ADR 0013).
- * Em produção com `ADMIN_AUTH_MODE=disabled`, ela é BLOQUEADA: o painel vai para /login.
+ * Sessão simulada (sem login) só é permitida em **development** (ADR 0017, que substitui a
+ * regra "fora de produção" da ADR 0013). Em staging ou production com
+ * `ADMIN_AUTH_MODE=disabled`, ela é BLOQUEADA: o painel vai para /login.
  */
-export const isDevelopmentSessionAllowed =
-  serverEnv.authMode === 'disabled' && isNonProduction(appEnv);
+export const isDevelopmentSessionAllowed = allowsUnauthenticatedAdmin(serverEnv.authMode, appEnv);
 
-if (appEnv === 'production' && serverEnv.authMode === 'disabled') {
+if (appEnv !== 'development' && serverEnv.authMode === 'disabled') {
   report.error(
     'ADMIN_AUTH_MODE',
-    'está "disabled" em produção. BLOQUEADO: a sessão sem login foi recusada e o painel envia para /login. Use "supabase" (login real, ADR 0016).',
+    `está "disabled" em ${appEnv}. BLOQUEADO: a sessão sem login só é permitida em development e o painel envia para /login. Use "supabase" (login real, ADR 0016/0017).`,
   );
 }
 
@@ -98,10 +144,6 @@ warnIfMissingInProduction(report, appEnv, {
   NEXT_PUBLIC_SUPABASE_ANON_KEY: publicEnv.supabaseAnonKey,
 });
 
-/** Avisos encontrados ao ler as variáveis (só nomes, nunca valores). */
-export const envIssues = report.issues;
-logEnvIssues('admin', envIssues);
-
 export const isSupabaseConfigured = Boolean(publicEnv.supabaseUrl && publicEnv.supabaseAnonKey);
 
 /**
@@ -109,3 +151,17 @@ export const isSupabaseConfigured = Boolean(publicEnv.supabaseUrl && publicEnv.s
  * chave pública preenchidas. Sem as duas, ninguém entra (o painel fica em /login).
  */
 export const isSupabaseAuthEnabled = serverEnv.authMode === 'supabase' && isSupabaseConfigured;
+
+if (isSupabaseAuthEnabled && !publicEnv.adminUrl) {
+  report.error(
+    'NEXT_PUBLIC_ADMIN_URL',
+    'está vazia ou inválida com o login real ligado. A recuperação de senha fica desligada até ela ser preenchida.',
+  );
+}
+
+/** Recuperação de senha disponível (ADR 0017): login real ligado + endereço do painel. */
+export const isPasswordRecoveryEnabled = isSupabaseAuthEnabled && Boolean(publicEnv.adminUrl);
+
+/** Avisos encontrados ao ler as variáveis (só nomes, nunca valores). */
+export const envIssues = report.issues;
+logEnvIssues('admin', envIssues);

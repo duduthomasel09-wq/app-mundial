@@ -5,20 +5,23 @@ Variáveis de cada ambiente: [ENVIRONMENT.md](ENVIRONMENT.md) · Supabase: [SUPA
 
 ## Resumo
 
-|                           | Desenvolvimento                                       | Produção                                               |
-| ------------------------- | ----------------------------------------------------- | ------------------------------------------------------ |
-| `APP_ENV`                 | `development` (padrão)                                | `production`                                           |
-| Projeto Supabase          | `global-food-guide-dev` (já existe)                   | `global-food-guide-prod` (**ainda não criado**)        |
-| Onde ficam as variáveis   | `.env.local` no seu computador                        | Só na hospedagem / GitHub — **nunca** no computador    |
-| Dados                     | Fictícios, podem ser apagados                         | Reais — nunca misturar com teste                       |
-| Aplicar migrations        | Workflow **Supabase dev — migrations** (ADR 0014)     | Manual, com checklist (futuro: workflow com aprovação) |
-| Seed (`--include-seed`)   | Permitido                                             | **PROIBIDO**                                           |
-| Confirmação de e-mail     | **Ligada** (ADR 0015; desligada só no Supabase local) | **Ligada**                                             |
-| Login do painel           | `ADMIN_AUTH_MODE=disabled` permitido                  | `disabled` é **bloqueado** (vai para /login)           |
-| Selo "Desenvolvimento"    | Aparece no painel e no app                            | Não aparece                                            |
-| URL `localhost/127.0.0.1` | Permitida (Supabase local)                            | **Erro** de configuração (URL descartada)              |
+|                           | Desenvolvimento                                       | Produção                                                 |
+| ------------------------- | ----------------------------------------------------- | -------------------------------------------------------- |
+| `APP_ENV`                 | `development` (padrão)                                | `production`                                             |
+| Projeto Supabase          | `global-food-guide-dev` (já existe)                   | `global-food-guide-prod` (**ainda não criado**)          |
+| Onde ficam as variáveis   | `.env.local` no seu computador                        | Só na hospedagem / GitHub — **nunca** no computador      |
+| Dados                     | Fictícios, podem ser apagados                         | Reais — nunca misturar com teste                         |
+| Aplicar migrations        | Workflow **Supabase dev — migrations** (ADR 0014)     | Manual, com checklist (futuro: workflow com aprovação)   |
+| Seed (`--include-seed`)   | Permitido                                             | **PROIBIDO**                                             |
+| Confirmação de e-mail     | **Ligada** (ADR 0015; desligada só no Supabase local) | **Ligada**                                               |
+| Login do painel           | `ADMIN_AUTH_MODE=disabled` permitido                  | `disabled` é **bloqueado** (vai para /login)             |
+| Endereço do painel        | `NEXT_PUBLIC_ADMIN_URL` vazio → `localhost:3000`      | `NEXT_PUBLIC_ADMIN_URL` **https** obrigatório (ADR 0017) |
+| Selo "Desenvolvimento"    | Aparece no painel e no app                            | Não aparece                                              |
+| URL `localhost/127.0.0.1` | Permitida (Supabase local)                            | **Erro** de configuração (URL descartada)                |
 
-`staging` (teste/homologação) continua aceito no código, mas **não tem projeto** nesta fase.
+`staging` (teste/homologação) continua aceito no código, mas **não tem projeto** nesta fase. No
+painel, `staging` segue as regras de **produção** para o login: `ADMIN_AUTH_MODE=disabled` também é
+bloqueado (ADR 0017).
 
 ## Regras de ouro
 

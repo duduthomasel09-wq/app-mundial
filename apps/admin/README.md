@@ -17,12 +17,15 @@ Para usar o login real, veja [Autenticação](#autenticação).
 
 ## Rotas
 
-| Rota             | O que é                                                                               |
-| ---------------- | ------------------------------------------------------------------------------------- |
-| `/`              | Redireciona para `/dashboard`                                                         |
-| `/login`         | Login com e-mail e senha (ativo com `ADMIN_AUTH_MODE=supabase`)                       |
-| `/dashboard`     | Tela inicial do painel, com menu lateral das áreas futuras ("Em breve")               |
-| `/sem-permissao` | Encerra a sessão de quem perdeu o papel e volta para `/login` (uso interno do painel) |
+| Rota              | O que é                                                                               |
+| ----------------- | ------------------------------------------------------------------------------------- |
+| `/`               | Redireciona para `/dashboard`                                                         |
+| `/login`          | Login com e-mail e senha (ativo com `ADMIN_AUTH_MODE=supabase`)                       |
+| `/dashboard`      | Tela inicial do painel, com menu lateral das áreas futuras ("Em breve")               |
+| `/sem-permissao`  | Encerra a sessão de quem perdeu o papel e volta para `/login` (uso interno do painel) |
+| `/esqueci-senha`  | Pede o e-mail de recuperação de senha (mesma resposta, exista a conta ou não)         |
+| `/auth/confirmar` | Destino do link do e-mail: valida o `token_hash` e vai para `/nova-senha`             |
+| `/nova-senha`     | Define a nova senha (só logo depois do link do e-mail)                                |
 
 ## Estrutura
 
@@ -30,7 +33,7 @@ Para usar o login real, veja [Autenticação](#autenticação).
 apps/admin
 ├── .env.example            Modelo das variáveis de ambiente (sem chaves reais)
 ├── eslint.config.mjs       ESLint (regras do Next.js + TypeScript)
-├── next.config.ts          Configuração do Next.js (pacotes compartilhados)
+├── next.config.ts          Configuração do Next.js (pacotes, cabeçalhos das telas de login)
 ├── package.json
 ├── tsconfig.json           Estende @gfg/config/typescript/nextjs.json
 └── src
@@ -39,8 +42,12 @@ apps/admin
     │   ├── globals.css         Estilos base (cores e medidas vêm dos tokens de @gfg/ui)
     │   ├── icon.svg            Ícone da aba do navegador
     │   ├── page.tsx            "/" → redireciona para /dashboard
+    │   ├── (auth)/AuthCard.tsx Moldura comum das telas sem login (+ auth.module.css)
     │   ├── (auth)/login/       Tela de login (página + formulário)
+    │   ├── (auth)/esqueci-senha/  "Esqueci minha senha"
+    │   ├── (auth)/nova-senha/  Definir a nova senha
     │   ├── (auth)/sem-permissao/  Encerra a sessão de quem não tem papel
+    │   ├── auth/confirmar/     Recebe o link do e-mail de recuperação
     │   └── (painel)/           Área protegida (exige sessão)
     │       ├── layout.tsx      Menu lateral + verificação de sessão
     │       └── dashboard/      Tela inicial
@@ -53,7 +60,7 @@ apps/admin
         ├── env.ts              Leitura das variáveis de ambiente
         ├── i18n.ts             Traduções do painel (idioma de ADMIN_LOCALE)
         ├── supabase/           Cliente Supabase do servidor + opções dos cookies
-        └── auth/               Sessão, papéis e ações de entrar/sair
+        └── auth/               Sessão, papéis, recuperação e ações (entrar, sair, senha)
 ```
 
 E na raiz de `src`: `proxy.ts` — renova a sessão do Supabase a cada acesso (Next 16).
@@ -67,24 +74,26 @@ Copie `.env.example` para `.env.local` (esse arquivo nunca vai para o Git).
 Todas as variáveis são lidas e validadas em `src/lib/env.ts`; lista completa em
 [docs/ENVIRONMENT.md](../../docs/ENVIRONMENT.md).
 
-| Variável                        | Uso                                                                     |
-| ------------------------------- | ----------------------------------------------------------------------- |
-| `NEXT_PUBLIC_APP_ENV`           | `development` (padrão), `staging` ou `production`                       |
-| `NEXT_PUBLIC_SUPABASE_URL`      | Supabase — veja docs/SUPABASE.md (obrigatória com `supabase`)           |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Chave **pública** do Supabase (obrigatória com `supabase`)              |
-| `ADMIN_LOCALE`                  | Idioma do painel: `pt-BR` (padrão), `en` ou `es`                        |
-| `ADMIN_AUTH_MODE`               | `disabled` (padrão, sem login; **bloqueado em produção**) ou `supabase` |
+| Variável                        | Uso                                                                   |
+| ------------------------------- | --------------------------------------------------------------------- |
+| `NEXT_PUBLIC_APP_ENV`           | `development` (padrão), `staging` ou `production`                     |
+| `NEXT_PUBLIC_SUPABASE_URL`      | Supabase — veja docs/SUPABASE.md (obrigatória com `supabase`)         |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Chave **pública** do Supabase (obrigatória com `supabase`)            |
+| `NEXT_PUBLIC_ADMIN_URL`         | Endereço do painel para o link de recuperação (dev: `localhost:3000`) |
+| `ADMIN_LOCALE`                  | Idioma do painel: `pt-BR` (padrão), `en` ou `es`                      |
+| `ADMIN_AUTH_MODE`               | `disabled` (padrão, sem login; **só development**) ou `supabase`      |
 
 Sem nenhum `.env.local`, o painel funciona em modo desenvolvimento (sem login).
 Valores inválidos não quebram o painel: usam o padrão e mostram um aviso no terminal.
 
 ## Autenticação
 
-Decisões: [ADR 0016](../../docs/decisions/0016-login-painel.md).
+Decisões: [ADR 0016](../../docs/decisions/0016-login-painel.md) (login) e
+[ADR 0017](../../docs/decisions/0017-recuperacao-senha-painel.md) (recuperação de senha).
 
 **Modo `supabase` (login real):**
 
-- `/login` tem e-mail e senha. Não há cadastro nem "esqueci minha senha" no painel (etapa 1.3).
+- `/login` tem e-mail e senha e o link **"Esqueci minha senha"**. Não há cadastro no painel.
 - Entrar e sair são **Server Actions** (`src/lib/auth/actions.ts`); a sessão fica em cookies
   `HttpOnly` gravados pelo `@supabase/ssr`. Nenhuma chave secreta é usada — só a pública.
 - `getAdminAccess()` (`src/lib/auth/session.ts`) confirma o usuário no Supabase e lê os papéis
@@ -94,15 +103,32 @@ Decisões: [ADR 0016](../../docs/decisions/0016-login-painel.md).
 - `src/proxy.ts` só renova a sessão (troca o token vencido); quem decide o acesso é o servidor.
 - O menu mostra nome, e-mail, papel e o botão **Sair**.
 
+**Recuperação de senha (ADR 0017):**
+
+1. `/esqueci-senha`: a pessoa informa o e-mail. A resposta é **sempre a mesma**, exista a conta
+   ou não.
+2. O e-mail traz um link `NEXT_PUBLIC_ADMIN_URL/auth/confirmar?token_hash=…&type=recovery`. Ele
+   funciona em qualquer navegador ou aparelho e só pode ser usado uma vez.
+3. `/auth/confirmar` valida o link (`verifyOtp`), cria a sessão e vai para `/nova-senha` — sem o
+   token na URL. Link inválido, adulterado, vencido ou já usado → `/esqueci-senha` com a mensagem
+   e o formulário para pedir outro.
+4. `/nova-senha`: nova senha + confirmação (mínimo 8 caracteres, máximo 72 **bytes**). Só abre
+   logo depois do link (marca de recuperação em cookie `HttpOnly`, 15 minutos).
+5. Depois da troca: as outras sessões da conta são encerradas, esta também, e a pessoa volta para
+   `/login` com "senha alterada".
+
+Quem não tem papel `editor`/`admin` pode trocar a senha, mas continua sem acesso ao painel. As
+telas do fluxo enviam `Referrer-Policy: no-referrer` e não ficam em cache.
+
 **Modo `disabled` (padrão, sem login):**
 
 - Uma sessão simulada libera o painel e o menu mostra "Modo desenvolvimento — sem login" —
-  **só fora de produção**. Com `NEXT_PUBLIC_APP_ENV=production` a sessão simulada é **recusada**:
-  o painel envia para `/login` e o atalho sem login some (ADR 0006/0013).
+  **só em `development`**. Com `NEXT_PUBLIC_APP_ENV=staging` ou `production` a sessão simulada é
+  **recusada**: o painel envia para `/login` e o atalho sem login some (ADR 0013/0017).
 - Fora de produção, o menu e o login mostram o selo **"Desenvolvimento"**.
 
 Como ligar o login no projeto de desenvolvimento: [docs/SUPABASE.md](../../docs/SUPABASE.md),
-seção 5.3.
+seção 5.3. Recuperação de senha no projeto de desenvolvimento: seção 5.4.
 
 ## Pacotes compartilhados
 

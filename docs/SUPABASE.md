@@ -33,6 +33,7 @@ Para começar, o **jeito A** é o mais simples. O jeito B é opcional.
 | Usuários, papéis e auditoria (`20260930120000`) | ✅ Aplicada em 01/10/2026 pelo workflow (`verificar` → `aplicar`)                                                                                                                                                                                                       |
 | Confirmação de e-mail e primeiro admin          | ✅ Confirmação de e-mail ligada; primeiro admin criado — seção 5                                                                                                                                                                                                        |
 | Chaves públicas nos apps (`.env.local`)         | ⏳ Painel: preencher para usar o login real (seção 5.3). App: ainda não usa                                                                                                                                                                                             |
+| Recuperação de senha do painel                  | ⏳ Configurar URL permitida e modelo do e-mail no site do Supabase — seção 5.4                                                                                                                                                                                          |
 
 ---
 
@@ -179,6 +180,10 @@ A primeira vez demora (baixa vários programas). No fim aparecem as URLs e chave
 | `npx supabase functions serve` | Roda as Edge Functions localmente                |
 | `npx supabase status`          | Mostra URLs e chaves locais                      |
 
+E-mails do Supabase local (ex.: recuperação de senha do painel) **não são enviados de verdade**:
+ficam na caixa de testes **Mailpit**, em http://127.0.0.1:54324. O modelo do e-mail de
+recuperação fica em `supabase/templates/recovery.html` (ADR 0017).
+
 ---
 
 ## 4. Criar uma nova migration (etapas futuras)
@@ -207,7 +212,8 @@ só para o ambiente local (onde a confirmação de e-mail fica desligada).
 3. Recomendado: tamanho mínimo de senha = **8** (igual ao ambiente local). O nome e o lugar
    dessa opção mudam conforme a versão do site (ex.: **Minimum password length**, nas opções do
    Email ou numa área de segurança de senha). Se não aparecer, deixe como está — o painel não
-   tem cadastro; isso volta a importar no cadastro pelo app (etapa 1.3).
+   tem cadastro; isso volta a importar no cadastro pelo app (etapa futura). A tela de nova
+   senha do painel já exige 8 caracteres por conta própria (ADR 0017).
 
 ### 5.2 Criar o primeiro admin (só depois da migration `20260930120000` aplicada)
 
@@ -216,7 +222,7 @@ Ninguém consegue se dar papéis pelo app ou pelo painel — nem o primeiro usu�
 desenvolvimento** (permitido no dev; **nunca** em produção — ADR 0013).
 
 1. Crie a sua conta e confirme o e-mail. O painel não tem cadastro; enquanto o app não tem
-   (etapa 1.3), use **Authentication** → **Users** → **Add user**.
+   (etapa futura), use **Authentication** → **Users** → **Add user**.
 2. No **SQL Editor**, troque o e-mail e rode:
 
    ```sql
@@ -250,6 +256,7 @@ real no computador:
    NEXT_PUBLIC_APP_ENV=development
    NEXT_PUBLIC_SUPABASE_URL=https://<id-do-projeto-dev>.supabase.co
    NEXT_PUBLIC_SUPABASE_ANON_KEY=<publishable key>
+   NEXT_PUBLIC_ADMIN_URL=http://localhost:3000
    ADMIN_AUTH_MODE=supabase
    ```
 
@@ -267,6 +274,74 @@ O que esperar:
 | **Sair**                              | Volta para `/login`; o Dashboard volta a pedir login     |
 
 Para voltar ao modo sem login, troque para `ADMIN_AUTH_MODE=disabled` (ou apague a linha).
+
+### 5.4 Recuperação de senha do painel (ADR 0017) — ⏳ configuração manual pendente
+
+O painel já tem "Esqueci minha senha" (`/esqueci-senha` → e-mail → `/auth/confirmar` →
+`/nova-senha`). Para funcionar com o projeto de **desenvolvimento**, o dono do projeto precisa
+fazer **duas configurações no site do Supabase** (nada disso é feito pelo código nem pelo
+GitHub). Faça só depois de revisar e aprovar a etapa 1.3.
+
+**1. Endereço permitido para o link do e-mail**
+
+Site do Supabase → projeto de desenvolvimento → **Authentication** → **URL Configuration** →
+**Redirect URLs** → **Add URL**:
+
+```
+http://localhost:3000/auth/confirmar
+```
+
+Não mude o **Site URL**. Quando o painel tiver endereço público (Vercel), adicione também
+`https://<endereço-do-painel>/auth/confirmar` e use esse endereço em `NEXT_PUBLIC_ADMIN_URL`.
+
+**2. Modelo do e-mail "Reset password"**
+
+Site do Supabase → **Authentication** → **Emails** (ou **Email Templates**) → **Reset password**
+(ou **Reset Password**). Troque o conteúdo pelo texto abaixo (é o mesmo de
+`supabase/templates/recovery.html`) e salve:
+
+```html
+<h2>Redefinir sua senha</h2>
+
+<p>Recebemos um pedido para criar uma nova senha para a sua conta do Global Food Guide.</p>
+
+<p>
+  <a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery">Criar uma nova senha</a>
+</p>
+
+<p>
+  O link vale por pouco tempo e só pode ser usado uma vez. Se você não pediu isso, ignore este
+  e-mail: sua senha continua a mesma.
+</p>
+```
+
+Assunto sugerido: `Redefinir sua senha — Global Food Guide`.
+
+> ⚠️ Sem essa troca, o e-mail do dev continua com o link padrão do Supabase, que **não**
+> funciona com o painel (o painel espera `token_hash`). Esse modelo é usado só pela recuperação
+> de senha; não afeta o login.
+
+**3. Testar** (no computador, com o login real ligado — seção 5.3, incluindo
+`NEXT_PUBLIC_ADMIN_URL=http://localhost:3000`):
+
+1. Em `/login`, clique em **Esqueci minha senha** e informe o **seu** e-mail.
+2. Abra o e-mail e clique em **Criar uma nova senha** (pode ser em outro navegador ou no celular,
+   desde que o painel esteja rodando no computador).
+3. Defina a nova senha (mínimo 8 caracteres) e entre com ela.
+
+| Situação                               | Resultado                                                     |
+| -------------------------------------- | ------------------------------------------------------------- |
+| E-mail que existe ou não existe        | Mesma mensagem ("Se existir uma conta…")                      |
+| Link vencido, já usado ou alterado     | "Este link… é inválido ou já venceu" + pedir outro            |
+| Senha curta, longa demais ou diferente | Mensagem no formulário                                        |
+| Senha igual à atual                    | "A nova senha precisa ser diferente da atual"                 |
+| Depois de salvar                       | Volta para `/login` com "Senha alterada"; outras sessões saem |
+| Conta sem papel `editor`/`admin`       | Troca a senha, mas continua sem acesso ao painel              |
+
+> **Limites do e-mail embutido do Supabase:** poucos envios por hora e, pelas regras atuais,
+> possivelmente só para e-mails de membros da equipe do projeto. Teste com o **seu** e-mail. Se
+> pedir vários links seguidos, o Supabase pode ignorar os pedidos repetidos (o painel mostra a
+> mesma mensagem, de propósito). Antes do beta: SMTP próprio (decisão futura).
 
 ## Problemas comuns
 

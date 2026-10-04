@@ -18,7 +18,8 @@ substitutos de ingredientes, tradução de nomes, listas de compras, guia de ch�
 🚧 **Fase 1 — Núcleo** em andamento:
 
 - ✅ Etapa 1.1 — Usuários, papéis e auditoria no banco (ADR 0015) — aplicada no desenvolvimento
-- 🔎 Etapa 1.2 — Login real do painel administrativo (ADR 0016) — aguardando revisão
+- ✅ Etapa 1.2 — Login real do painel administrativo (ADR 0016)
+- 🔎 Etapa 1.3 — Recuperação de senha do painel (ADR 0017) — aguardando revisão
 
 - ✅ Etapa 1 — Estrutura do monorepo
 - ✅ Etapa 2 — pnpm + Turborepo

@@ -101,6 +101,7 @@
       "password": "Contraseña",
       "submit": "Entrar",
       "submitting": "Entrando…",
+      "forgotPassword": "Olvidé mi contraseña",
       "notice": "El inicio de sesión está desactivado en este entorno (ADMIN_AUTH_MODE=disabled).",
       "noticeNotConfigured": "El inicio de sesión está activado, pero falta la URL o la clave pública de Supabase. Avisa al responsable técnico.",
       "devLink": "Entrar al panel (modo desarrollo)",
@@ -112,6 +113,44 @@
         "no_permission": "Tu cuenta no tiene permiso para usar el panel. Habla con un administrador.",
         "not_configured": "El inicio de sesión no está configurado en este entorno.",
         "unknown": "No pudimos iniciar tu sesión ahora. Inténtalo de nuevo en unos instantes."
+      },
+      "notices": {
+        "password_changed": "Contraseña cambiada. Inicia sesión con la nueva contraseña."
+      }
+    },
+    "forgotPassword": {
+      "title": "Recuperar contraseña",
+      "intro": "Ingresa el correo de tu cuenta. Si existe, te enviaremos un enlace para crear una nueva contraseña.",
+      "submit": "Enviar enlace",
+      "submitting": "Enviando…",
+      "sent": "Si existe una cuenta con ese correo, enviamos un enlace para crear una nueva contraseña. Revisa tu bandeja de entrada (y el spam). El enlace vence pronto y solo se puede usar una vez.",
+      "linkInvalid": "Este enlace de recuperación no es válido o ya venció. Pide un nuevo enlace abajo.",
+      "unavailable": "La recuperación de contraseña no está disponible en este entorno.",
+      "backToLogin": "Volver al inicio de sesión",
+      "errors": {
+        "invalid_input": "Ingresa un correo válido.",
+        "not_configured": "La recuperación de contraseña no está configurada en este entorno."
+      }
+    },
+    "newPassword": {
+      "title": "Nueva contraseña",
+      "intro": "Crea una nueva contraseña para {{email}}.",
+      "password": "Nueva contraseña",
+      "confirmation": "Repite la nueva contraseña",
+      "hint": "Mínimo 8 caracteres. Los acentos y emojis ocupan más espacio: el límite total es de 72 bytes.",
+      "submit": "Guardar nueva contraseña",
+      "submitting": "Guardando…",
+      "errors": {
+        "invalid_input": "Completa la nueva contraseña y la confirmación.",
+        "password_too_short": "La contraseña debe tener al menos 8 caracteres.",
+        "password_too_long": "La contraseña es demasiado larga (límite de 72 bytes: los acentos y emojis cuentan más). Usa una contraseña más corta.",
+        "password_mismatch": "Las dos contraseñas no coinciden.",
+        "weak_password": "Esta contraseña es demasiado débil. Elige otra.",
+        "same_password": "La nueva contraseña debe ser diferente de la actual.",
+        "session_expired": "Se acabó el tiempo para cambiar la contraseña. Pide un nuevo enlace.",
+        "rate_limited": "Demasiados intentos. Espera unos minutos y vuelve a intentarlo.",
+        "not_configured": "La recuperación de contraseña no está configurada en este entorno.",
+        "unknown": "No pudimos guardar tu nueva contraseña. Inténtalo de nuevo en unos instantes."
       }
     }
   }
