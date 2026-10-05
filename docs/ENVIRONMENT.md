@@ -64,8 +64,9 @@ Usado só pelo workflow **Supabase dev — migrations**.
 | `SUPABASE_SERVICE_ROLE_KEY` | 🔒   | Fornecida automaticamente — **só** dentro das funções     |
 | `REVENUECAT_WEBHOOK_SECRET` | 🔒   | Futuro (Fase 2). Cadastrar com `npx supabase secrets set` |
 
-¹ Vazia é permitida enquanto o app/painel não usa o Supabase; em `production` gera aviso. No painel,
-com `ADMIN_AUTH_MODE=supabase` as duas são **obrigatórias** (sem elas ninguém entra e aparece **erro**).
+¹ Vazia é permitida; em `production` gera aviso. No painel, com `ADMIN_AUTH_MODE=supabase` as duas
+são **obrigatórias** (sem elas ninguém entra e aparece **erro**). No app, sem as duas ele funciona
+**sem conta** (onboarding e preferências no aparelho) e esconde entrar/criar conta (ADR 0018).
 ² `supabase` = login real (ADR 0016). Fora de `development` (em `staging` **e** `production`),
 `disabled` é **bloqueado** (ADR 0013/0017): a sessão sem login é recusada e o painel envia para
 `/login` (o build não é impedido).

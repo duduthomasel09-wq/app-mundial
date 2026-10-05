@@ -14,6 +14,12 @@
       "ES": "Espanha",
       "GB": "Reino Unido"
     },
+    "currencies": {
+      "BRL": "Real brasileiro",
+      "USD": "Dólar americano",
+      "EUR": "Euro",
+      "GBP": "Libra esterlina"
+    },
     "languageCount_one": "{{count}} idioma",
     "languageCount_many": "{{count}} de idiomas",
     "languageCount_other": "{{count}} idiomas",
@@ -25,11 +31,26 @@
     }
   },
   "mobile": {
+    "loading": "Carregando…",
+    "error": {
+      "title": "Não foi possível carregar",
+      "text": "Confira sua conexão com a internet e tente de novo.",
+      "retry": "Tentar de novo"
+    },
     "home": {
-      "subtitle": "Em construção — Fase 0",
       "language": "Idioma: {{language}}",
-      "phase": "Fase 0",
-      "openDesignSystem": "Ver design system"
+      "phase": "Fase 1",
+      "openDesignSystem": "Ver design system",
+      "preferencesTitle": "Suas preferências",
+      "country": "País: {{country}}",
+      "currency": "Moeda: {{currency}}",
+      "units": "Unidades: {{units}}",
+      "editPreferences": "Alterar preferências",
+      "signedInAs": "Conectado como {{email}}. Suas preferências ficam salvas na sua conta.",
+      "guest": "Você está usando o app sem conta. Suas preferências ficam só neste aparelho.",
+      "createAccount": "Criar conta",
+      "signIn": "Entrar",
+      "signOut": "Sair"
     },
     "designSystem": {
       "title": "Design system",
@@ -60,6 +81,90 @@
       "badgeDanger": "Erro",
       "cardText": "Um card agrupa informações relacionadas.",
       "back": "Voltar"
+    },
+    "onboarding": {
+      "step": "Passo {{current}} de {{total}}",
+      "next": "Continuar",
+      "back": "Voltar",
+      "finish": "Concluir",
+      "saving": "Salvando…",
+      "saveError": "Não foi possível salvar suas preferências na conta. Confira a internet e tente de novo.",
+      "savedToAccount": "Suas escolhas serão salvas na sua conta.",
+      "language": {
+        "title": "Escolha o idioma",
+        "subtitle": "Você pode mudar depois."
+      },
+      "country": {
+        "title": "Em que país você está?",
+        "subtitle": "Usamos o país para mostrar produtos, preços e equivalências certos."
+      },
+      "currencyUnits": {
+        "title": "Moeda e unidades",
+        "subtitle": "Já marcamos o padrão do país. Troque se preferir.",
+        "currency": "Moeda",
+        "units": "Unidades de medida"
+      },
+      "unitSystems": {
+        "metric": {
+          "name": "Métrico",
+          "description": "Gramas, mililitros e °C"
+        },
+        "us": {
+          "name": "Americano",
+          "description": "Onças, xícaras e °F"
+        },
+        "uk": {
+          "name": "Britânico",
+          "description": "Métrico, com libras e onças em algumas receitas"
+        }
+      }
+    },
+    "auth": {
+      "email": "E-mail",
+      "emailPlaceholder": "voce@exemplo.com",
+      "password": "Senha",
+      "backHome": "Voltar ao início",
+      "signIn": {
+        "title": "Entrar",
+        "subtitle": "Use o e-mail e a senha da sua conta.",
+        "submit": "Entrar",
+        "submitting": "Entrando…",
+        "toSignUp": "Ainda não tem conta? Criar conta"
+      },
+      "signUp": {
+        "title": "Criar conta",
+        "subtitle": "Com uma conta, suas preferências ficam salvas em qualquer aparelho.",
+        "passwordHint": "Mínimo de 8 caracteres (máximo de 72 bytes — acentos e emojis ocupam mais).",
+        "confirmation": "Repita a senha",
+        "submit": "Criar conta",
+        "submitting": "Criando…",
+        "toSignIn": "Já tem conta? Entrar"
+      },
+      "confirm": {
+        "title": "Confirme seu e-mail",
+        "subtitle": "Se o e-mail {{email}} puder ser usado, enviamos um código de {{length}} dígitos para ele. Digite o código abaixo. Se você já tem conta, volte e entre com sua senha.",
+        "code": "Código de {{length}} dígitos",
+        "submit": "Confirmar",
+        "submitting": "Confirmando…",
+        "resend": "Reenviar código",
+        "resendIn": "Reenviar código em {{seconds}} s",
+        "resent": "Se houver um código pendente, enviamos um novo. Confira também o spam.",
+        "changeEmail": "Usar outro e-mail"
+      },
+      "errors": {
+        "invalid_email": "Informe um e-mail válido.",
+        "invalid_input": "Preencha o e-mail e a senha.",
+        "password_too_short": "A senha precisa ter pelo menos 8 caracteres.",
+        "password_too_long": "A senha é longa demais (limite de 72 bytes — acentos e emojis contam mais).",
+        "password_mismatch": "As duas senhas não são iguais.",
+        "invalid_credentials": "E-mail ou senha incorretos.",
+        "code_invalid": "Código inválido ou vencido. Confira o código ou peça um novo.",
+        "weak_password": "Essa senha é fraca demais. Escolha outra.",
+        "rate_limited": "Muitas tentativas. Aguarde alguns minutos e tente de novo.",
+        "network": "Sem conexão. Confira a internet e tente de novo.",
+        "not_configured": "O login não está configurado neste aplicativo.",
+        "unknown": "Algo deu errado. Tente de novo em instantes."
+      }
     }
   },
   "admin": {

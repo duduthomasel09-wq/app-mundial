@@ -14,6 +14,12 @@
       "ES": "Spain",
       "GB": "United Kingdom"
     },
+    "currencies": {
+      "BRL": "Brazilian real",
+      "USD": "US dollar",
+      "EUR": "Euro",
+      "GBP": "British pound"
+    },
     "languageCount_one": "{{count}} language",
     "languageCount_other": "{{count}} languages",
     "countryCount_one": "{{count}} country",
@@ -23,11 +29,26 @@
     }
   },
   "mobile": {
+    "loading": "Loading…",
+    "error": {
+      "title": "Couldn't load",
+      "text": "Check your internet connection and try again.",
+      "retry": "Try again"
+    },
     "home": {
-      "subtitle": "Under construction — Phase 0",
       "language": "Language: {{language}}",
-      "phase": "Phase 0",
-      "openDesignSystem": "View design system"
+      "phase": "Phase 1",
+      "openDesignSystem": "View design system",
+      "preferencesTitle": "Your preferences",
+      "country": "Country: {{country}}",
+      "currency": "Currency: {{currency}}",
+      "units": "Units: {{units}}",
+      "editPreferences": "Change preferences",
+      "signedInAs": "Signed in as {{email}}. Your preferences are saved to your account.",
+      "guest": "You're using the app without an account. Your preferences stay on this device only.",
+      "createAccount": "Create account",
+      "signIn": "Sign in",
+      "signOut": "Sign out"
     },
     "designSystem": {
       "title": "Design system",
@@ -58,6 +79,90 @@
       "badgeDanger": "Error",
       "cardText": "A card groups related information.",
       "back": "Back"
+    },
+    "onboarding": {
+      "step": "Step {{current}} of {{total}}",
+      "next": "Continue",
+      "back": "Back",
+      "finish": "Finish",
+      "saving": "Saving…",
+      "saveError": "We couldn't save your preferences to your account. Check your internet and try again.",
+      "savedToAccount": "Your choices will be saved to your account.",
+      "language": {
+        "title": "Choose your language",
+        "subtitle": "You can change it later."
+      },
+      "country": {
+        "title": "Which country are you in?",
+        "subtitle": "We use your country to show the right products, prices and equivalents."
+      },
+      "currencyUnits": {
+        "title": "Currency and units",
+        "subtitle": "We've selected your country's defaults. Change them if you like.",
+        "currency": "Currency",
+        "units": "Units of measurement"
+      },
+      "unitSystems": {
+        "metric": {
+          "name": "Metric",
+          "description": "Grams, milliliters and °C"
+        },
+        "us": {
+          "name": "US customary",
+          "description": "Ounces, cups and °F"
+        },
+        "uk": {
+          "name": "British",
+          "description": "Metric, with pounds and ounces in some recipes"
+        }
+      }
+    },
+    "auth": {
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "password": "Password",
+      "backHome": "Back to home",
+      "signIn": {
+        "title": "Sign in",
+        "subtitle": "Use your account email and password.",
+        "submit": "Sign in",
+        "submitting": "Signing in…",
+        "toSignUp": "No account yet? Create one"
+      },
+      "signUp": {
+        "title": "Create account",
+        "subtitle": "With an account, your preferences are saved on any device.",
+        "passwordHint": "At least 8 characters (72 bytes max — accents and emojis take more space).",
+        "confirmation": "Repeat the password",
+        "submit": "Create account",
+        "submitting": "Creating…",
+        "toSignIn": "Already have an account? Sign in"
+      },
+      "confirm": {
+        "title": "Confirm your email",
+        "subtitle": "If the email {{email}} can be used, we've sent a {{length}}-digit code to it. Enter the code below. If you already have an account, go back and sign in with your password.",
+        "code": "{{length}}-digit code",
+        "submit": "Confirm",
+        "submitting": "Confirming…",
+        "resend": "Resend code",
+        "resendIn": "Resend code in {{seconds}} s",
+        "resent": "If there's a pending code, we've sent a new one. Check your spam folder too.",
+        "changeEmail": "Use another email"
+      },
+      "errors": {
+        "invalid_email": "Enter a valid email.",
+        "invalid_input": "Enter your email and password.",
+        "password_too_short": "The password must have at least 8 characters.",
+        "password_too_long": "The password is too long (72-byte limit — accents and emojis count more).",
+        "password_mismatch": "The two passwords don't match.",
+        "invalid_credentials": "Incorrect email or password.",
+        "code_invalid": "Invalid or expired code. Check the code or request a new one.",
+        "weak_password": "This password is too weak. Choose another one.",
+        "rate_limited": "Too many attempts. Wait a few minutes and try again.",
+        "network": "No connection. Check your internet and try again.",
+        "not_configured": "Sign-in isn't configured in this app.",
+        "unknown": "Something went wrong. Please try again shortly."
+      }
     }
   },
   "admin": {

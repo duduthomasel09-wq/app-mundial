@@ -12,6 +12,7 @@ supabase
 │   └── 20260930120000_usuarios_papeis_auditoria.sql  profiles, user_roles, has_role(), audit_log (ADR 0015)
 ├── tests/database/              Testes pgTAP de RLS e segurança (rodam na CI: `supabase test db`)
 ├── templates/recovery.html      E-mail de recuperação de senha do painel (só local — ADR 0017)
+├── templates/confirmation.html  E-mail com o código de confirmação do app (só local — ADR 0018)
 ├── seed/                        SÓ DESENVOLVIMENTO: dados fictícios (proibido em produção)
 │   └── 01_referencia.sql        Sem dados por enquanto (os de referência viraram migration)
 └── functions/                   Edge Functions (Deno)

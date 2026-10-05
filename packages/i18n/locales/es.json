@@ -14,6 +14,12 @@
       "ES": "España",
       "GB": "Reino Unido"
     },
+    "currencies": {
+      "BRL": "Real brasileño",
+      "USD": "Dólar estadounidense",
+      "EUR": "Euro",
+      "GBP": "Libra esterlina"
+    },
     "languageCount_one": "{{count}} idioma",
     "languageCount_many": "{{count}} de idiomas",
     "languageCount_other": "{{count}} idiomas",
@@ -25,11 +31,26 @@
     }
   },
   "mobile": {
+    "loading": "Cargando…",
+    "error": {
+      "title": "No se pudo cargar",
+      "text": "Revisa tu conexión a internet e inténtalo de nuevo.",
+      "retry": "Intentar de nuevo"
+    },
     "home": {
-      "subtitle": "En construcción — Fase 0",
       "language": "Idioma: {{language}}",
-      "phase": "Fase 0",
-      "openDesignSystem": "Ver design system"
+      "phase": "Fase 1",
+      "openDesignSystem": "Ver design system",
+      "preferencesTitle": "Tus preferencias",
+      "country": "País: {{country}}",
+      "currency": "Moneda: {{currency}}",
+      "units": "Unidades: {{units}}",
+      "editPreferences": "Cambiar preferencias",
+      "signedInAs": "Conectado como {{email}}. Tus preferencias se guardan en tu cuenta.",
+      "guest": "Estás usando la app sin cuenta. Tus preferencias quedan solo en este dispositivo.",
+      "createAccount": "Crear cuenta",
+      "signIn": "Iniciar sesión",
+      "signOut": "Cerrar sesión"
     },
     "designSystem": {
       "title": "Design system",
@@ -60,6 +81,90 @@
       "badgeDanger": "Error",
       "cardText": "Una tarjeta agrupa información relacionada.",
       "back": "Volver"
+    },
+    "onboarding": {
+      "step": "Paso {{current}} de {{total}}",
+      "next": "Continuar",
+      "back": "Volver",
+      "finish": "Terminar",
+      "saving": "Guardando…",
+      "saveError": "No pudimos guardar tus preferencias en tu cuenta. Revisa la conexión e inténtalo de nuevo.",
+      "savedToAccount": "Tus elecciones se guardarán en tu cuenta.",
+      "language": {
+        "title": "Elige el idioma",
+        "subtitle": "Puedes cambiarlo después."
+      },
+      "country": {
+        "title": "¿En qué país estás?",
+        "subtitle": "Usamos el país para mostrar los productos, precios y equivalencias correctos."
+      },
+      "currencyUnits": {
+        "title": "Moneda y unidades",
+        "subtitle": "Ya marcamos lo habitual en tu país. Cámbialo si prefieres.",
+        "currency": "Moneda",
+        "units": "Unidades de medida"
+      },
+      "unitSystems": {
+        "metric": {
+          "name": "Métrico",
+          "description": "Gramos, mililitros y °C"
+        },
+        "us": {
+          "name": "Estadounidense",
+          "description": "Onzas, tazas y °F"
+        },
+        "uk": {
+          "name": "Británico",
+          "description": "Métrico, con libras y onzas en algunas recetas"
+        }
+      }
+    },
+    "auth": {
+      "email": "Correo electrónico",
+      "emailPlaceholder": "tu@ejemplo.com",
+      "password": "Contraseña",
+      "backHome": "Volver al inicio",
+      "signIn": {
+        "title": "Iniciar sesión",
+        "subtitle": "Usa el correo y la contraseña de tu cuenta.",
+        "submit": "Iniciar sesión",
+        "submitting": "Entrando…",
+        "toSignUp": "¿Aún no tienes cuenta? Crear cuenta"
+      },
+      "signUp": {
+        "title": "Crear cuenta",
+        "subtitle": "Con una cuenta, tus preferencias se guardan en cualquier dispositivo.",
+        "passwordHint": "Mínimo 8 caracteres (máximo 72 bytes: los acentos y emojis ocupan más).",
+        "confirmation": "Repite la contraseña",
+        "submit": "Crear cuenta",
+        "submitting": "Creando…",
+        "toSignIn": "¿Ya tienes cuenta? Iniciar sesión"
+      },
+      "confirm": {
+        "title": "Confirma tu correo",
+        "subtitle": "Si el correo {{email}} se puede usar, le enviamos un código de {{length}} dígitos. Escríbelo abajo. Si ya tienes cuenta, vuelve e inicia sesión con tu contraseña.",
+        "code": "Código de {{length}} dígitos",
+        "submit": "Confirmar",
+        "submitting": "Confirmando…",
+        "resend": "Reenviar código",
+        "resendIn": "Reenviar código en {{seconds}} s",
+        "resent": "Si hay un código pendiente, enviamos uno nuevo. Revisa también el spam.",
+        "changeEmail": "Usar otro correo"
+      },
+      "errors": {
+        "invalid_email": "Ingresa un correo válido.",
+        "invalid_input": "Completa el correo y la contraseña.",
+        "password_too_short": "La contraseña debe tener al menos 8 caracteres.",
+        "password_too_long": "La contraseña es demasiado larga (límite de 72 bytes: los acentos y emojis cuentan más).",
+        "password_mismatch": "Las dos contraseñas no coinciden.",
+        "invalid_credentials": "Correo o contraseña incorrectos.",
+        "code_invalid": "Código no válido o vencido. Revísalo o pide uno nuevo.",
+        "weak_password": "Esta contraseña es demasiado débil. Elige otra.",
+        "rate_limited": "Demasiados intentos. Espera unos minutos e inténtalo de nuevo.",
+        "network": "Sin conexión. Revisa tu internet e inténtalo de nuevo.",
+        "not_configured": "El inicio de sesión no está configurado en esta app.",
+        "unknown": "Algo salió mal. Inténtalo de nuevo en unos instantes."
+      }
     }
   },
   "admin": {

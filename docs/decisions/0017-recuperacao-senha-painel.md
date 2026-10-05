@@ -1,6 +1,6 @@
 # ADR 0017 — Recuperação de senha do painel (Fase 1, etapa 1.3)
 
-- **Status:** Aprovada (03/10/2026) — decisões aprovadas; implementação aguardando revisão
+- **Status:** Aprovada (03/10/2026) — implementada (commit `d2685ef`)
 - **Relaciona-se com:** ADR 0016 (login do painel), ADR 0013 (ambientes — **substitui o item 3**:
   a sessão sem login passa a valer só em `development`), ADR 0011 (variáveis de ambiente)
 

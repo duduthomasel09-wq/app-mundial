@@ -13,7 +13,7 @@ Decisões aprovadas não são apagadas — se mudarem, cria-se uma nova ADR que 
 | [0006](0006-painel-admin-nextjs.md)       | Fundação do painel admin (Next.js 16, CSS Modules, auth preparada) — item 6 atualizado pela 0016                                            | Aprovada | 29/09/2026 |
 | [0007](0007-pacotes-compartilhados.md)    | Pacotes compartilhados `@gfg/core`, `@gfg/i18n` e `@gfg/ui`                                                                                 | Aprovada | 29/09/2026 |
 | [0008](0008-fundacao-supabase.md)         | Fundação do Supabase (CLI, migrations, seed, Edge Functions) — item 5 atualizado pela 0013                                                  | Aprovada | 29/09/2026 |
-| [0009](0009-i18n-base.md)                 | Base de i18n: i18next, arquivos pt-BR/en/es, tipos das chaves                                                                               | Aprovada | 29/09/2026 |
+| [0009](0009-i18n-base.md)                 | Base de i18n: i18next, arquivos pt-BR/en/es, tipos das chaves — idioma do perfil no app: 0018                                               | Aprovada | 29/09/2026 |
 | [0010](0010-design-system.md)             | Design system: tokens em `@gfg/ui`, componentes em `@gfg/ui/native` e no painel                                                             | Aprovada | 29/09/2026 |
 | [0011](0011-variaveis-de-ambiente.md)     | Variáveis de ambiente: ambientes, nomes, validação em `@gfg/core`                                                                           | Aprovada | 29/09/2026 |
 | [0012](0012-ci-github-actions.md)         | CI com GitHub Actions: verificações + empacotamento do app, sem secrets                                                                     | Aprovada | 29/09/2026 |
@@ -22,3 +22,4 @@ Decisões aprovadas não são apagadas — se mudarem, cria-se uma nova ADR que 
 | [0015](0015-usuarios-papeis-auditoria.md) | Usuários, papéis (editor/admin) e auditoria + decisões gerais da Fase 1                                                                     | Aprovada | 30/09/2026 |
 | [0016](0016-login-painel.md)              | Login real do painel (Supabase Auth, cookies, só editor/admin, `proxy.ts`) — recuperação de senha na 0017                                   | Aprovada | 03/10/2026 |
 | [0017](0017-recuperacao-senha-painel.md)  | Recuperação de senha do painel (`token_hash`, `NEXT_PUBLIC_ADMIN_URL`, 72 bytes) e sessão sem login só em development                       | Aprovada | 03/10/2026 |
+| [0018](0018-login-onboarding-app.md)      | Login, cadastro (código de 6 dígitos) e onboarding do app; conta opcional; sessão criptografada                                             | Aprovada | 05/10/2026 |

@@ -1,27 +1,40 @@
-import { COUNTRY_CODES, LOCALES, type LocaleCode } from '@gfg/core';
+import { preferencesFromProfile } from '@gfg/core';
 import { fontSize, spacing } from '@gfg/ui';
-import { Badge, Button, Card, Divider, Text, useTheme } from '@gfg/ui/native';
+import { Badge, Button, Card, Divider, Text } from '@gfg/ui/native';
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text as RNText, View } from 'react-native';
 
+import { Screen } from '@/components/Screen';
+import { useAppSession } from '@/lib/auth/AppSessionProvider';
 import { showEnvironmentBadge } from '@/lib/env';
 
-// Tela provisória da Fase 0 — só confirma que o app abre, usa os pacotes compartilhados,
-// mostra os textos no idioma do aparelho e aplica o design system.
-// As funcionalidades (receitas, produtos etc.) entram nas próximas fases.
+/**
+ * Início (Fase 1). Mostra as preferências atuais e a conta: a conta é opcional (ADR 0018).
+ * As funcionalidades (receitas, produtos etc.) entram nas próximas etapas.
+ */
 export default function HomeScreen() {
-  const { colors } = useTheme();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const router = useRouter();
-  const locale = i18n.language as LocaleCode;
+  const { signedIn, email, profile, localPreferences, isConfigured, signOut } = useAppSession();
+  const [leaving, setLeaving] = useState(false);
+
+  // Com conta, vale o perfil; sem conta, as escolhas do aparelho.
+  const preferences = (signedIn ? preferencesFromProfile(profile) : null) ?? localPreferences;
+
+  const leave = async () => {
+    setLeaving(true);
+    await signOut();
+    setLeaving(false);
+  };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <Screen centered>
       <RNText style={styles.emoji} accessibilityElementsHidden importantForAccessibility="no">
         🌍
       </RNText>
-      <Text variant="title" tone="brand" align="center">
+      <Text variant="title" tone="brand" align="center" accessibilityRole="header">
         {t('common.appName')}
       </Text>
       <View style={styles.badges}>
@@ -31,18 +44,79 @@ export default function HomeScreen() {
         )}
       </View>
 
-      <Card style={styles.card}>
-        <Text tone="muted" align="center">
-          {t('mobile.home.subtitle')}
-        </Text>
-        <Divider space="xs" />
-        <Text variant="caption" tone="muted" align="center">
-          {t('mobile.home.language', { language: t(`common.languages.${locale}`) })}
-        </Text>
-        <Text variant="caption" tone="muted" align="center">
-          {t('common.languageCount', { count: LOCALES.length })} ·{' '}
-          {t('common.countryCount', { count: COUNTRY_CODES.length })}
-        </Text>
+      <Card>
+        <Text variant="subtitle">{t('mobile.home.preferencesTitle')}</Text>
+        {preferences && (
+          <View testID="preferences">
+            <Text>
+              {t('mobile.home.language', { language: t(`common.languages.${preferences.locale}`) })}
+            </Text>
+            <Text>
+              {t('mobile.home.country', {
+                country: t(`common.countries.${preferences.countryCode}`),
+              })}
+            </Text>
+            <Text>
+              {t('mobile.home.currency', {
+                currency: t(`common.currencies.${preferences.currencyCode}`),
+              })}
+            </Text>
+            <Text>
+              {t('mobile.home.units', {
+                units: t(`mobile.onboarding.unitSystems.${preferences.unitSystem}.name`),
+              })}
+            </Text>
+          </View>
+        )}
+        <Button
+          label={t('mobile.home.editPreferences')}
+          variant="secondary"
+          onPress={() => router.push('/idioma')}
+          testID="edit-preferences"
+        />
+      </Card>
+
+      <Card>
+        {signedIn ? (
+          <>
+            <Text testID="account-status">
+              {t('mobile.home.signedInAs', { email: email ?? '' })}
+            </Text>
+            <Divider space="xs" />
+            <Button
+              label={t('mobile.home.signOut')}
+              variant="secondary"
+              loading={leaving}
+              onPress={leave}
+              testID="sign-out"
+            />
+          </>
+        ) : (
+          <>
+            <Text tone="muted" testID="account-status">
+              {t('mobile.home.guest')}
+            </Text>
+            {isConfigured ? (
+              <>
+                <Button
+                  label={t('mobile.home.createAccount')}
+                  onPress={() => router.push('/criar-conta')}
+                  testID="create-account"
+                />
+                <Button
+                  label={t('mobile.home.signIn')}
+                  variant="secondary"
+                  onPress={() => router.push('/entrar')}
+                  testID="sign-in"
+                />
+              </>
+            ) : (
+              <Text variant="caption" tone="muted">
+                {t('mobile.auth.errors.not_configured')}
+              </Text>
+            )}
+          </>
+        )}
       </Card>
 
       {__DEV__ && (
@@ -53,20 +127,12 @@ export default function HomeScreen() {
           style={styles.centered}
         />
       )}
-    </View>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'stretch',
-    justifyContent: 'center',
-    gap: spacing.md,
-    padding: spacing.xl,
-  },
   emoji: { fontSize: fontSize.display, textAlign: 'center' },
   centered: { alignSelf: 'center' },
   badges: { flexDirection: 'row', justifyContent: 'center', gap: spacing.sm },
-  card: { marginTop: spacing.sm },
 });

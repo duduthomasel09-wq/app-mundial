@@ -34,6 +34,7 @@ Para começar, o **jeito A** é o mais simples. O jeito B é opcional.
 | Confirmação de e-mail e primeiro admin          | ✅ Confirmação de e-mail ligada; primeiro admin criado — seção 5                                                                                                                                                                                                        |
 | Chaves públicas nos apps (`.env.local`)         | ⏳ Painel: preencher para usar o login real (seção 5.3). App: ainda não usa                                                                                                                                                                                             |
 | Recuperação de senha do painel                  | ⏳ Configurar URL permitida e modelo do e-mail no site do Supabase — seção 5.4                                                                                                                                                                                          |
+| Login e cadastro do app (código de 6 dígitos)   | ⏳ Configurar o modelo "Confirm signup" e conferir o tamanho do código — seção 5.5                                                                                                                                                                                      |
 
 ---
 
@@ -181,8 +182,10 @@ A primeira vez demora (baixa vários programas). No fim aparecem as URLs e chave
 | `npx supabase status`          | Mostra URLs e chaves locais                      |
 
 E-mails do Supabase local (ex.: recuperação de senha do painel) **não são enviados de verdade**:
-ficam na caixa de testes **Mailpit**, em http://127.0.0.1:54324. O modelo do e-mail de
-recuperação fica em `supabase/templates/recovery.html` (ADR 0017).
+ficam na caixa de testes **Mailpit**, em http://127.0.0.1:54324. Os modelos ficam em
+`supabase/templates/`: recuperação de senha do painel (`recovery.html`, ADR 0017) e código de
+confirmação do app (`confirmation.html`, ADR 0018 — usado só se a confirmação de e-mail for
+ligada no `config.toml`).
 
 ---
 
@@ -342,6 +345,62 @@ Assunto sugerido: `Redefinir sua senha — Global Food Guide`.
 > possivelmente só para e-mails de membros da equipe do projeto. Teste com o **seu** e-mail. Se
 > pedir vários links seguidos, o Supabase pode ignorar os pedidos repetidos (o painel mostra a
 > mesma mensagem, de propósito). Antes do beta: SMTP próprio (decisão futura).
+
+### 5.5 Login, cadastro e onboarding do app (ADR 0018) — ⏳ configuração manual pendente
+
+O app confirma o cadastro com um **código de 6 dígitos** digitado no próprio app (sem links que
+abrem o app). Para funcionar com o projeto de **desenvolvimento**, o dono do projeto precisa
+fazer no site do Supabase (nada disso é feito pelo código nem pelo GitHub). Faça só depois de
+revisar e aprovar a etapa 1.4.
+
+**1. Tamanho do código = 6**
+
+Site do Supabase → projeto de desenvolvimento → **Authentication** → **Sign In / Providers** →
+**Email**: confira se **Email OTP Length** está em **6** (o app aceita exatamente 6 dígitos).
+O nome e o lugar podem mudar conforme a versão do site. **Email OTP Expiration** pode ficar no
+padrão.
+
+**2. Modelo do e-mail "Confirm signup"**
+
+**Authentication** → **Emails** (ou **Email Templates**) → **Confirm signup**. Troque o conteúdo
+pelo texto abaixo (é o mesmo de `supabase/templates/confirmation.html`) e salve:
+
+```html
+<h2>Confirme seu e-mail</h2>
+
+<p>Use este código no app Global Food Guide para confirmar sua conta:</p>
+
+<p style="font-size: 28px; font-weight: bold; letter-spacing: 6px">{{ .Token }}</p>
+
+<p>O código vale por pouco tempo. Se você não criou uma conta, ignore este e-mail.</p>
+```
+
+Assunto sugerido: `Seu código de confirmação — Global Food Guide`.
+
+> ⚠️ Sem essa troca, o e-mail do dev continua com o **link** padrão do Supabase, e o app não tem
+> onde digitar nada útil — o cadastro fica sem confirmar. Esse modelo só afeta o cadastro.
+
+**3. Testar no celular (Expo Go)**
+
+1. Crie `apps/mobile/.env.local` a partir de `apps/mobile/.env.example`, com a URL e a chave
+   **pública** do projeto de desenvolvimento (seção 2.5) — nunca a secreta.
+2. `pnpm --filter @gfg/mobile dev` e escaneie o QR code com o Expo Go.
+3. Faça o onboarding, crie conta com o **seu** e-mail, digite o código, feche e abra o app (deve
+   continuar com a conta), saia e entre de novo.
+
+| Situação                                  | Resultado                                               |
+| ----------------------------------------- | ------------------------------------------------------- |
+| Primeiro acesso                           | Onboarding (idioma, país, moeda e unidades) — sem conta |
+| Criar conta (e-mail novo **ou** já usado) | Tela do código (mesma resposta nos dois casos)          |
+| Código errado ou vencido                  | "Código inválido ou vencido"                            |
+| "Reenviar código"                         | Liberado depois de 60 s                                 |
+| Senha errada ou e-mail que não existe     | "E-mail ou senha incorretos" (mesma mensagem)           |
+| Entrar com e-mail não confirmado          | Volta para a tela do código (com código novo)           |
+| Conta com perfil incompleto               | Onboarding antes do início                              |
+| Fechar e abrir o app                      | Continua com a conta                                    |
+
+> **Limites do e-mail embutido do Supabase:** poucos envios por hora e, possivelmente, só para
+> e-mails de membros da equipe do projeto. Teste com o **seu** e-mail.
 
 ## Problemas comuns
 

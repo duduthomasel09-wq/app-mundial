@@ -77,6 +77,14 @@ enable_confirmations = false
 subject = "Redefinir sua senha — Global Food Guide"
 content_path = "./supabase/templates/recovery.html"
 
+# E-mail de confirmação do cadastro no app (ADR 0018): traz o **código de 6 dígitos**
+# (`{{ .Token }}`), digitado no app — sem links que abrem o app. Só vale no ambiente local
+# (aqui a confirmação fica desligada; ligue-a só para testar). No projeto de
+# desenvolvimento, o mesmo texto é configurado no site do Supabase (docs/SUPABASE.md, 5.5).
+[auth.email.template.confirmation]
+subject = "Seu código de confirmação — Global Food Guide"
+content_path = "./supabase/templates/confirmation.html"
+
 [edge_runtime]
 enabled = true
 policy = "per_worker"

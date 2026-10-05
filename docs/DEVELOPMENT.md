@@ -37,6 +37,14 @@ Rodar só um projeto: `pnpm --filter @gfg/mobile dev` ou `pnpm --filter @gfg/adm
 
 > O Expo Go precisa ser compatível com o **SDK 57** do projeto.
 
+**Com login (ADR 0018):** crie `apps/mobile/.env.local` a partir de `apps/mobile/.env.example`
+com a URL e a chave **pública** do projeto de desenvolvimento (veja
+[SUPABASE.md](SUPABASE.md), seção 5.5).
+Sem esse arquivo, o app funciona sem conta (só o onboarding e as preferências no aparelho).
+O celular e o computador precisam estar na mesma rede Wi-Fi.
+Depois de mudar o `.env.local`, rode `pnpm --filter @gfg/mobile dev --clear` (o Expo guarda as
+variáveis em cache).
+
 ## Rodar o painel administrativo
 
 1. Na raiz do projeto: `pnpm --filter @gfg/admin dev`
@@ -97,7 +105,9 @@ Nenhum texto da tela fica escrito direto no código: todos estão em
 
 - Para mudar um texto: edite o JSON do idioma.
 - Para criar um texto novo: adicione a mesma chave nos três arquivos e rode `pnpm test`.
-- O app usa o idioma do celular. O painel usa `ADMIN_LOCALE` (padrão `pt-BR`) — veja `apps/admin/.env.example`.
+- O app usa o idioma escolhido no onboarding (do perfil, com conta; do aparelho, sem conta) e, antes
+  disso, o do celular (ADR 0018). O painel usa `ADMIN_LOCALE` (padrão `pt-BR`) — veja
+  `apps/admin/.env.example`.
 
 Detalhes em [packages/i18n/README.md](../packages/i18n/README.md).
 

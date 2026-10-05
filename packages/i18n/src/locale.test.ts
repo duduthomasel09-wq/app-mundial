@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { resolveLocale } from './locale';
+import { resolveAppLocale, resolveLocale } from './locale';
 
 describe('resolveLocale', () => {
   it('usa o idioma exato quando existe', () => {
@@ -25,5 +25,25 @@ describe('resolveLocale', () => {
     expect(resolveLocale([])).toBe('en');
     expect(resolveLocale(undefined)).toBe('en');
     expect(resolveLocale('')).toBe('en');
+  });
+});
+
+describe('resolveAppLocale (prioridade do idioma no app)', () => {
+  it('o idioma do perfil vence o do aparelho e o do celular', () => {
+    expect(resolveAppLocale('es', 'en', ['pt-BR'])).toBe('es');
+  });
+
+  it('sem perfil, vale o idioma salvo no aparelho', () => {
+    expect(resolveAppLocale(null, 'en', ['pt-BR'])).toBe('en');
+  });
+
+  it('sem perfil nem escolha salva, vale o idioma do celular', () => {
+    expect(resolveAppLocale(null, null, ['pt-PT', 'en'])).toBe('pt-BR');
+    expect(resolveAppLocale(undefined, undefined, ['fr-FR'])).toBe('en');
+  });
+
+  it('ignora valores desconhecidos', () => {
+    expect(resolveAppLocale('fr', 'xx', ['es-MX'])).toBe('es');
+    expect(resolveAppLocale('PT-BR', null, ['en'])).toBe('en');
   });
 });

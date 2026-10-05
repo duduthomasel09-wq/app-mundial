@@ -1,4 +1,4 @@
-import { FALLBACK_LOCALE, LOCALES, type LocaleCode } from '@gfg/core';
+import { FALLBACK_LOCALE, isLocaleCode, LOCALES, type LocaleCode } from '@gfg/core';
 
 /**
  * Escolhe o idioma suportado mais próximo do que o aparelho/navegador pede.
@@ -27,4 +27,21 @@ export function resolveLocale(
   }
 
   return FALLBACK_LOCALE;
+}
+
+/**
+ * Idioma do app (ADR 0018), em ordem de prioridade:
+ * 1. idioma salvo no perfil (quem tem conta);
+ * 2. idioma escolhido no onboarding e salvo no aparelho (quem não tem conta);
+ * 3. idioma do celular (`resolveLocale`).
+ * Valores desconhecidos são ignorados.
+ */
+export function resolveAppLocale(
+  profileLocale: string | null | undefined,
+  savedLocale: string | null | undefined,
+  deviceLocales: string | readonly string[] | null | undefined,
+): LocaleCode {
+  if (isLocaleCode(profileLocale)) return profileLocale;
+  if (isLocaleCode(savedLocale)) return savedLocale;
+  return resolveLocale(deviceLocales);
 }
