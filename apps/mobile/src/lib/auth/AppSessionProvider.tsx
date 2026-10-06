@@ -191,6 +191,15 @@ export function AppSessionProvider({ children }: { children: ReactNode }) {
           password: input.value.password,
           options: { data: signUpMetadata(state.local) },
         });
+        // TEMPORÁRIO (diagnóstico do cadastro no Expo Go): só código, status e mensagem do
+        // erro — nunca e-mail, senha, token, URL ou chave. Remover depois do diagnóstico.
+        if (error && __DEV__) {
+          console.warn('[diagnóstico signUp]', {
+            code: error.code,
+            status: error.status,
+            message: error.message,
+          });
+        }
         // E-mail já cadastrado: mesma resposta de um cadastro novo (tela do código), sem
         // revelar que a conta existe. Nenhum código é enviado nesse caso.
         if (isExistingAccountSignUpError(error?.code)) {
